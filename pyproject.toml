@@ -1,7 +1,7 @@
 [project]
 name = "probium"
-version = "0.1.0"
-description = ""
+version = "0.1.2"
+description = "Probium is a fast, modular content analysis tool that detects and classifies file types using pluggable detection engines. Built for high-throughput environments, it supports both API and CLI usage."
 requires-python = ">=3.9"
 dependencies = [
   "pydantic>=2.7",
@@ -9,11 +9,13 @@ dependencies = [
   "platformdirs>=4.2",
   "olefile>=0.46"
 ]
+authors = [{ name = "frankoceanluvr26"}]
 [build-system]
 requires = ["setuptools>=61", "wheel"]
 build-backend = "setuptools.build_meta"
 [project.scripts]
 probium = "probium.cli:main"
+
 [tool.setuptools]
 package-dir = {"" = "."}
 [tool.setuptools.packages.find]
@@ -21,4 +23,4 @@ where    = ["."]
 include  = ["probium", "probium.*"]
 
 [tool.setuptools.package-data]
-fastbackfilter = ["detection_schema.json"]
+probium = ["detection_schema.json"]

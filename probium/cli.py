@@ -1,76 +1,89 @@
-#hashing
+"""
+probium CLI  –  `probium one …` and `probium all …`
+"""
+from __future__ import annotations
+
+import argparse
 import json
 import sys
-import argparse
 from pathlib import Path
+
 from .core import detect, scan_dir
-def cmd_one(args: argparse.Namespace) -> None:
 
-    res = detect(args.file, cap_bytes=None, only=args.only, extensions=args.ext)
 
-    res = detect(args.file, cap_bytes=None, only=args.only)
-
-    json.dump(res.model_dump(), sys.stdout, indent=None if args.raw else 2)
-    sys.stdout.write("\n")
-def cmd_all(args: argparse.Namespace) -> None:
-    results = []
-    for path, res in scan_dir(
-        args.root,
-        pattern=args.pattern,
-        workers=args.workers,
+# ─────────────────────────────────────────  command impls  ──────────────────────────────────────────
+def cmd_one(ns: argparse.Namespace) -> None:
+    """Detect a single file and emit JSON."""
+    res = detect(
+        ns.file,
         cap_bytes=None,
-        only=args.only,
-
-        extensions=args.ext,
-
-    ):
-        line = {"path": str(path), **res.model_dump()}
-        results.append(line)
-    json.dump(results, sys.stdout, indent=None if args.raw else 2)
+        only=ns.only,
+        extensions=ns.ext,
+    )
+    json.dump(res.model_dump(), sys.stdout, indent=None if ns.raw else 2)
     sys.stdout.write("\n")
-def build_parser() -> argparse.ArgumentParser:
-    p = argparse.ArgumentParser(prog="fastback", description="fastback one|all")
+
+
+def cmd_all(ns: argparse.Namespace) -> None:
+    """Walk a directory, run detection on each file, emit one big JSON list."""
+    results: list[dict] = []
+    for path, res in scan_dir(
+        ns.root,
+        pattern=ns.pattern,
+        workers=ns.workers,
+        cap_bytes=None,
+        only=ns.only,
+        extensions=ns.ext,
+    ):
+        results.append({"path": str(path), **res.model_dump()})
+
+    json.dump(results, sys.stdout, indent=None if ns.raw else 2)
+    sys.stdout.write("\n")
+
+
+# ─────────────────────────────────────────  parser builder  ─────────────────────────────────────────
+def _build_parser() -> argparse.ArgumentParser:
+    p = argparse.ArgumentParser(prog="probium", description="Content-type detector")
     sub = p.add_subparsers(dest="cmd", required=True)
+
+    # one ──────────────────────────
     p_one = sub.add_parser("one", help="Detect a single file")
     p_one.add_argument("file", type=Path, help="Path to file")
-    p_one.add_argument(
-        "--only",
-        nargs="+",
-        metavar="ENGINE",
-        help="Restrict detection to these engines",
-    )
-    p_one.add_argument(
-        "--ext",
-        nargs="+",
-        metavar="EXT",
-        help="Only analyze files with these extensions",
-    )
-    p_one.add_argument("--raw", action="store_true", help="compact JSON")
+    _add_common_options(p_one)
     p_one.set_defaults(func=cmd_one)
+
+    # all ──────────────────────────
     p_all = sub.add_parser("all", help="Scan directory recursively")
-    p_all.add_argument("root", type=Path, help="root folder")
-    p_all.add_argument("--pattern", default="**/*", help="glob (default **/*)")
-    p_all.add_argument("--workers", type=int, default=8, help="thread pool size")
-    p_all.add_argument(
+    p_all.add_argument("root", type=Path, help="Root folder")
+    p_all.add_argument("--pattern", default="**/*", help="Glob pattern (default **/*)")
+    p_all.add_argument("--workers", type=int, default=8, help="Thread-pool size")
+    _add_common_options(p_all)
+    p_all.set_defaults(func=cmd_all)
+
+    return p
+
+
+def _add_common_options(ap: argparse.ArgumentParser) -> None:
+    ap.add_argument(
         "--only",
         nargs="+",
         metavar="ENGINE",
         help="Restrict detection to these engines",
     )
-
-    p_all.add_argument(
+    ap.add_argument(
         "--ext",
         nargs="+",
         metavar="EXT",
-        help="Only analyze files with these extensions",
+        help="Only analyse files with these extensions",
     )
+    ap.add_argument("--raw", action="store_true", help="Emit compact JSON")
 
 
-    p_all.add_argument("--raw", action="store_true", help="compact JSON")
-    p_all.set_defaults(func=cmd_all)
-    return p
-def main() -> None:
-    args = build_parser().parse_args()
-    args.func(args)
-if __name__ == "__main__":
+# ────────────────────────────────────────────  entry point  ─────────────────────────────────────────
+def main() -> None:  # this is what the console-script calls
+    ns = _build_parser().parse_args()
+    ns.func(ns)
+
+
+if __name__ == "__main__":   # support `python -m probium`
     main()

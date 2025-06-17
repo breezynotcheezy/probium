@@ -14,7 +14,7 @@ class Result(BaseModel):
     Engines can populate only *candidates*; framework fills the rest.
     """
     engine: str = ""
-    bytes_analyzed: int = 0         
+    bytes_analyzed: int = 0
     elapsed_ms: float = 0.0
     candidates: List[Candidate]
     error: str | None = None
@@ -24,6 +24,8 @@ class Result(BaseModel):
 class DetectionResult(BaseModel):
     file_name: str
     detected_type: str
+
+    
     confidence_score: float = Field(ge=0, le=100)
     detection_method: str
     timestamp: str
@@ -33,5 +35,3 @@ class DetectionResult(BaseModel):
     file_size: int | None = None
     mime_type: str | None = None
     extension: str | None = None
-
-
