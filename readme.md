@@ -8,21 +8,19 @@ Probium is a fast, modular content analysis tool that detects and classifies fil
 - Pluggable engine architecture (PDF, ZIP, etc.) ✔
 - Python library and CLI interface ✔
 - Parallel scanning with thread pools ✔
-- JSON output for easy integration ✔
+- JSON output for easy integration
 
-## Installation
+## Usage:
 
 pip install probium
 
-Usage:
-
 ☑️ CLI ☑️
 
-# To scan a single file
+### To scan a single file
 *probium one path/to/file*
 
 
-# To recursively scan a folder
+### To recursively scan a folder
 *probium all path/to/folder*
 
 
