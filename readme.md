@@ -1,35 +1,82 @@
-*************************************************************
-Probity Data Filter Tool
-*************************************************************
+Probium (formerly FastbackFilter) is a blazing-fast, pluggable content detection engine that recursively scans files, identifies their true types using heuristic and signature-based engines, and outputs structured results in JSON format. Designed for modern compliance, security auditing, and data integrity use cases.
 
+🚀 Features
+⚡ Fast, multithreaded scanning of directories or individual files.
 
+🔍 Custom pluggable engines for content detection (e.g., PDFs, archives).
 
-Common file types such as PNG, MP3, MP4, HTML, GZIP, JSON, CSV, TAR, WAV, EXE,
-BAT and SH now
-have dedicated engines. Engine detection runs all registered engines in parallel
-for faster results. Use ``--only`` to limit scanning to particular engines.
+🧠 Heuristic and magic-byte based detection—no reliance on file extensions.
 
-Use the ``--only`` option to restrict detection to specific engines for faster
-scans, for example:
+🛠️ CLI + Python API for flexible integration into pipelines and tools.
 
-```bash
-python -m fastbackfilter.cli one sample.wav --only wav
-```
+🪪 Typed JSON output with confidence scores, detection breakdowns, and timing metrics.
 
-You can also restrict directory scans to specific file extensions using
-``--ext``:
+💾 Local SQLite cache for repeated scans with expiration control.
 
-```bash
-python -m fastbackfilter.cli all mydir --ext exe sh
-```
+📦 Zero fluff. Zero noise. Just results.
 
-## Logging
-=======
+📦 Installation
+bash
+Copy
+Edit
+pip install probium
+To test the latest version locally during development:
 
-Set `FASTBACK_LOG` to change verbosity. Logs are emitted as pretty JSON, for example:
+bash
+Copy
+Edit
+git clone https://github.com/your-org/probium.git
+cd probium
+python -m venv .venv && source .venv/bin/activate  # or .venv\Scripts\activate on Windows
+pip install -e .
+🧪 Usage
+Scan a single file:
+bash
+Copy
+Edit
+python -m fastbackfilter.cli one ./sample.pdf
+Recursively scan a directory:
+bash
+Copy
+Edit
+python -m fastbackfilter.cli all /path/to/folder
+Use --raw to emit compact JSON, and --pattern to control the glob filter.
 
-*************************************************************
-FASTBACK_LOG=INFO python -m fastbackfilter.cli one sample.pdf
-*************************************************************
-A JSON schema describing the detection result format is provided in `fastbackfilter/detection_schema.json`.
+🧩 Output Example
+json
+Copy
+Edit
+{
+  "path": "sample.pdf",
+  "engine": "pdf",
+  "bytes_analyzed": 76292,
+  "elapsed_ms": 0.68,
+  "candidates": [
+    {
+      "media_type": "application/pdf",
+      "extension": "pdf",
+      "confidence": 1.0,
+      "breakdown": {
+        "offset": 0.0
+      }
+    }
+  ],
+  "error": null
+}
+🔧 Architecture
+engines/: Modular signature-based detectors (e.g., PDF, ZIP, Fallback).
 
+core.py: Threaded scanning orchestration.
+
+cache.py: SQLite-backed LRU cache with TTL.
+
+cli.py: Lightweight click-based command-line interface.
+
+🔐 Use Cases
+🧾 Digital forensics & chain-of-custody verification
+
+🏛️ Government compliance checks (OMB M-23-02, FIPS-validated formats)
+
+🗃️ Archive auditing & media validation
+
+🧬 Data ingestion and pipeline filtering
