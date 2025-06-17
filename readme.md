@@ -19,10 +19,10 @@ Usage:
 
 * CLI
 To scan a single file
-python -m probium.cli one path/to/file
+probium one path/to/file
 
 To recursively scan a folder
-python -m probium.cli all path/to/folder
+probium all path/to/folder
 
 
 * Python Library
