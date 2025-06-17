@@ -14,7 +14,7 @@ Probium is a fast, modular content analysis tool that detects and classifies fil
 
 pip install probium
 
-## ☑️ CLI ☑️
+### ☑️ CLI ☑️
 
 ### To scan a single file
 *probium one path/to/file*
@@ -24,7 +24,7 @@ pip install probium
 *probium all path/to/folder*
 
 
-## ☑️ Python Library ☑️
+### ☑️ Python Library ☑️
 
 from probium import detect
 
