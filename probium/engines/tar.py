@@ -1,0 +1,18 @@
+from __future__ import annotations
+
+from ..types import Candidate, Result
+from .base import EngineBase
+from ..registry import register
+
+_TAR_MAGIC = b"ustar"
+
+@register
+class TAREngine(EngineBase):
+    name = "tar"
+    cost = 0.1
+
+    def sniff(self, payload: bytes) -> Result:
+        if len(payload) > 262 and payload[257:262] == _TAR_MAGIC:
+            cand = Candidate(media_type="application/x-tar", extension="tar", confidence=0.95)
+            return Result(candidates=[cand])
+        return Result(candidates=[])
