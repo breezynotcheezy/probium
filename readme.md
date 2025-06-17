@@ -13,20 +13,20 @@ Probium is a fast, modular content analysis tool that detects and classifies fil
 ## Installation
 
 ```bash
-pip install fastbackfilter
+pip install probium
 
 Usage:
 
 * CLI
 To scan a single file
-python -m fastbackfilter.cli one path/to/file
+python -m probium.cli one path/to/file
 
 To recursively scan a folder
-python -m fastbackfilter.cli all path/to/folder
+python -m probium.cli all path/to/folder
 
 
 * Python Library
-from fastbackfilter import detect
+from probium import detect
 
 result = detect("path/to/file")
 print(result.model_dump_json())
