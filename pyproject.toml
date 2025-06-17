@@ -1,0 +1,24 @@
+[project]
+name = "probium"
+version = "0.1.0"
+description = ""
+requires-python = ">=3.9"
+dependencies = [
+  "pydantic>=2.7",
+  "cachetools>=5.3",
+  "platformdirs>=4.2",
+  "olefile>=0.46"
+]
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+[project.scripts]
+probium = "probium.cli:main"
+[tool.setuptools]
+package-dir = {"" = "."}
+[tool.setuptools.packages.find]
+where    = ["."]
+include  = ["probium", "probium.*"]
+
+[tool.setuptools.package-data]
+fastbackfilter = ["detection_schema.json"]
