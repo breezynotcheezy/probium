@@ -3,6 +3,7 @@
 
 ## Probium (formerly fastbackfilter) is a high-performance, pluggable content detection engine designed for use in compliance, digital forensics, and large-scale file analysis workflows. It scans files or directories and returns structured JSON output indicating detected file types with confidence scores.
 
+
 ### Features
 
 Multithreaded directory scanning
