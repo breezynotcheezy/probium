@@ -16,6 +16,7 @@ Probium is a fast, modular content analysis tool that detects and classifies fil
 pip install fastbackfilter
 
 Usage:
+
 * CLI
 To scan a single file
 python -m fastbackfilter.cli one path/to/file
@@ -29,10 +30,8 @@ from fastbackfilter import detect
 
 result = detect("path/to/file")
 print(result.model_dump_json())
-Development
-bash
-Copy
-Edit
+
+
 # Clone and install locally
 git clone https://github.com/your-org/probium.git
 cd probium
