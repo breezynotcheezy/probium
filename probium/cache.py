@@ -13,7 +13,11 @@ from .types import Result
 CACHE_DIR = Path(user_cache_dir("fastbackfilter"))
 CACHE_DIR.mkdir(parents=True, exist_ok=True)
 DB = CACHE_DIR / "results.sqlite3"
-with sqlite3.connect(DB) as con:
+
+_DB_TIMEOUT = 30.0
+
+with sqlite3.connect(DB, timeout=_DB_TIMEOUT) as con:
+    con.execute("PRAGMA journal_mode=WAL")
     con.execute(
         "CREATE TABLE IF NOT EXISTS r (p TEXT PRIMARY KEY, t REAL, j TEXT)"
     )
@@ -43,7 +47,7 @@ def get(path: Path) -> Optional[Result]:
         return _des(_mem[key])
 
     # L2: SQLite (own connection per thread)
-    with sqlite3.connect(DB) as con:
+    with sqlite3.connect(DB, timeout=_DB_TIMEOUT) as con:
         row = con.execute(
             "SELECT t, j FROM r WHERE p = ?", (key,)
         ).fetchone()
@@ -61,7 +65,7 @@ def put(path: Path, result: Result) -> None:
     key = str(path.resolve())
     raw = _ser(result)
     _mem[key] = raw
-    with sqlite3.connect(DB) as con:
+    with sqlite3.connect(DB, timeout=_DB_TIMEOUT) as con:
         con.execute(
             "INSERT OR REPLACE INTO r (p, t, j) VALUES (?,?,?)",
             (key, _now(), raw),
