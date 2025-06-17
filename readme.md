@@ -15,12 +15,23 @@ Probium is a fast, modular content analysis tool that detects and classifies fil
 ```bash
 pip install probium
 
+
+Usage:
+
+* CLI
+To scan a single file
+python -m probium one path/to/file
+
+To recursively scan a folder
+python -m probium all path/to/folder
+=======
 Usage:
 
 ☑️ CLI ☑️
 
 # To scan a single file
 *probium one path/to/file*
+
 
 # To recursively scan a folder
 *probium all path/to/folder*
