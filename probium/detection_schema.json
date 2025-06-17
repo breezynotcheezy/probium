@@ -1,0 +1,34 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "DetectionResult",
+  "type": "object",
+  "required": [
+    "file_name",
+    "detected_type",
+    "confidence_score",
+    "detection_method",
+    "timestamp"
+  ],
+  "properties": {
+    "file_name": { "type": "string" },
+    "detected_type": { "type": "string" },
+    "confidence_score": { "type": "number", "minimum": 0, "maximum": 100 },
+    "detection_method": { "type": "string" },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "errors": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "warnings": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "analysis_time": { "type": "number" },
+    "file_size": { "type": "integer" },
+    "mime_type": { "type": "string" },\
+    "extension": { "type": "string" }
+  },
+  "additionalProperties": false
+}
+
+
