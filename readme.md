@@ -1,4 +1,4 @@
-# Probium
+# Probium 🌑
 
 Probium is a fast, modular content analysis tool that detects and classifies file types using pluggable detection engines. Built for high-throughput environments, it supports both API and CLI usage.
 
