@@ -8,7 +8,7 @@ Probium is a fast, modular content analysis tool that detects and classifies fil
 - Pluggable engine architecture (PDF, ZIP, etc.) ✔
 - Python library and CLI interface ✔
 - Parallel scanning with thread pools ✔
-- JSON output for easy integration
+- JSON output for easy integration ✔
 
 ## Usage:
 
