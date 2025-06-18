@@ -4,6 +4,9 @@ import logging
 import os
 from pathlib import Path
 from typing import Any, Iterable, Sequence
+
+# directories ignored by default when scanning
+DEFAULT_IGNORES = {".git", "venv", ".venv", "__pycache__"}
 from .cache import get as cache_get, put as cache_put
 from .registry import list_engines, get_instance
 from .types import Result, Candidate
@@ -112,6 +115,8 @@ def scan_dir(
 
     extensions: Iterable[str] | None = None,
 
+    ignore: Iterable[str] | None = None,
+
 
     **kw,
 ):
@@ -132,13 +137,26 @@ def scan_dir(
         Optional iterable of file extensions to scan. Files with other
         extensions are skipped.
 
+    ignore:
+        Optional iterable of directory names to skip during scanning. If not
+        provided, a default set of common build and VCS directories is ignored.
+
 
     kw:
         Additional arguments passed to :func:`detect`.
     """
 
     root = Path(root)
-    paths = [p for p in root.glob(pattern) if p.is_file()]
+    ignore_set = set(DEFAULT_IGNORES)
+    if ignore:
+        ignore_set.update(Path(d).name for d in ignore)
+    paths = []
+    for p in root.glob(pattern):
+        if not p.is_file():
+            continue
+        if ignore_set and any(part in ignore_set for part in p.relative_to(root).parts):
+            continue
+        paths.append(p)
     if extensions is not None:
         allowed = {e.lower().lstrip('.') for e in extensions}
         paths = [p for p in paths if p.suffix.lower().lstrip('.') in allowed]

@@ -19,10 +19,17 @@ Usage:
 
 * CLI
 To scan a single file
-python -m probium.cli one path/to/file
+python -m probium one path/to/file
 
 To recursively scan a folder
-python -m probium.cli all path/to/folder
+python -m probium all path/to/folder
+
+Probium skips `.git`, `venv`, `.venv` and `__pycache__` by default. You can
+specify additional directories with `--ignore`:
+
+```bash
+python -m probium all path/to/folder --ignore node_modules build
+```
 
 
 * Python Library
@@ -36,3 +43,11 @@ print(result.model_dump_json())
 git clone https://github.com/your-org/probium.git
 cd probium
 pip install -e .
+
+## Testing
+
+Run the engine test harness with:
+
+```bash
+pytest
+```
