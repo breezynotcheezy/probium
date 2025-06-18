@@ -3,7 +3,9 @@ from . import test_engines
 import pytest
 from probium import detect
 
+
 #test harness backbone - UNUSED. 
+
 def test_exe_valid_1():
     res = detect(test_engines.BASE_SAMPLES["exe"], engine="exe")
     assert res.candidates
@@ -1332,5 +1334,573 @@ def test_bat_invalid_9():
 def test_bat_invalid_10():
     payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["bat"])[9]
     res = detect(payload, engine="bat")
+    assert not res.candidates
+
+
+def test_java_valid_1():
+    res = detect(test_engines.BASE_SAMPLES["java"], engine="java")
+    assert res.candidates
+
+def test_java_valid_2():
+    res = detect(test_engines.BASE_SAMPLES["java"], engine="java")
+    assert res.candidates
+
+def test_java_valid_3():
+    res = detect(test_engines.BASE_SAMPLES["java"], engine="java")
+    assert res.candidates
+
+def test_java_valid_4():
+    res = detect(test_engines.BASE_SAMPLES["java"], engine="java")
+    assert res.candidates
+
+def test_java_valid_5():
+    res = detect(test_engines.BASE_SAMPLES["java"], engine="java")
+    assert res.candidates
+
+def test_java_invalid_1():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["java"])[0]
+    res = detect(payload, engine="java")
+    assert not res.candidates
+
+def test_java_invalid_2():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["java"])[1]
+    res = detect(payload, engine="java")
+    assert not res.candidates
+
+def test_java_invalid_3():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["java"])[2]
+    res = detect(payload, engine="java")
+    assert not res.candidates
+
+def test_java_invalid_4():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["java"])[3]
+    res = detect(payload, engine="java")
+    assert not res.candidates
+
+def test_java_invalid_5():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["java"])[4]
+    res = detect(payload, engine="java")
+    assert not res.candidates
+
+def test_java_invalid_6():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["java"])[5]
+    res = detect(payload, engine="java")
+    assert not res.candidates
+
+def test_java_invalid_7():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["java"])[6]
+    res = detect(payload, engine="java")
+    assert not res.candidates
+
+def test_java_invalid_8():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["java"])[7]
+    res = detect(payload, engine="java")
+    assert not res.candidates
+
+def test_java_invalid_9():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["java"])[8]
+    res = detect(payload, engine="java")
+    assert not res.candidates
+
+def test_java_invalid_10():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["java"])[9]
+    res = detect(payload, engine="java")
+    assert not res.candidates
+
+
+def test_c_valid_1():
+    res = detect(test_engines.BASE_SAMPLES["c"], engine="c")
+    assert res.candidates
+
+def test_c_valid_2():
+    res = detect(test_engines.BASE_SAMPLES["c"], engine="c")
+    assert res.candidates
+
+def test_c_valid_3():
+    res = detect(test_engines.BASE_SAMPLES["c"], engine="c")
+    assert res.candidates
+
+def test_c_valid_4():
+    res = detect(test_engines.BASE_SAMPLES["c"], engine="c")
+    assert res.candidates
+
+def test_c_valid_5():
+    res = detect(test_engines.BASE_SAMPLES["c"], engine="c")
+    assert res.candidates
+
+def test_c_invalid_1():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["c"])[0]
+    res = detect(payload, engine="c")
+    assert not res.candidates
+
+def test_c_invalid_2():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["c"])[1]
+    res = detect(payload, engine="c")
+    assert not res.candidates
+
+def test_c_invalid_3():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["c"])[2]
+    res = detect(payload, engine="c")
+    assert not res.candidates
+
+def test_c_invalid_4():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["c"])[3]
+    res = detect(payload, engine="c")
+    assert not res.candidates
+
+def test_c_invalid_5():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["c"])[4]
+    res = detect(payload, engine="c")
+    assert not res.candidates
+
+def test_c_invalid_6():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["c"])[5]
+    res = detect(payload, engine="c")
+    assert not res.candidates
+
+def test_c_invalid_7():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["c"])[6]
+    res = detect(payload, engine="c")
+    assert not res.candidates
+
+def test_c_invalid_8():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["c"])[7]
+    res = detect(payload, engine="c")
+    assert not res.candidates
+
+def test_c_invalid_9():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["c"])[8]
+    res = detect(payload, engine="c")
+    assert not res.candidates
+
+def test_c_invalid_10():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["c"])[9]
+    res = detect(payload, engine="c")
+    assert not res.candidates
+
+
+def test_js_valid_1():
+    res = detect(test_engines.BASE_SAMPLES["js"], engine="js")
+    assert res.candidates
+
+def test_js_valid_2():
+    res = detect(test_engines.BASE_SAMPLES["js"], engine="js")
+    assert res.candidates
+
+def test_js_valid_3():
+    res = detect(test_engines.BASE_SAMPLES["js"], engine="js")
+    assert res.candidates
+
+def test_js_valid_4():
+    res = detect(test_engines.BASE_SAMPLES["js"], engine="js")
+    assert res.candidates
+
+def test_js_valid_5():
+    res = detect(test_engines.BASE_SAMPLES["js"], engine="js")
+    assert res.candidates
+
+def test_js_invalid_1():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["js"])[0]
+    res = detect(payload, engine="js")
+    assert not res.candidates
+
+def test_js_invalid_2():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["js"])[1]
+    res = detect(payload, engine="js")
+    assert not res.candidates
+
+def test_js_invalid_3():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["js"])[2]
+    res = detect(payload, engine="js")
+    assert not res.candidates
+
+def test_js_invalid_4():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["js"])[3]
+    res = detect(payload, engine="js")
+    assert not res.candidates
+
+def test_js_invalid_5():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["js"])[4]
+    res = detect(payload, engine="js")
+    assert not res.candidates
+
+def test_js_invalid_6():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["js"])[5]
+    res = detect(payload, engine="js")
+    assert not res.candidates
+
+def test_js_invalid_7():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["js"])[6]
+    res = detect(payload, engine="js")
+    assert not res.candidates
+
+def test_js_invalid_8():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["js"])[7]
+    res = detect(payload, engine="js")
+    assert not res.candidates
+
+def test_js_invalid_9():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["js"])[8]
+    res = detect(payload, engine="js")
+    assert not res.candidates
+
+def test_js_invalid_10():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["js"])[9]
+    res = detect(payload, engine="js")
+    assert not res.candidates
+
+
+def test_ruby_valid_1():
+    res = detect(test_engines.BASE_SAMPLES["ruby"], engine="ruby")
+    assert res.candidates
+
+def test_ruby_valid_2():
+    res = detect(test_engines.BASE_SAMPLES["ruby"], engine="ruby")
+    assert res.candidates
+
+def test_ruby_valid_3():
+    res = detect(test_engines.BASE_SAMPLES["ruby"], engine="ruby")
+    assert res.candidates
+
+def test_ruby_valid_4():
+    res = detect(test_engines.BASE_SAMPLES["ruby"], engine="ruby")
+    assert res.candidates
+
+def test_ruby_valid_5():
+    res = detect(test_engines.BASE_SAMPLES["ruby"], engine="ruby")
+    assert res.candidates
+
+def test_ruby_invalid_1():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["ruby"])[0]
+    res = detect(payload, engine="ruby")
+    assert not res.candidates
+
+def test_ruby_invalid_2():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["ruby"])[1]
+    res = detect(payload, engine="ruby")
+    assert not res.candidates
+
+def test_ruby_invalid_3():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["ruby"])[2]
+    res = detect(payload, engine="ruby")
+    assert not res.candidates
+
+def test_ruby_invalid_4():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["ruby"])[3]
+    res = detect(payload, engine="ruby")
+    assert not res.candidates
+
+def test_ruby_invalid_5():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["ruby"])[4]
+    res = detect(payload, engine="ruby")
+    assert not res.candidates
+
+def test_ruby_invalid_6():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["ruby"])[5]
+    res = detect(payload, engine="ruby")
+    assert not res.candidates
+
+def test_ruby_invalid_7():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["ruby"])[6]
+    res = detect(payload, engine="ruby")
+    assert not res.candidates
+
+def test_ruby_invalid_8():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["ruby"])[7]
+    res = detect(payload, engine="ruby")
+    assert not res.candidates
+
+def test_ruby_invalid_9():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["ruby"])[8]
+    res = detect(payload, engine="ruby")
+    assert not res.candidates
+
+def test_ruby_invalid_10():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["ruby"])[9]
+    res = detect(payload, engine="ruby")
+    assert not res.candidates
+
+
+def test_rust_valid_1():
+    res = detect(test_engines.BASE_SAMPLES["rust"], engine="rust")
+    assert res.candidates
+
+def test_rust_valid_2():
+    res = detect(test_engines.BASE_SAMPLES["rust"], engine="rust")
+    assert res.candidates
+
+def test_rust_valid_3():
+    res = detect(test_engines.BASE_SAMPLES["rust"], engine="rust")
+    assert res.candidates
+
+def test_rust_valid_4():
+    res = detect(test_engines.BASE_SAMPLES["rust"], engine="rust")
+    assert res.candidates
+
+def test_rust_valid_5():
+    res = detect(test_engines.BASE_SAMPLES["rust"], engine="rust")
+    assert res.candidates
+
+def test_rust_invalid_1():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["rust"])[0]
+    res = detect(payload, engine="rust")
+    assert not res.candidates
+
+def test_rust_invalid_2():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["rust"])[1]
+    res = detect(payload, engine="rust")
+    assert not res.candidates
+
+def test_rust_invalid_3():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["rust"])[2]
+    res = detect(payload, engine="rust")
+    assert not res.candidates
+
+def test_rust_invalid_4():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["rust"])[3]
+    res = detect(payload, engine="rust")
+    assert not res.candidates
+
+def test_rust_invalid_5():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["rust"])[4]
+    res = detect(payload, engine="rust")
+    assert not res.candidates
+
+def test_rust_invalid_6():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["rust"])[5]
+    res = detect(payload, engine="rust")
+    assert not res.candidates
+
+def test_rust_invalid_7():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["rust"])[6]
+    res = detect(payload, engine="rust")
+    assert not res.candidates
+
+def test_rust_invalid_8():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["rust"])[7]
+    res = detect(payload, engine="rust")
+    assert not res.candidates
+
+def test_rust_invalid_9():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["rust"])[8]
+    res = detect(payload, engine="rust")
+    assert not res.candidates
+
+def test_rust_invalid_10():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["rust"])[9]
+    res = detect(payload, engine="rust")
+    assert not res.candidates
+
+
+def test_cpp_valid_1():
+    res = detect(test_engines.BASE_SAMPLES["cpp"], engine="cpp")
+    assert res.candidates
+
+def test_cpp_valid_2():
+    res = detect(test_engines.BASE_SAMPLES["cpp"], engine="cpp")
+    assert res.candidates
+
+def test_cpp_valid_3():
+    res = detect(test_engines.BASE_SAMPLES["cpp"], engine="cpp")
+    assert res.candidates
+
+def test_cpp_valid_4():
+    res = detect(test_engines.BASE_SAMPLES["cpp"], engine="cpp")
+    assert res.candidates
+
+def test_cpp_valid_5():
+    res = detect(test_engines.BASE_SAMPLES["cpp"], engine="cpp")
+    assert res.candidates
+
+def test_cpp_invalid_1():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["cpp"])[0]
+    res = detect(payload, engine="cpp")
+    assert not res.candidates
+
+def test_cpp_invalid_2():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["cpp"])[1]
+    res = detect(payload, engine="cpp")
+    assert not res.candidates
+
+def test_cpp_invalid_3():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["cpp"])[2]
+    res = detect(payload, engine="cpp")
+    assert not res.candidates
+
+def test_cpp_invalid_4():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["cpp"])[3]
+    res = detect(payload, engine="cpp")
+    assert not res.candidates
+
+def test_cpp_invalid_5():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["cpp"])[4]
+    res = detect(payload, engine="cpp")
+    assert not res.candidates
+
+def test_cpp_invalid_6():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["cpp"])[5]
+    res = detect(payload, engine="cpp")
+    assert not res.candidates
+
+def test_cpp_invalid_7():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["cpp"])[6]
+    res = detect(payload, engine="cpp")
+    assert not res.candidates
+
+def test_cpp_invalid_8():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["cpp"])[7]
+    res = detect(payload, engine="cpp")
+    assert not res.candidates
+
+def test_cpp_invalid_9():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["cpp"])[8]
+    res = detect(payload, engine="cpp")
+    assert not res.candidates
+
+def test_cpp_invalid_10():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["cpp"])[9]
+    res = detect(payload, engine="cpp")
+    assert not res.candidates
+
+
+def test_scala_valid_1():
+    res = detect(test_engines.BASE_SAMPLES["scala"], engine="scala")
+    assert res.candidates
+
+def test_scala_valid_2():
+    res = detect(test_engines.BASE_SAMPLES["scala"], engine="scala")
+    assert res.candidates
+
+def test_scala_valid_3():
+    res = detect(test_engines.BASE_SAMPLES["scala"], engine="scala")
+    assert res.candidates
+
+def test_scala_valid_4():
+    res = detect(test_engines.BASE_SAMPLES["scala"], engine="scala")
+    assert res.candidates
+
+def test_scala_valid_5():
+    res = detect(test_engines.BASE_SAMPLES["scala"], engine="scala")
+    assert res.candidates
+
+def test_scala_invalid_1():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["scala"])[0]
+    res = detect(payload, engine="scala")
+    assert not res.candidates
+
+def test_scala_invalid_2():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["scala"])[1]
+    res = detect(payload, engine="scala")
+    assert not res.candidates
+
+def test_scala_invalid_3():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["scala"])[2]
+    res = detect(payload, engine="scala")
+    assert not res.candidates
+
+def test_scala_invalid_4():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["scala"])[3]
+    res = detect(payload, engine="scala")
+    assert not res.candidates
+
+def test_scala_invalid_5():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["scala"])[4]
+    res = detect(payload, engine="scala")
+    assert not res.candidates
+
+def test_scala_invalid_6():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["scala"])[5]
+    res = detect(payload, engine="scala")
+    assert not res.candidates
+
+def test_scala_invalid_7():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["scala"])[6]
+    res = detect(payload, engine="scala")
+    assert not res.candidates
+
+def test_scala_invalid_8():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["scala"])[7]
+    res = detect(payload, engine="scala")
+    assert not res.candidates
+
+def test_scala_invalid_9():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["scala"])[8]
+    res = detect(payload, engine="scala")
+    assert not res.candidates
+
+def test_scala_invalid_10():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["scala"])[9]
+    res = detect(payload, engine="scala")
+    assert not res.candidates
+
+
+def test_python_valid_1():
+    res = detect(test_engines.BASE_SAMPLES["python"], engine="python")
+    assert res.candidates
+
+def test_python_valid_2():
+    res = detect(test_engines.BASE_SAMPLES["python"], engine="python")
+    assert res.candidates
+
+def test_python_valid_3():
+    res = detect(test_engines.BASE_SAMPLES["python"], engine="python")
+    assert res.candidates
+
+def test_python_valid_4():
+    res = detect(test_engines.BASE_SAMPLES["python"], engine="python")
+    assert res.candidates
+
+def test_python_valid_5():
+    res = detect(test_engines.BASE_SAMPLES["python"], engine="python")
+    assert res.candidates
+
+def test_python_invalid_1():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["python"])[0]
+    res = detect(payload, engine="python")
+    assert not res.candidates
+
+def test_python_invalid_2():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["python"])[1]
+    res = detect(payload, engine="python")
+    assert not res.candidates
+
+def test_python_invalid_3():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["python"])[2]
+    res = detect(payload, engine="python")
+    assert not res.candidates
+
+def test_python_invalid_4():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["python"])[3]
+    res = detect(payload, engine="python")
+    assert not res.candidates
+
+def test_python_invalid_5():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["python"])[4]
+    res = detect(payload, engine="python")
+    assert not res.candidates
+
+def test_python_invalid_6():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["python"])[5]
+    res = detect(payload, engine="python")
+    assert not res.candidates
+
+def test_python_invalid_7():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["python"])[6]
+    res = detect(payload, engine="python")
+    assert not res.candidates
+
+def test_python_invalid_8():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["python"])[7]
+    res = detect(payload, engine="python")
+    assert not res.candidates
+
+def test_python_invalid_9():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["python"])[8]
+    res = detect(payload, engine="python")
+    assert not res.candidates
+
+def test_python_invalid_10():
+    payload = test_engines._invalid_variants(test_engines.BASE_SAMPLES["python"])[9]
+    res = detect(payload, engine="python")
     assert not res.candidates
 

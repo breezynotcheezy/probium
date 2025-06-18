@@ -21,6 +21,7 @@ pip install probium
 *probium one path/to/file*
 
 
+
 ### *To recursively scan a folder*
 *probium all path/to/folder*
 
@@ -38,6 +39,8 @@ print(result.model_dump_json())
 git clone https://github.com/your-org/probium.git
 cd probium
 
+
 pip install -e .
+
 
 

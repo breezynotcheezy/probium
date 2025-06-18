@@ -6,7 +6,12 @@ import zipfile
 import struct
 import random
 import pytest
+
+
 from probium import detect
+
+
+
 def _sample_pdf():
     return (
         b"%PDF-1.4\n1 0 obj\n<<>>\nendobj\ntrailer\n<<>>\n%%EOF\n"
@@ -76,6 +81,32 @@ def _sample_bat():
 def _sample_fallback():
     return os.urandom(20)
 
+
+def _sample_python():
+    return b"#!/usr/bin/env python\nprint('hi')\n"
+
+def _sample_java():
+    return b"public class Test { public static void main(String[] a){ } }"
+
+def _sample_c():
+    return b"#include <stdio.h>\nint main(){return 0;}\n"
+
+def _sample_js():
+    return b"function test(){ console.log('hi'); }"
+
+def _sample_ruby():
+    return b"#!/usr/bin/env ruby\nputs 'hi'\n"
+
+def _sample_rust():
+    return b"fn main() { println!(\"hi\"); }"
+
+def _sample_cpp():
+    return b"#include <iostream>\nint main(){std::cout<<\"hi\";}"
+
+def _sample_scala():
+    return b"object Main extends App { println(\"hi\") }"
+
+
 BASE_SAMPLES = {
     "exe": _sample_exe(),
     "image": _sample_jpeg(),
@@ -96,6 +127,16 @@ BASE_SAMPLES = {
     "zipoffice": _sample_zip_office(),
     "legacyoffice": _sample_legacy_office(),
     "bat": _sample_bat(),
+
+    "python": _sample_python(),
+    "java": _sample_java(),
+    "c": _sample_c(),
+    "js": _sample_js(),
+    "ruby": _sample_ruby(),
+    "rust": _sample_rust(),
+    "cpp": _sample_cpp(),
+    "scala": _sample_scala(),
+
 }
 
 
@@ -104,9 +145,13 @@ def _valid_variants(base: bytes) -> list[bytes]:
 
 
 def _invalid_variants(base: bytes) -> list[bytes]:
-    # if there's a prefix with a byte it is UNLIKELY to match so we randomized them.
+
+    # Prefix with a byte unlikely to match engine heuristics so random
     # payloads don't accidentally appear valid.
     return [b"\x00" + os.urandom(len(base) + i % 3) for i in range(10)]
+
+
+
 def _cases():
     cases = []
     for engine, base in BASE_SAMPLES.items():
