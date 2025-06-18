@@ -41,6 +41,33 @@ def _sample_mp4():
 def _sample_wav():
     return b"RIFF" + b"\x24\x00\x00\x00" + b"WAVE" + b"\0" * 8
 
+def _sample_bmp():
+    return b"BM" + b"\0" * 10
+
+def _sample_flac():
+    return b"fLaC" + b"\0" * 8
+
+def _sample_ogg():
+    return b"OggS" + b"\0" * 8
+
+def _sample_rar():
+    return b"Rar!" + b"\0" * 8
+
+def _sample_xz():
+    return b"\xFD7zXZ\x00" + b"\0" * 8
+
+def _sample_bzip2():
+    return b"BZh9" + b"\0" * 8
+
+def _sample_7z():
+    return b"7z\xBC\xAF\x27\x1C" + b"\0" * 8
+
+def _sample_ico():
+    return b"\x00\x00\x01\x00" + b"\0" * 8
+
+def _sample_sqlite():
+    return b"SQLite format 3\x00" + b"\0" * 8
+
 def _sample_tar():
     mem = io.BytesIO()
     with tarfile.open(fileobj=mem, mode="w") as tf:
@@ -127,6 +154,16 @@ BASE_SAMPLES = {
     "zipoffice": _sample_zip_office(),
     "legacyoffice": _sample_legacy_office(),
     "bat": _sample_bat(),
+
+    "bmp": _sample_bmp(),
+    "flac": _sample_flac(),
+    "ogg": _sample_ogg(),
+    "rar": _sample_rar(),
+    "xz": _sample_xz(),
+    "bzip2": _sample_bzip2(),
+    "7z": _sample_7z(),
+    "ico": _sample_ico(),
+    "sqlite": _sample_sqlite(),
 
     "python": _sample_python(),
     "java": _sample_java(),
