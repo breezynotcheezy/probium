@@ -41,6 +41,33 @@ def _sample_mp4():
 def _sample_wav():
     return b"RIFF" + b"\x24\x00\x00\x00" + b"WAVE" + b"\0" * 8
 
+def _sample_bmp():
+    return b"BM" + b"\0" * 10
+
+def _sample_flac():
+    return b"fLaC" + b"\0" * 8
+
+def _sample_ogg():
+    return b"OggS" + b"\0" * 8
+
+def _sample_rar():
+    return b"Rar!" + b"\0" * 8
+
+def _sample_xz():
+    return b"\xFD7zXZ\x00" + b"\0" * 8
+
+def _sample_bzip2():
+    return b"BZh9" + b"\0" * 8
+
+def _sample_7z():
+    return b"7z\xBC\xAF\x27\x1C" + b"\0" * 8
+
+def _sample_ico():
+    return b"\x00\x00\x01\x00" + b"\0" * 8
+
+def _sample_sqlite():
+    return b"SQLite format 3\x00" + b"\0" * 8
+
 def _sample_tar():
     mem = io.BytesIO()
     with tarfile.open(fileobj=mem, mode="w") as tf:
@@ -106,6 +133,66 @@ def _sample_cpp():
 def _sample_scala():
     return b"object Main extends App { println(\"hi\") }"
 
+def _sample_go():
+    return b"package main\nfunc main() { println(\"hi\") }"
+
+def _sample_php():
+    return b"<?php echo 'hi';"
+
+def _sample_csharp():
+    return b"using System; class P { static void Main(){ } }"
+
+def _sample_perl():
+    return b"#!/usr/bin/perl\nprint 'hi';\n"
+
+def _sample_swift():
+    return b"import Foundation\nfunc main(){print(\"hi\")}"
+
+def _sample_kotlin():
+    return b"fun main(){ println(\"hi\") }"
+
+def _sample_haskell():
+    return b"module Main where\nmain = putStrLn \"hi\""
+
+def _sample_lua():
+    return b"function main() print('hi') end"
+
+def _sample_markdown():
+    return b"# Title\n\nSome text"
+
+def _sample_yaml():
+    return b"key: value\nlist:\n  - item"
+
+def _sample_ini():
+    return b"[section]\nkey=value"
+
+def _sample_makefile():
+    return b"all:\n\techo hi"
+
+def _sample_dockerfile():
+    return b"FROM busybox\nCMD echo hi"
+
+def _sample_terraform():
+    return b"terraform { required_version=\"1.0\" }"
+
+def _sample_toml():
+    return b"[tool]\nname=\"hi\""
+
+def _sample_powershell():
+    return b"Write-Host 'hi'"
+
+def _sample_clojure():
+    return b"(ns hi) (defn -main [] (println \"hi\"))"
+
+def _sample_elixir():
+    return b"defmodule Hi do\nend"
+
+def _sample_dart():
+    return b"void main(){ print('hi'); }"
+
+def _sample_zig():
+    return b"pub fn main() void { std.debug.print(\"hi\", .{}); }"
+
 
 BASE_SAMPLES = {
     "exe": _sample_exe(),
@@ -128,6 +215,16 @@ BASE_SAMPLES = {
     "legacyoffice": _sample_legacy_office(),
     "bat": _sample_bat(),
 
+    "bmp": _sample_bmp(),
+    "flac": _sample_flac(),
+    "ogg": _sample_ogg(),
+    "rar": _sample_rar(),
+    "xz": _sample_xz(),
+    "bzip2": _sample_bzip2(),
+    "7z": _sample_7z(),
+    "ico": _sample_ico(),
+    "sqlite": _sample_sqlite(),
+
     "python": _sample_python(),
     "java": _sample_java(),
     "c": _sample_c(),
@@ -136,6 +233,26 @@ BASE_SAMPLES = {
     "rust": _sample_rust(),
     "cpp": _sample_cpp(),
     "scala": _sample_scala(),
+    "go": _sample_go(),
+    "php": _sample_php(),
+    "csharp": _sample_csharp(),
+    "perl": _sample_perl(),
+    "swift": _sample_swift(),
+    "kotlin": _sample_kotlin(),
+    "haskell": _sample_haskell(),
+    "lua": _sample_lua(),
+    "markdown": _sample_markdown(),
+    "yaml": _sample_yaml(),
+    "ini": _sample_ini(),
+    "makefile": _sample_makefile(),
+    "dockerfile": _sample_dockerfile(),
+    "terraform": _sample_terraform(),
+    "toml": _sample_toml(),
+    "powershell": _sample_powershell(),
+    "clojure": _sample_clojure(),
+    "elixir": _sample_elixir(),
+    "dart": _sample_dart(),
+    "zig": _sample_zig(),
 
 }
 
@@ -177,3 +294,16 @@ _CASE_IDS = [case_id for _, _, _, case_id in _ALL_CASES]
 def test_engines(engine: str, payload: bytes, expected: bool, case_id: str) -> None:
     res = detect(payload, engine=engine, cap_bytes=None)
     assert (len(res.candidates) > 0) == expected
+
+
+def test_directory_detection(tmp_path):
+    d = tmp_path / "subdir"
+    d.mkdir()
+    res = detect(d)
+    assert res.candidates and res.candidates[0].media_type == "inode/directory"
+
+
+def test_python_precedence():
+    res = detect(BASE_SAMPLES["python"], cap_bytes=None)
+    assert res.candidates
+    assert res.candidates[0].media_type == "text/x-python"
