@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ..types import Candidate, Result
+from ..models import Candidate, Result
 from .base import EngineBase
 from ..registry import register
 import io

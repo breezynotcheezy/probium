@@ -1,4 +1,4 @@
-# fastbackfilter/cache.py  – thread-safe SQLite + small in-mem LRU
+# probium/cache.py  – thread-safe SQLite + small in-mem LRU
 from __future__ import annotations
 import sqlite3, time
 from pathlib import Path
@@ -7,10 +7,10 @@ from typing import Optional
 from platformdirs import user_cache_dir
 from cachetools import LRUCache
 
-from .types import Result
+from .models import Result
 
 
-CACHE_DIR = Path(user_cache_dir("fastbackfilter"))
+CACHE_DIR = Path(user_cache_dir("probium"))
 CACHE_DIR.mkdir(parents=True, exist_ok=True)
 DB = CACHE_DIR / "results.sqlite3"
 
