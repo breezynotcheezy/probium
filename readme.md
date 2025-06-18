@@ -40,12 +40,4 @@ cd probium
 
 pip install -e .
 
-## Testing
-
-Install dependencies and run the engine test harness with:
-
-```bash
-pip install -e .
-pytest
-```
 
