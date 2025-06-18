@@ -1,6 +1,6 @@
 from __future__ import annotations
 import abc, time, logging
-from ..types import Result
+from ..models import Result
 from ..exceptions import EngineFailure
 import hashlib
 
