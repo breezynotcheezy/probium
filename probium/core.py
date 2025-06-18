@@ -1,4 +1,6 @@
 from __future__ import annotations
+
+import asyncio
 import concurrent.futures as cf
 import logging
 import os
@@ -105,10 +107,14 @@ def detect(
     return best
 try:
     import anyio as _anyio
+
     async def detect_async(source: Any, **kw) -> Result:
         return await _anyio.to_thread.run_sync(detect, source, **kw)
-except ImportError:
-    pass
+except ImportError:  # pragma: no cover - optional dependency
+    import asyncio
+
+    async def detect_async(source: Any, **kw) -> Result:
+        return await asyncio.to_thread(detect, source, **kw)
 def scan_dir(
     root: str | Path,
     *,
@@ -155,14 +161,12 @@ def scan_dir(
         ignore_set.update(Path(d).name for d in ignore)
     paths = []
     for p in root.glob(pattern):
-        if not p.is_file():
-            continue
         if ignore_set and any(part in ignore_set for part in p.relative_to(root).parts):
             continue
         paths.append(p)
     if extensions is not None:
         allowed = {e.lower().lstrip('.') for e in extensions}
-        paths = [p for p in paths if p.suffix.lower().lstrip('.') in allowed]
+        paths = [p for p in paths if p.is_dir() or p.suffix.lower().lstrip('.') in allowed]
     with cf.ThreadPoolExecutor(max_workers=workers) as ex:
         futs = {
             ex.submit(detect, p, only=only, extensions=extensions, **kw): p
@@ -171,3 +175,45 @@ def scan_dir(
 
         for fut in cf.as_completed(futs):
             yield futs[fut], fut.result()
+
+
+async def scan_dir_async(
+    root: str | Path,
+    *,
+    pattern: str = "**/*",
+    workers: int = os.cpu_count() or 4,
+    only: Iterable[str] | None = None,
+    extensions: Iterable[str] | None = None,
+    ignore: Iterable[str] | None = None,
+    **kw,
+) -> Iterable[tuple[Path, Result]]:
+    """Asynchronously yield ``(path, Result)`` for files and dirs under ``root``.
+
+    Parameters are the same as :func:`scan_dir` but detection runs concurrently
+    using ``asyncio`` tasks.
+    """
+
+    root = Path(root)
+    ignore_set = set(DEFAULT_IGNORES)
+    if ignore:
+        ignore_set.update(Path(d).name for d in ignore)
+    paths = []
+    for p in root.glob(pattern):
+        if ignore_set and any(part in ignore_set for part in p.relative_to(root).parts):
+            continue
+        if extensions is not None and p.is_file():
+            allowed = {e.lower().lstrip('.') for e in extensions}
+            if p.suffix.lower().lstrip('.') not in allowed:
+                continue
+        paths.append(p)
+
+    sem = asyncio.Semaphore(workers)
+
+    async def _run(path: Path):
+        async with sem:
+            res = await detect_async(path, only=only, extensions=extensions, **kw)
+            return path, res
+
+    tasks = [asyncio.create_task(_run(p)) for p in paths]
+    for coro in asyncio.as_completed(tasks):
+        yield await coro
