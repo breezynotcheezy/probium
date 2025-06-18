@@ -5,7 +5,7 @@ from .base import EngineBase
 from ..registry import register
 import csv, io
 
-@register
+@registerg
 class CSVEngine(EngineBase):
     name = "csv"
     cost = 0.05
@@ -26,7 +26,7 @@ class CSVEngine(EngineBase):
             if len(lines) < self.MIN_ROWS:
                 return Result(candidates=[])
 
-            sample_text = "\n".join(lines[:10])  # try up to 10 lines
+            sample_text = "\n".join(lines[:10])
             dialect = csv.Sniffer().sniff(sample_text, self.DELIMS)
 
             delim_count = sum(dialect.delimiter in ln for ln in lines[:10])
