@@ -27,6 +27,7 @@ def cmd_one(ns: argparse.Namespace) -> None:
 def cmd_all(ns: argparse.Namespace) -> None:
     """Walk a directory, run detection on each file, emit one big JSON list."""
     results: list[dict] = []
+
     for path, res in scan_dir(
         ns.root,
         pattern=ns.pattern,
@@ -36,6 +37,7 @@ def cmd_all(ns: argparse.Namespace) -> None:
         extensions=ns.ext,
         ignore=ns.ignore,
     ):
+
         results.append({"path": str(path), **res.model_dump()})
 
     json.dump(results, sys.stdout, indent=None if ns.raw else 2)
@@ -52,7 +54,7 @@ def _build_parser() -> argparse.ArgumentParser:
     p_one.set_defaults(func=cmd_one)
 
 
-    # all ──────────────────────────
+ 
     p_all = sub.add_parser("all", help="Scan directory recursively")
     p_all.add_argument("root", type=Path, help="Root folder")
     p_all.add_argument("--pattern", default="**/*", help="Glob pattern (default **/*)")
@@ -65,6 +67,7 @@ def _build_parser() -> argparse.ArgumentParser:
     )
     _add_common_options(p_all)
     p_all.set_defaults(func=cmd_all)
+
 
 
     return p

@@ -125,7 +125,15 @@ def _cases():
     return cases
 
 
-@pytest.mark.parametrize("engine,payload,expected,case_id", _cases(), ids=lambda x: x if isinstance(x, str) else None)
+
+_ALL_CASES = _cases()
+_CASE_IDS = [case_id for _, _, _, case_id in _ALL_CASES]
+
+
+@pytest.mark.parametrize(
+    "engine,payload,expected,case_id", _ALL_CASES, ids=_CASE_IDS
+)
+
 def test_engines(engine: str, payload: bytes, expected: bool, case_id: str) -> None:
     res = detect(payload, engine=engine, cap_bytes=None)
     assert (len(res.candidates) > 0) == expected

@@ -25,6 +25,7 @@ pip install probium
 *probium all path/to/folder*
 
 
+
 ### ☑️ Python Library ☑️
 
 from probium import detect
@@ -36,12 +37,15 @@ print(result.model_dump_json())
 # Clone and install locally
 git clone https://github.com/your-org/probium.git
 cd probium
+
 pip install -e .
 
 ## Testing
 
-Run the engine test harness with:
+Install dependencies and run the engine test harness with:
 
 ```bash
+pip install -e .
 pytest
 ```
+

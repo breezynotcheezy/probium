@@ -1,5 +1,7 @@
 import os
-from tests import test_engines
+
+from . import test_engines
+
 import pytest
 from probium import detect
 
