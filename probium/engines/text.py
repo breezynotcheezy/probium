@@ -1,6 +1,6 @@
 from __future__ import annotations
 import string
-from ..types import Candidate, Result
+from ..models import Candidate, Result
 from .base import EngineBase
 from ..registry import register
 

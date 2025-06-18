@@ -9,7 +9,7 @@ from typing import Any, Iterable, Sequence
 DEFAULT_IGNORES = {".git", "venv", ".venv", "__pycache__"}
 from .cache import get as cache_get, put as cache_put
 from .registry import list_engines, get_instance
-from .types import Result, Candidate
+from .models import Result, Candidate
 logger = logging.getLogger(__name__)
 def _load_bytes(source: str | Path | bytes, cap: int | None) -> bytes:
     """Return raw bytes, never a Result (guards against cache mix-ups)."""

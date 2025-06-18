@@ -7,7 +7,7 @@ from typing import Optional
 from platformdirs import user_cache_dir
 from cachetools import LRUCache
 
-from .types import Result
+from .models import Result
 
 
 CACHE_DIR = Path(user_cache_dir("fastbackfilter"))
