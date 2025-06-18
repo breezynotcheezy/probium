@@ -1,16 +1,9 @@
-"""
-probium CLI  –  `probium one …` and `probium all …`
-"""
 from __future__ import annotations
-
 import argparse
 import json
 import sys
 from pathlib import Path
-
 from .core import detect, scan_dir
-
-
 
 def cmd_one(ns: argparse.Namespace) -> None:
     """Detect a single file and emit JSON."""
@@ -53,8 +46,6 @@ def _build_parser() -> argparse.ArgumentParser:
     _add_common_options(p_one)
     p_one.set_defaults(func=cmd_one)
 
-
- 
     p_all = sub.add_parser("all", help="Scan directory recursively")
     p_all.add_argument("root", type=Path, help="Root folder")
     p_all.add_argument("--pattern", default="**/*", help="Glob pattern (default **/*)")
