@@ -11,7 +11,7 @@ from pathlib import Path
 from .core import detect, scan_dir
 
 
-# ─────────────────────────────────────────  command impls  ──────────────────────────────────────────
+
 def cmd_one(ns: argparse.Namespace) -> None:
     """Detect a single file and emit JSON."""
     res = detect(
@@ -41,18 +41,16 @@ def cmd_all(ns: argparse.Namespace) -> None:
     sys.stdout.write("\n")
 
 
-# ─────────────────────────────────────────  parser builder  ─────────────────────────────────────────
+
 def _build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="probium", description="Content-type detector")
     sub = p.add_subparsers(dest="cmd", required=True)
-
-    # one ──────────────────────────
     p_one = sub.add_parser("one", help="Detect a single file")
     p_one.add_argument("file", type=Path, help="Path to file")
     _add_common_options(p_one)
     p_one.set_defaults(func=cmd_one)
 
-    # all ──────────────────────────
+#all
     p_all = sub.add_parser("all", help="Scan directory recursively")
     p_all.add_argument("root", type=Path, help="Root folder")
     p_all.add_argument("--pattern", default="**/*", help="Glob pattern (default **/*)")
@@ -79,11 +77,11 @@ def _add_common_options(ap: argparse.ArgumentParser) -> None:
     ap.add_argument("--raw", action="store_true", help="Emit compact JSON")
 
 
-# ────────────────────────────────────────────  entry point  ─────────────────────────────────────────
-def main() -> None:  # this is what the console-script calls
+
+def main() -> None:  
     ns = _build_parser().parse_args()
     ns.func(ns)
 
 
-if __name__ == "__main__":   # support `python -m probium`
+if __name__ == "__main__":
     main()
