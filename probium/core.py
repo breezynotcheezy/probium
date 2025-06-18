@@ -66,26 +66,29 @@ def detect(
 
 
 
+    p: Path | None = None
+    if isinstance(source, (str, Path)):
+        p = Path(source)
+        if p.is_dir():
+            return Result(candidates=[Candidate(media_type="inode/directory", confidence=1.0)])
     payload = _load_bytes(source, cap_bytes)
+
     if engine != "auto":
         return get_instance(engine)(payload)
+
     engines: Sequence[str] = engine_order or list_engines()
     if only is not None:
         allowed = set(only)
         engines = [e for e in engines if e in allowed]
-    best: Result | None = None
 
-    with cf.ThreadPoolExecutor(max_workers=len(engines)) as ex:
-        futs = {
-            ex.submit(get_instance(name), payload): name for name in engines
-        }
-        for fut in cf.as_completed(futs):
-            res = fut.result()
-            if res.candidates:
-                if best is None or res.candidates[0].confidence > best.candidates[0].confidence:
-                    best = res
-                    if res.candidates[0].confidence >= 0.99:
-                        break
+    best: Result | None = None
+    for name in engines:
+        res = get_instance(name)(payload)
+        if res.candidates:
+            if best is None or res.candidates[0].confidence > best.candidates[0].confidence:
+                best = res
+                if res.candidates[0].confidence >= 0.99:
+                    break
     if (best is None or best.candidates[0].confidence == 0.0) and cap_bytes is not None and isinstance(source, (str, Path)):
         payload = Path(source).read_bytes()
         for name in engines:
