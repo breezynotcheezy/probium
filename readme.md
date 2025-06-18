@@ -29,7 +29,7 @@ Probium is a fast, modular content analysis tool that detects and classifies fil
 ## ☑️ Python Library ☑️
 
 
-### 1) import
+### 1) Import
 from probium import detect, scan_dir
 
 ### 2) Peek at one file
