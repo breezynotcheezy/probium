@@ -26,10 +26,10 @@ else:
     __all__.append("detect_async")
 try:
     from importlib.metadata import version
-    __version__ = version("fastback")
+    __version__ = version("probium")
 except Exception:
     __version__ = "0.0.0-dev"
 from . import engines
 
-for ep in entry_points(group="fastback.engines"):
+for ep in entry_points(group="probium.engines"):
     ep.load()

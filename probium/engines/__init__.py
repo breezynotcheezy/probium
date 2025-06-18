@@ -1,4 +1,4 @@
-#register your own engine into 'fastbackfilter/engines/' and it will auto-register here.
+# Register your own engine into 'probium/engines/' and it will auto-register here.
 from importlib import import_module
 from pathlib import Path
 import logging
