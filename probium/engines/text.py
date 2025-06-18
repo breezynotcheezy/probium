@@ -7,7 +7,7 @@ from ..registry import register
 @register
 class TextEngine(EngineBase):
     name = "text"
-    cost = 0.05
+    cost = 1.0
 
     def sniff(self, payload: bytes) -> Result:
         sample = payload[:512]

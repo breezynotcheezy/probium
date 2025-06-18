@@ -177,3 +177,16 @@ _CASE_IDS = [case_id for _, _, _, case_id in _ALL_CASES]
 def test_engines(engine: str, payload: bytes, expected: bool, case_id: str) -> None:
     res = detect(payload, engine=engine, cap_bytes=None)
     assert (len(res.candidates) > 0) == expected
+
+
+def test_directory_detection(tmp_path):
+    d = tmp_path / "subdir"
+    d.mkdir()
+    res = detect(d)
+    assert res.candidates and res.candidates[0].media_type == "inode/directory"
+
+
+def test_python_precedence():
+    res = detect(BASE_SAMPLES["python"], cap_bytes=None)
+    assert res.candidates
+    assert res.candidates[0].media_type == "text/x-python"
