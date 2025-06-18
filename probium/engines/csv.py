@@ -5,7 +5,7 @@ from .base import EngineBase
 from ..registry import register
 import csv, io
 
-@registerg
+@register
 class CSVEngine(EngineBase):
     name = "csv"
     cost = 0.05
