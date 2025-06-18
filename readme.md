@@ -16,12 +16,12 @@ Probium is a fast, modular content analysis tool that detects and classifies fil
 
 ## ☑️ CLI ☑️
 
-### 🟣 To scan a single file
+### To scan a single file
 "probium one path/to/file"
 
 
 
-### 🟪 To recursively scan a folder
+### To recursively scan a folder
 "probium all path/to/folder"
 
 
@@ -29,21 +29,21 @@ Probium is a fast, modular content analysis tool that detects and classifies fil
 ## ☑️ Python Library ☑️
 
 
-### 🟣 1) import
+### 1) import
 from probium import detect, scan_dir
 
-### 🟪 2) Peek at one file
+### 2) Peek at one file
 meta = detect("sample.pdf")            # returns a rich Pydantic model
 print("SHA-256 🔮", meta.hash.sha256)  # 🍇 easy attribute access
 
-### 🟣 3) Fine-tune if you like
+### 3) Fine-tune if you like
 meta = detect(
     "sample.pdf",
     only=["hash", "pdf"],   # run just these engines
     cap_bytes=1_000_000     # read at most 1 MB
 )
 
-### 🟪 4) Stream-scan an entire folder
+### 4) Stream-scan an entire folder
 for path, m in scan_dir("docs", pattern="**/*.pdf", workers=4):
     print(f"{path} → {m.mimetype} · {m.size:,} bytes 🍇")
 
