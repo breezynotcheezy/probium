@@ -6,10 +6,7 @@ import zipfile
 import struct
 import random
 import pytest
-
 from probium import detect
-
-
 def _sample_pdf():
     return (
         b"%PDF-1.4\n1 0 obj\n<<>>\nendobj\ntrailer\n<<>>\n%%EOF\n"
@@ -107,11 +104,9 @@ def _valid_variants(base: bytes) -> list[bytes]:
 
 
 def _invalid_variants(base: bytes) -> list[bytes]:
-    # Prefix with a byte unlikely to match engine heuristics so random
+    # if there's a prefix with a byte it is UNLIKELY to match so we randomized them.
     # payloads don't accidentally appear valid.
     return [b"\x00" + os.urandom(len(base) + i % 3) for i in range(10)]
-
-
 def _cases():
     cases = []
     for engine, base in BASE_SAMPLES.items():
