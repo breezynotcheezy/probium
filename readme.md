@@ -14,6 +14,7 @@ Probium is a fast, modular content analysis tool that detects and classifies fil
 
 pip install probium
 
+
 ### ☑️ CLI ☑️
 
 ### *To scan a single file*
@@ -36,3 +37,11 @@ print(result.model_dump_json())
 git clone https://github.com/your-org/probium.git
 cd probium
 pip install -e .
+
+## Testing
+
+Run the engine test harness with:
+
+```bash
+pytest
+```

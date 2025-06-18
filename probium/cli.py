@@ -34,6 +34,7 @@ def cmd_all(ns: argparse.Namespace) -> None:
         cap_bytes=None,
         only=ns.only,
         extensions=ns.ext,
+        ignore=ns.ignore,
     ):
         results.append({"path": str(path), **res.model_dump()})
 
@@ -50,13 +51,21 @@ def _build_parser() -> argparse.ArgumentParser:
     _add_common_options(p_one)
     p_one.set_defaults(func=cmd_one)
 
-#all
+
+    # all ──────────────────────────
     p_all = sub.add_parser("all", help="Scan directory recursively")
     p_all.add_argument("root", type=Path, help="Root folder")
     p_all.add_argument("--pattern", default="**/*", help="Glob pattern (default **/*)")
     p_all.add_argument("--workers", type=int, default=8, help="Thread-pool size")
+    p_all.add_argument(
+        "--ignore",
+        nargs="+",
+        metavar="DIR",
+        help="Directory names to skip during scan",
+    )
     _add_common_options(p_all)
     p_all.set_defaults(func=cmd_all)
+
 
     return p
 
