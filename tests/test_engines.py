@@ -7,7 +7,9 @@ import struct
 import random
 import pytest
 
+
 from probium import detect
+
 
 
 def _sample_pdf():
@@ -79,6 +81,7 @@ def _sample_bat():
 def _sample_fallback():
     return os.urandom(20)
 
+
 def _sample_python():
     return b"#!/usr/bin/env python\nprint('hi')\n"
 
@@ -103,6 +106,7 @@ def _sample_cpp():
 def _sample_scala():
     return b"object Main extends App { println(\"hi\") }"
 
+
 BASE_SAMPLES = {
     "exe": _sample_exe(),
     "image": _sample_jpeg(),
@@ -123,6 +127,7 @@ BASE_SAMPLES = {
     "zipoffice": _sample_zip_office(),
     "legacyoffice": _sample_legacy_office(),
     "bat": _sample_bat(),
+
     "python": _sample_python(),
     "java": _sample_java(),
     "c": _sample_c(),
@@ -131,6 +136,7 @@ BASE_SAMPLES = {
     "rust": _sample_rust(),
     "cpp": _sample_cpp(),
     "scala": _sample_scala(),
+
 }
 
 
@@ -139,9 +145,11 @@ def _valid_variants(base: bytes) -> list[bytes]:
 
 
 def _invalid_variants(base: bytes) -> list[bytes]:
+
     # Prefix with a byte unlikely to match engine heuristics so random
     # payloads don't accidentally appear valid.
     return [b"\x00" + os.urandom(len(base) + i % 3) for i in range(10)]
+
 
 
 def _cases():
@@ -157,6 +165,7 @@ def _cases():
     return cases
 
 
+
 _ALL_CASES = _cases()
 _CASE_IDS = [case_id for _, _, _, case_id in _ALL_CASES]
 
@@ -164,6 +173,7 @@ _CASE_IDS = [case_id for _, _, _, case_id in _ALL_CASES]
 @pytest.mark.parametrize(
     "engine,payload,expected,case_id", _ALL_CASES, ids=_CASE_IDS
 )
+
 def test_engines(engine: str, payload: bytes, expected: bool, case_id: str) -> None:
     res = detect(payload, engine=engine, cap_bytes=None)
     assert (len(res.candidates) > 0) == expected
