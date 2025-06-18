@@ -29,18 +29,22 @@ pip install probium
 
 ### ☑️ Python Library ☑️
 
-from probium import detect
 
-result = detect("path/to/file")
-print(result.model_dump_json())
+from probium import detect, scan_dir   # 🟣 1) import the magic
 
+# 🟪 2) Peek at one file
+meta = detect("sample.pdf")            # returns a rich Pydantic model
+print("SHA-256 🔮", meta.hash.sha256)  # 🍇 easy attribute access
 
-# Clone and install locally
-git clone https://github.com/your-org/probium.git
-cd probium
+# 🟣 3) Fine-tune if you like
+meta = detect(
+    "sample.pdf",
+    only=["hash", "pdf"],   # run just these engines
+    cap_bytes=1_000_000     # read at most 1 MB
+)
 
-
-pip install -e .
-
+# 💜 4) Stream-scan an entire folder
+for path, m in scan_dir("docs", pattern="**/*.pdf", workers=4):
+    print(f"{path} → {m.mimetype} · {m.size:,} bytes 🍇")
 
 
