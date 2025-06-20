@@ -7,7 +7,7 @@ import csv, io
 
 @register
 class CSVEngine(EngineBase):
-    name = "csv"
+    name = "csV"
     cost = 0.05
 
     DELIMS = ",;\t|"
