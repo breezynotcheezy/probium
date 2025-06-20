@@ -4,16 +4,27 @@ import json
 import sys
 from pathlib import Path
 from .core import detect, scan_dir
+from .trid_multi import detect_with_trid
 
 def cmd_one(ns: argparse.Namespace) -> None:
     """Detect a single file and emit JSON."""
-    res = detect(
-        ns.file,
-        cap_bytes=None,
-        only=ns.only,
-        extensions=ns.ext,
-    )
-    json.dump(res.model_dump(), sys.stdout, indent=None if ns.raw else 2)
+    if ns.trid:
+        res_map = detect_with_trid(
+            ns.file,
+            cap_bytes=None,
+            only=ns.only,
+            extensions=ns.ext,
+        )
+        out = {k: v.model_dump() for k, v in res_map.items()}
+    else:
+        res = detect(
+            ns.file,
+            cap_bytes=None,
+            only=ns.only,
+            extensions=ns.ext,
+        )
+        out = res.model_dump()
+    json.dump(out, sys.stdout, indent=None if ns.raw else 2)
     sys.stdout.write("\n")
 
 
@@ -29,8 +40,11 @@ def cmd_all(ns: argparse.Namespace) -> None:
         extensions=ns.ext,
         ignore=ns.ignore,
     ):
-
-        results.append({"path": str(path), **res.model_dump()})
+        entry = {"path": str(path), **res.model_dump()}
+        if ns.trid:
+            trid_res = detect(path, engine="trid", cap_bytes=None)
+            entry["trid"] = trid_res.model_dump()
+        results.append(entry)
 
     json.dump(results, sys.stdout, indent=None if ns.raw else 2)
     sys.stdout.write("\n")
@@ -80,6 +94,7 @@ def _add_common_options(ap: argparse.ArgumentParser) -> None:
         help="Only analyse files with these extensions",
     )
     ap.add_argument("--raw", action="store_true", help="Emit compact JSON")
+    ap.add_argument("--trid", action="store_true", help="Include TRiD engine")
 
 
 
