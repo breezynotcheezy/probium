@@ -10,7 +10,7 @@ dependencies = [
   "olefile>=0.46",
   "python-magic>=0.4.27"
 ]
-authors = [{ name = "frankoceanluvr26"}]
+authors = [{ name = "tcoates, qedwards, cgreen"}]
 [build-system]
 requires = ["setuptools>=61", "wheel"]
 build-backend = "setuptools.build_meta"
