@@ -1,30 +1,30 @@
 # main_harness.py
-# Located at fastbackfilter-1.3.2/main_harness.py
+# Located at probium-x.x.x/main_harness.py (assuming probium-x.x.x is your project root)
 
 import sys
 import os
 import time
 
 # --- Path Configuration for main_harness.py ---
-# Get the absolute path of the current script's directory (fastbackfilter-1.3.2)
+# Get the absolute path of the current script's directory (e.g., probium-x.x.x)
 project_root_dir = os.path.dirname(os.path.abspath(__file__))
 
-# Add the 'fastbackfilter' package root to sys.path
-# This is crucial for importing fastbackfilter.engines.test_harness.test_engine_call
+# Add the 'probium' package root to sys.path
+# This is crucial for importing probium.engines.test_harness.test_engine_call
 # and for engines to resolve their internal relative imports.
-fastbackfilter_package_dir = os.path.join(project_root_dir, 'fastbackfilter')
-if fastbackfilter_package_dir not in sys.path:
-    sys.path.insert(0, fastbackfilter_package_dir)
+probium_package_dir = os.path.join(project_root_dir, 'probium')
+if probium_package_dir not in sys.path:
+    sys.path.insert(0, probium_package_dir)
 
 # --- Diagnostic Check for test_harness __init__.py ---
 # This is crucial for Python to recognize 'test_harness' as a subpackage.
 print("\n--- Performing Test Harness Package Structure Check ---")
-test_harness_dir = os.path.join(fastbackfilter_package_dir, 'engines', 'test_harness')
+test_harness_dir = os.path.join(probium_package_dir, 'engines', 'test_harness')
 test_harness_init = os.path.join(test_harness_dir, '__init__.py')
 
 if not os.path.exists(test_harness_init):
     print(f"WARNING: Missing '{test_harness_init}'. The 'test_harness' directory is not recognized as a Python subpackage.")
-    print("ACTION: Please create an empty file named '__init__.py' inside the 'fastbackfilter/engines/test_harness' directory.")
+    print("ACTION: Please create an empty file named '__init__.py' inside the 'probium/engines/test_harness' directory.")
 else:
     print(f"'{test_harness_init}' found.")
 print("--- End of Test Harness Package Structure Check ---\n")
@@ -37,8 +37,9 @@ try:
 except ImportError as e:
     print(f"ERROR: Could not import load_all_engines_for_harness: {e}")
     print("Please ensure your directory structure is correct:")
-    print(f"- {fastbackfilter_package_dir}/engines/test_harness/test_engine_call.py exists.")
-    print(f"- All necessary __init__.py files are present (fastbackfilter/__init__.py, fastbackfilter/engines/__init__.py, fastbackfilter/engines/test_harness/__init__.py).")
+    print(f"- {probium_package_dir}/engines/test_harness/test_engine_call.py exists.")
+    print(f"- All necessary __init__.py files are present (probium/__init__.py, probium/engines/__init__.py, probium/engines/test_harness/__init__.py).")
+    print(f"- Also ensure that test_engine_call.py itself has been updated to use 'probium' in its internal imports.")
     sys.exit(1)
 except Exception as e:
     print(f"ERROR: An unexpected error occurred during import: {e}")
@@ -107,8 +108,6 @@ def scan_file_with_engines(file_path: str, engines_to_use: dict, base_class: typ
                     print(f"      Result from {name}: {scan_result}")
                     if scan_result and hasattr(scan_result, 'candidates') and scan_result.candidates:
                         # Check if it's a specific match (not just a generic 'octet-stream' from a non-fallback engine)
-                        # This refinement assumes your engines return specific media types when they 'match'
-                        # You might need to adjust this condition based on how your Results object indicates a strong match
                         if scan_result.candidates[0].media_type != 'application/octet-stream' or scan_result.candidates[0].confidence > 0.0:
                             print(f"    MATCH FOUND by {name} engine for {os.path.basename(file_path)}!")
                             print(f"    Detected type: {scan_result.candidates[0].media_type}")
@@ -234,7 +233,7 @@ def main():
         print("\nFATAL: No engines loaded. Cannot proceed with scanning.")
         sys.exit(1)
 
-    print("\n--- Fastbackfilter Test Harness ---")
+    print("\n--- Probium Test Harness ---")
     print("Available Engines:", ", ".join(loaded_engines.keys()))
 
     while True:
@@ -269,7 +268,7 @@ def main():
             if continue_harness != 'yes':
                 break
 
-    print("\nExiting Fastbackfilter Test Harness. Goodbye!")
+    print("\nExiting Probium Test Harness. Goodbye!")
 
 if __name__ == "__main__":
     main()
