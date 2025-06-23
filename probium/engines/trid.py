@@ -10,6 +10,7 @@ from ..models import Candidate, Result
 from .base import EngineBase
 from ..registry import register
 
+
 logger = logging.getLogger(__name__)
 
 _TRID_CMD = shutil.which("trid")
