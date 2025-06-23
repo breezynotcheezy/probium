@@ -13,7 +13,7 @@ from ..registry import register
 logger = logging.getLogger(__name__)
 
 _TRID_CMD = shutil.which("trid")
-# set after the first missing-binary warning to avoid log spam
+
 _missing_warning_logged = False
 
 @register
