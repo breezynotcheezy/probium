@@ -1,10 +1,10 @@
 from __future__ import annotations
 import logging
 import mimetypes
-import magic
 from ..models import Candidate, Result
 from .base import EngineBase
 from ..registry import register
+from ..libmagic import load_magic
 
 logger = logging.getLogger(__name__)
 
@@ -17,11 +17,7 @@ class MagicLibEngine(EngineBase):
 
     def __init__(self) -> None:
         super().__init__()
-        try:
-            self._magic = magic.Magic(mime=True)
-        except Exception as exc:  # pragma: no cover - library issues
-            logger.warning("libmagic unavailable: %s", exc)
-            self._magic = None
+        self._magic = load_magic()
 
     def sniff(self, payload: bytes) -> Result:
         if self._magic is None:

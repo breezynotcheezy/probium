@@ -1,6 +1,7 @@
 from importlib.metadata import entry_points, version
 from typing import TYPE_CHECKING
 from .core import detect, scan_dir, list_engines
+from .magic_service import detect_magic
 from .trid_multi import detect_with_trid
 from .exceptions import EngineFailure, FastbackError, UnsupportedType
 from .registry import register
@@ -13,6 +14,7 @@ __all__ = [
     "UnsupportedType",
     "EngineFailure",
     "detect_with_trid",
+    "detect_magic",
 ]
 try:
     from .core import detect_async
