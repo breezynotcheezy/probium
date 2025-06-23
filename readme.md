@@ -30,7 +30,9 @@ Probium is a fast, modular content analysis tool that detects and classifies fil
 
 
 ### 1) Import
+
 from probium import detect, detect_magic, scan_dir
+
 
 ### 2) Peek at one file
 meta = detect("sample.pdf")            # returns a rich Pydantic model
@@ -48,5 +50,13 @@ meta = detect(
 ### 4) Stream-scan an entire folder
 for path, m in scan_dir("docs", pattern="**/*.pdf", workers=4):
     print(f"{path} → {m.mimetype} · {m.size:,} bytes 🍇")
+
+### 5) Monitor a folder for new files
+def handle(path, result):
+    print(path, "→", result.candidates[0].media_type)
+
+wc = watch("incoming", handle, extensions=["pdf", "docx"])
+# ... later
+wc.stop()
 
 

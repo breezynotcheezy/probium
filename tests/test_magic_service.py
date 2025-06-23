@@ -7,6 +7,7 @@ def test_magic_service_detects_samples():
         res_magic = detect_magic(payload)
         assert res_magic.candidates
 
+
 def test_load_magic_cached():
     import importlib
     from probium import libmagic

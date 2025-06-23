@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING
 from .core import detect, scan_dir, list_engines
 from .magic_service import detect_magic
 from .trid_multi import detect_with_trid
+from .watch import watch
 from .exceptions import EngineFailure, FastbackError, UnsupportedType
 from .registry import register
 __all__ = [
@@ -15,6 +16,9 @@ __all__ = [
     "EngineFailure",
     "detect_with_trid",
     "detect_magic",
+
+    "watch",
+
 ]
 try:
     from .core import detect_async

@@ -3,7 +3,10 @@ from __future__ import annotations
 from pathlib import Path
 
 from .models import Result
-from .core import detect, _load_bytes
+
+from .cache import get as cache_get
+
+
 from .registry import get_instance
 
 # tuples of (signature bytes, offset, engine name)
@@ -35,6 +38,17 @@ MAGIC_SIGNATURES: list[tuple[bytes, int, str]] = [
 
 _MAX_SCAN = max(off + len(sig) for sig, off, _ in MAGIC_SIGNATURES) + 1
 
+def _load_bytes(source: str | Path | bytes, cap: int | None) -> bytes:
+    if isinstance(source, (str, Path)):
+        p = Path(source)
+        cached = cache_get(p)
+        if isinstance(cached, (bytes, bytearray)):
+            return cached[:cap] if cap else bytes(cached)
+        data = p.read_bytes() if cap is None else p.read_bytes()[:cap]
+        return data
+    return source[:cap] if cap else source
+
+
 
 def detect_magic(source: str | Path | bytes, *, cap_bytes: int | None = None) -> Result:
     """Detect using custom magic signatures, falling back to normal detection."""
@@ -44,4 +58,7 @@ def detect_magic(source: str | Path | bytes, *, cap_bytes: int | None = None) ->
         if len(payload) >= end and payload[off:end] == sig:
             return get_instance(engine)(payload)
     # fallback to standard autodetection
+
+    from .core import detect
+
     return detect(payload if isinstance(source, (bytes, bytearray)) else source, cap_bytes=cap_bytes)
