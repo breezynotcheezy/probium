@@ -1,101 +1,116 @@
 # test_engine_call.py
-# Located at probium-x.x.x/test_harness/test_engine_call.py (NEW LOCATION)
+# Located at probium-x.x.x/probium/test_harness/test_engine_call.py
 
 import sys
 import os
-import importlib # Required for dynamic module loading
-
-# --- Path Configuration ---
-# Get the absolute path of the current script's directory.
-# This script is now at probium-x.x.x/test_harness
-current_script_dir = os.path.dirname(os.path.abspath(__file__))
-
-# The 'probium-x.x.x' project root is now the parent of test_harness.
-# This is typically where main_harness.py would also reside.
-project_root_dir = os.path.dirname(current_script_dir)
-
-# The actual 'probium' package directory (e.g., probium-x.x.x/probium)
-probium_package_dir = os.path.join(project_root_dir, 'probium')
-
-# The 'engines' directory is now inside the 'probium' package.
-engines_dir = os.path.join(probium_package_dir, 'engines')
-
-# Add the 'probium' package root to Python's system path.
-# This is crucial for Python to correctly resolve imports like probium.types or probium.engines.base
-if probium_package_dir not in sys.path:
-    sys.path.insert(0, probium_package_dir) # Insert at the beginning to prioritize
+import importlib.util # For dynamic loading from file path
+import importlib.machinery # Potentially needed for source file loader
 
 def load_all_engines_for_harness():
     """
-    Performs package structure diagnostics and attempts to load all engine modules
-    found dynamically within the probium/engines directory.
-    Returns a dictionary of successfully loaded engine modules.
+    Dynamically discovers and loads all engine modules from the 'probium/engines' directory.
+    This function focuses solely on the loading process, assuming the necessary package
+    structure and internal imports (e.g., to 'probium.types' or 'probium.models')
+    are correctly handled within each engine's own code.
+    
+    Returns:
+        dict: A dictionary of successfully loaded engine modules, with module names as keys.
     """
-    # --- Diagnostic Check for __init__.py and core modules ---
-    print("\n--- Performing Package Structure and Core Dependency Check (from test_engine_call) ---")
+    # --- Path Configuration ---
+    current_script_dir = os.path.dirname(os.path.abspath(__file__))
     
-    # Path to the probium package's __init__.py
-    probium_init = os.path.join(probium_package_dir, '__init__.py')
+    # probium_package_dir is the parent of test_harness_dir (where this script resides)
+    probium_package_dir = os.path.dirname(current_script_dir)
     
-    # Path to the probium/engines package's __init__.py
-    engines_init = os.path.join(engines_dir, '__init__.py')
+    # engines_dir is a sibling of test_harness_dir, both inside probium_package_dir
+    engines_dir = os.path.join(probium_package_dir, 'engines')
 
-    # Path to the probium/types.py and probium/registry.py
-    types_module_path = os.path.join(probium_package_dir, 'types.py')
-    registry_module_path = os.path.join(probium_package_dir, 'registry.py')
+    # Add the 'probium' package root to Python's system path.
+    # This is CRITICAL for internal relative imports within engine files (e.g., from ..types, from ..models)
+    # to resolve correctly when engines are loaded.
+    if probium_package_dir not in sys.path:
+        sys.path.insert(0, probium_package_dir)
 
-    if not os.path.exists(probium_init):
-        print(f"WARNING: Missing '{probium_init}'. The 'probium' directory might not be recognized as a Python package.")
-        print("ACTION: Please create an empty file named '__init__.py' inside the 'probium' directory.")
-    else:
-        print(f"'{probium_init}' found.")
+    print(f"DEBUG: 'probium' package root added to sys.path: {probium_package_dir}")
+    print(f"DEBUG: Engines directory to scan: {engines_dir}")
 
-    if not os.path.exists(engines_init):
-        print(f"WARNING: Missing '{engines_init}'. The 'probium.engines' directory might not be recognized as a Python subpackage.")
-        print("ACTION: Please create an empty file named '__init__.py' inside the 'probium/engines' directory.")
-    else:
-        print(f"'{engines_init}' found.")
+    # --- CRITICAL NEW DIAGNOSTIC: Attempt to import probium.models directly ---
+    print("\n--- CRITICAL DIAGNOSTIC: Attempting to import 'probium.models' ---")
+    models_file_path = os.path.join(probium_package_dir, 'models.py')
+    print(f"DIAG: Expected 'probium/models.py' path: '{models_file_path}'")
 
-    # Attempt to import types and registry to catch syntax errors early within these core modules
+    if not os.path.exists(models_file_path):
+        print(f"ERROR: File '{models_file_path}' DOES NOT EXIST on disk.")
+        print("ACTION: Ensure 'models.py' is correctly located inside your 'probium' package.")
+        return {} # Cannot proceed without models.py
+
+    print(f"DIAG: File '{models_file_path}' EXISTS on disk. Attempting to load its module spec and execute.")
     try:
-        importlib.import_module('probium.types')
-        print(f"Successfully imported 'probium.types'.")
+        # First, try to find the module specification
+        spec = importlib.util.find_spec('probium.models')
+        if spec is None:
+            print(f"ERROR: importlib.util.find_spec('probium.models') returned None.")
+            print("  This means Python cannot find the 'models' module even with the 'probium' package root in sys.path.")
+            print("  Possible reasons: incorrect `__init__.py` files, case sensitivity issues, or caching.")
+            return {}
+
+        # If spec is found, try to load and execute the module
+        module = importlib.util.module_from_spec(spec)
+        # Register the module in sys.modules so subsequent imports find it
+        sys.modules[spec.name] = module
+        # Execute the module's code
+        spec.loader.exec_module(module)
+
+        print(f"SUCCESS: Successfully loaded 'probium.models'. Module path: {module.__file__}")
+        if hasattr(module, 'Result'):
+            print(f"DIAG: 'Result' class found in 'probium.models'.")
+        else:
+            print(f"WARNING: 'Result' class NOT found in 'probium.models'. This may cause issues for 'base.py'.")
+
     except Exception as e:
-        print(f"ERROR: Failed to import 'probium.types': {e}. Please check for syntax errors in 'probium/types.py'.")
+        print(f"CRITICAL ERROR: Failed to load 'probium.models': {type(e).__name__}: {e}")
+        print("  This means Python found 'models.py' but encountered an error while trying to execute its code.")
+        print("  Common causes: Syntax errors *within* 'models.py', or missing dependencies *used by* 'models.py' (e.g., pydantic).")
+        print("  Even if 'pydantic' is installed, ensure its version is compatible or check for other hidden issues in 'models.py'.")
+        return {} # Return empty dict as engines won't work without models
 
-    try:
-        importlib.import_module('probium.registry')
-        print(f"Successfully imported 'probium.registry'.")
-    except Exception as e:
-        print(f"ERROR: Failed to import 'probium.registry': {e}. Please check for syntax errors in 'probium/registry.py'.")
+    print("--- End of CRITICAL DIAGNOSTIC: probium.models ---\n")
 
-    print("--- End of Package Structure and Core Dependency Check (from test_engine_call) ---\n")
-
-
-    # --- Dynamic Engine Loading ---
+    # --- Engine Loading ---
     loaded_engines = {}
     
-    print(f"Dynamically discovering and attempting to load engine modules from: {engines_dir}")
+    if not os.path.isdir(engines_dir):
+        print(f"ERROR: Engines directory not found: {engines_dir}")
+        print("Please ensure your directory structure is:")
+        print("  probium-main/")
+        print("  └── probium/")
+        print("      ├── engines/  <-- This directory must exist and contain your engine files")
+        print("      └── test_harness/ <-- This directory contains test_engine_call.py")
+        return loaded_engines
 
-    # List all files in the engines directory
     for item in os.listdir(engines_dir):
         if item.endswith('.py') and item != '__init__.py':
             module_name = item[:-3] # Remove .py extension
-            full_module_path = f"probium.engines.{module_name}"
+            engine_file_path = os.path.join(engines_dir, item)
             
             try:
-                # Use importlib.import_module for a cleaner and more reliable dynamic import
-                module = importlib.import_module(full_module_path)
-                loaded_engines[module_name] = module # Store the module directly
-                print(f"Successfully loaded engine module: {full_module_path}")
-            except ImportError as e:
-                print(f"ERROR: Could not load engine module '{full_module_path}': {e}.")
-                print(f"  Check if '{module_name}.py' exists in '{engines_dir}', has no syntax errors,")
-                print(f"  and verify all its internal imports (e.g., from ..types, from .base) are resolvable.")
-            except Exception as e:
-                print(f"ERROR: An unexpected error occurred while loading '{full_module_path}': {e}")
-                print(f"  This might indicate a runtime error or a deeper issue within {module_name}.py.")
+                # Use importlib.util to load the module directly from its file path.
+                # This explicitly loads each engine as 'probium.engines.module_name'.
+                spec = importlib.util.spec_from_file_location(f"probium.engines.{module_name}", engine_file_path)
+                if spec is None:
+                    raise ImportError(f"Could not create module spec for {module_name} at {engine_file_path}")
+                
+                module = importlib.util.module_from_spec(spec)
+                sys.modules[f"probium.engines.{module_name}"] = module # Register it in sys.modules
+                spec.loader.exec_module(module) # Execute the module's code, triggering its internal imports
 
+                loaded_engines[module_name] = module
+                print(f"Successfully loaded engine: {module_name} from {engine_file_path}")
+            except Exception as e:
+                print(f"ERROR loading engine '{module_name}' from '{engine_file_path}': {e}")
+                print(f"  This error indicates an issue within the engine's own code (e.g., syntax error, or failed internal import like 'from probium.types', 'from probium.models', or 'from .base').")
+                print(f"  Please check the file: {engine_file_path}")
+                
     return loaded_engines
 
 # This block will only run if test_engine_call.py is executed directly.
