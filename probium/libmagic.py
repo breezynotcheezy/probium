@@ -3,6 +3,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+
 _SENTINEL = object()
 _cached_magic: object | None = _SENTINEL
 
@@ -12,10 +13,12 @@ def load_magic():
     global _cached_magic
     if _cached_magic is not _SENTINEL:
         return _cached_magic  # type: ignore[return-value]
+
     try:
         import magic  # type: ignore
     except Exception as exc:  # pragma: no cover - optional dep missing
         logger.warning("python-magic not installed: %s", exc)
+
         _cached_magic = None
         return None
     try:
@@ -24,3 +27,4 @@ def load_magic():
         logger.warning("libmagic unavailable: %s", exc)
         _cached_magic = None
     return _cached_magic  # type: ignore[return-value]
+
