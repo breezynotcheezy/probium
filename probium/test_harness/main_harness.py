@@ -1,5 +1,5 @@
 # main_harness.py
-# Located at probium-x.x.x/main_harness.py (assuming probium-x.x.x is your project root)
+# Located at probium-x.x.x/main_harness.py
 
 import sys
 import os
@@ -10,35 +10,41 @@ import time
 project_root_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Add the 'probium' package root to sys.path
-# This is crucial for importing probium.engines.test_harness.test_engine_call
-# and for engines to resolve their internal relative imports.
+# This is crucial for importing probium.engines.* and for engines to resolve their internal relative imports.
 probium_package_dir = os.path.join(project_root_dir, 'probium')
 if probium_package_dir not in sys.path:
     sys.path.insert(0, probium_package_dir)
 
-# --- Diagnostic Check for test_harness __init__.py ---
-# This is crucial for Python to recognize 'test_harness' as a subpackage.
-print("\n--- Performing Test Harness Package Structure Check ---")
-test_harness_dir = os.path.join(probium_package_dir, 'engines', 'test_harness')
-test_harness_init = os.path.join(test_harness_dir, '__init__.py')
+# Add the 'test_harness' directory itself to sys.path
+# This allows 'test_harness.test_engine_call' to be imported as a top-level module/package.
+test_harness_dir = os.path.join(project_root_dir, 'test_harness')
+if test_harness_dir not in sys.path:
+    sys.path.insert(0, test_harness_dir)
 
-if not os.path.exists(test_harness_init):
-    print(f"WARNING: Missing '{test_harness_init}'. The 'test_harness' directory is not recognized as a Python subpackage.")
-    print("ACTION: Please create an empty file named '__init__.py' inside the 'probium/engines/test_harness' directory.")
+
+# --- Diagnostic Check for test_harness __init__.py (New Location) ---
+# This is crucial for Python to recognize 'test_harness' as a top-level package.
+print("\n--- Performing Test Harness Package Structure Check ---")
+test_harness_init_new_location = os.path.join(test_harness_dir, '__init__.py')
+
+if not os.path.exists(test_harness_init_new_location):
+    print(f"WARNING: Missing '{test_harness_init_new_location}'. The 'test_harness' directory at the project root is not recognized as a Python package.")
+    print("ACTION: Please create an empty file named '__init__.py' inside the 'probium-x.x.x/test_harness' directory.")
 else:
-    print(f"'{test_harness_init}' found.")
+    print(f"'{test_harness_init_new_location}' found.")
 print("--- End of Test Harness Package Structure Check ---\n")
 
 
 # Now, import the engine loading function from test_engine_call.py
+# The import path has changed because test_harness is now at the project root level.
 try:
-    from probium.test_harness.test_engine_call import load_all_engines_for_harness
-    print("Successfully imported load_all_engines_for_harness.")
+    from test_harness.test_engine_call import load_all_engines_for_harness
+    print("Successfully imported load_all_engines_for_harness from test_harness package.")
 except ImportError as e:
     print(f"ERROR: Could not import load_all_engines_for_harness: {e}")
     print("Please ensure your directory structure is correct:")
-    print(f"- {probium_package_dir}/engines/test_harness/test_engine_call.py exists.")
-    print(f"- All necessary __init__.py files are present (probium/__init__.py, probium/engines/__init__.py, probium/engines/test_harness/__init__.py).")
+    print(f"- {test_harness_dir}/test_engine_call.py exists.")
+    print(f"- {probium_package_dir}/__init__.py, {probium_package_dir}/engines/__init__.py, and {test_harness_dir}/__init__.py exist.")
     print(f"- Also ensure that test_engine_call.py itself has been updated to use 'probium' in its internal imports.")
     sys.exit(1)
 except Exception as e:
