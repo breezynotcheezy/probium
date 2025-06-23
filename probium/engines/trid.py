@@ -13,6 +13,8 @@ from ..registry import register
 logger = logging.getLogger(__name__)
 
 _TRID_CMD = shutil.which("trid")
+# set after the first missing-binary warning to avoid log spam
+_missing_warning_logged = False
 
 @register
 class TridEngine(EngineBase):
@@ -21,8 +23,11 @@ class TridEngine(EngineBase):
     cost = 5.0
 
     def sniff(self, payload: bytes) -> Result:
+        global _missing_warning_logged
         if _TRID_CMD is None:
-            logger.warning("trid command not found")
+            if not _missing_warning_logged:
+                logger.warning("trid command not found")
+                _missing_warning_logged = True
             return Result(candidates=[])
         with tempfile.NamedTemporaryFile(delete=False) as tmp:
             tmp.write(payload)
