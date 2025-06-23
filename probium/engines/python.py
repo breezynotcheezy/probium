@@ -1,37 +1,22 @@
 from __future__ import annotations
 
 from ..models import Candidate, Result
-from .base import EngineBase
+from .base import MagicEngine
 from ..registry import register
 import logging
-import mimetypes
-import magic
 
 logger = logging.getLogger(__name__)
 
-try:
-    _magic = magic.Magic(mime=True)
-except Exception as exc:  # pragma: no cover - lib setup
-    logger.warning("libmagic unavailable: %s", exc)
-    _magic = None
-
-_PY_SHEBANG = b"python"
-
 @register
-class PythonEngine(EngineBase):
+class PythonEngine(MagicEngine):
     name = "python"
     cost = 0.01
+    magic_hint = "python"
 
     def sniff(self, payload: bytes) -> Result:
-        if _magic is not None:
-            try:
-                mime = _magic.from_buffer(payload)
-            except Exception as exc:  # pragma: no cover - libmagic errors
-                logger.warning("libmagic failed: %s", exc)
-            else:
-                if mime and "python" in mime:
-                    cand = Candidate(media_type="text/x-python", extension="py", confidence=0.99)
-                    return Result(candidates=[cand])
+        res = self._probe_magic(payload)
+        if res:
+            return res
 
         try:
             text = payload.decode("utf-8", errors="ignore")

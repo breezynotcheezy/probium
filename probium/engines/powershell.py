@@ -1,36 +1,22 @@
 from __future__ import annotations
 
 from ..models import Candidate, Result
-from .base import EngineBase
+from .base import MagicEngine
 from ..registry import register
 import logging
-import mimetypes
-import magic
 
 logger = logging.getLogger(__name__)
 
-try:
-    _magic = magic.Magic(mime=True)
-except Exception as exc:  # pragma: no cover
-    logger.warning("libmagic unavailable: %s", exc)
-    _magic = None
-
 @register
-class PowerShellEngine(EngineBase):
+class PowerShellEngine(MagicEngine):
     name = "powershell"
     cost = 0.05
+    magic_hint = "powershell"
 
     def sniff(self, payload: bytes) -> Result:
-        if _magic is not None:
-            try:
-                mime = _magic.from_buffer(payload)
-            except Exception as exc:  # pragma: no cover
-                logger.warning("libmagic failed: %s", exc)
-            else:
-                if mime and "powershell" in mime:
-                    ext = (mimetypes.guess_extension(mime) or "").lstrip(".") or "ps1"
-                    cand = Candidate(media_type=mime, extension=ext, confidence=0.95)
-                    return Result(candidates=[cand])
+        res = self._probe_magic(payload)
+        if res:
+            return res
 
         try:
             text = payload.decode("utf-8", errors="ignore")

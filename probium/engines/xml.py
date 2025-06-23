@@ -1,36 +1,22 @@
 from __future__ import annotations
 from ..models import Candidate, Result
-from .base import EngineBase
+from .base import MagicEngine
 from ..registry import register
 import logging
-import mimetypes
-import magic
 
 logger = logging.getLogger(__name__)
 
-try:
-    _magic = magic.Magic(mime=True)
-except Exception as exc:  # pragma: no cover
-    logger.warning("libmagic unavailable: %s", exc)
-    _magic = None
-
 @register
-class XMLEngine(EngineBase):
+class XMLEngine(MagicEngine):
     name = "xml"
     cost = 0.05
+    magic_hint = "xml"
     _MAGIC = [b'\xEF\xBB\xBF', b'\xFF\xFE', b'\xFE\xFF', b"<?xml"]
 
     def sniff(self, payload: bytes) -> Result:
-        if _magic is not None:
-            try:
-                mime = _magic.from_buffer(payload)
-            except Exception as exc:  # pragma: no cover
-                logger.warning("libmagic failed: %s", exc)
-            else:
-                if mime and "xml" in mime:
-                    ext = (mimetypes.guess_extension(mime) or "").lstrip(".") or "xml"
-                    cand = Candidate(media_type=mime, extension=ext, confidence=0.95)
-                    return Result(candidates=[cand])
+        res = self._probe_magic(payload)
+        if res:
+            return res
 
         window = payload[:64]
         cand = []
