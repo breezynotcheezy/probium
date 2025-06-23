@@ -1,90 +1,101 @@
+# test_engine_call.py
+# Located at probium-x.x.x/probium/engines/test_harness/test_engine_call.py
+
 import sys
 import os
 import importlib # Required for dynamic module loading
 
 # --- Path Configuration ---
 # Get the absolute path of the current script's directory.
-# This script is now at fastbackfilter-1.3.2/fastbackfilter/engines/test_harness
+# This script is now at probium-x.x.x/probium/engines/test_harness
 current_script_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Navigate up to the 'engines' directory (parent of test_harness)
 engines_dir = os.path.dirname(current_script_dir)
 
-# Navigate up one more level to the 'fastbackfilter' directory.
-# This is the root of your package and needs to be in sys.path for relative imports to work.
-package_root_dir = os.path.dirname(engines_dir)
+# Navigate up two more levels to the 'probium-x.x.x' project root.
+# This is typically where main_harness.py would reside.
+project_root_dir = os.path.dirname(os.path.dirname(engines_dir))
 
-# Add the 'fastbackfilter' directory to Python's system path.
-# This tells Python that 'fastbackfilter' is a package it can import from.
-if package_root_dir not in sys.path:
-    sys.path.insert(0, package_root_dir) # Insert at the beginning to prioritize
+# The actual 'probium' package directory itself (e.g., probium-x.x.x/probium)
+probium_package_dir = os.path.join(project_root_dir, 'probium')
+
+
+# Add the 'probium' package root to Python's system path.
+# This is crucial for Python to correctly resolve imports like probium.types or probium.engines.base
+if probium_package_dir not in sys.path:
+    sys.path.insert(0, probium_package_dir) # Insert at the beginning to prioritize
 
 def load_all_engines_for_harness():
     """
-    Performs package structure diagnostics and attempts to load all specified engine modules.
+    Performs package structure diagnostics and attempts to load all engine modules
+    found dynamically within the probium/engines directory.
     Returns a dictionary of successfully loaded engine modules.
     """
     # --- Diagnostic Check for __init__.py and core modules ---
     print("\n--- Performing Package Structure and Core Dependency Check (from test_engine_call) ---")
-    fastbackfilter_init = os.path.join(package_root_dir, '__init__.py')
+    
+    # Path to the probium package's __init__.py
+    probium_init = os.path.join(probium_package_dir, '__init__.py')
+    
+    # Path to the probium/engines package's __init__.py
     engines_init = os.path.join(engines_dir, '__init__.py')
 
-    if not os.path.exists(fastbackfilter_init):
-        print(f"WARNING: Missing '{fastbackfilter_init}'. The 'fastbackfilter' directory might not be recognized as a Python package.")
-        print("ACTION: Please create an empty file named '__init__.py' inside the 'fastbackfilter' directory.")
+    # Path to the probium/types.py and probium/registry.py
+    types_module_path = os.path.join(probium_package_dir, 'types.py')
+    registry_module_path = os.path.join(probium_package_dir, 'registry.py')
+
+    if not os.path.exists(probium_init):
+        print(f"WARNING: Missing '{probium_init}'. The 'probium' directory might not be recognized as a Python package.")
+        print("ACTION: Please create an empty file named '__init__.py' inside the 'probium' directory.")
     else:
-        print(f"'{fastbackfilter_init}' found.")
+        print(f"'{probium_init}' found.")
 
     if not os.path.exists(engines_init):
-        print(f"WARNING: Missing '{engines_init}'. The 'fastbackfilter.engines' directory might not be recognized as a Python subpackage.")
-        print("ACTION: Please create an empty file named '__init__.py' inside the 'fastbackfilter/engines' directory.")
+        print(f"WARNING: Missing '{engines_init}'. The 'probium.engines' directory might not be recognized as a Python subpackage.")
+        print("ACTION: Please create an empty file named '__init__.py' inside the 'probium/engines' directory.")
     else:
         print(f"'{engines_init}' found.")
 
     # Attempt to import types and registry to catch syntax errors early within these core modules
     try:
-        importlib.import_module('fastbackfilter.types')
-        print(f"Successfully imported 'fastbackfilter.types'.")
+        importlib.import_module('probium.types')
+        print(f"Successfully imported 'probium.types'.")
     except Exception as e:
-        print(f"ERROR: Failed to import 'fastbackfilter.types': {e}. Please check for syntax errors in 'fastbackfilter/types.py'.")
+        print(f"ERROR: Failed to import 'probium.types': {e}. Please check for syntax errors in 'probium/types.py'.")
 
     try:
-        importlib.import_module('fastbackfilter.registry')
-        print(f"Successfully imported 'fastbackfilter.registry'.")
+        importlib.import_module('probium.registry')
+        print(f"Successfully imported 'probium.registry'.")
     except Exception as e:
-        print(f"ERROR: Failed to import 'fastbackfilter.registry': {e}. Please check for syntax errors in 'fastbackfilter/registry.py'.")
+        print(f"ERROR: Failed to import 'probium.registry': {e}. Please check for syntax errors in 'probium/registry.py'.")
 
     print("--- End of Package Structure and Core Dependency Check (from test_engine_call) ---\n")
 
 
-    # --- Engine Loading ---
-    # Define a list of engine module names to attempt to load.
-    engine_submodule_names = [
-        "base", "bat", "csv", "exe", "fallback", "gzip", "html", "image",
-        "json", "legacy_office", "mp3", "mp4", "pdf", "png", "sh", "tar",
-        "text", "wav", "xml", "zip_office"
-    ]
-
-    # A dictionary to store successfully loaded engine modules
+    # --- Dynamic Engine Loading ---
     loaded_engines = {}
+    
+    print(f"Dynamically discovering and attempting to load engine modules from: {engines_dir}")
 
-    print(f"Attempting to load engine modules from package 'fastbackfilter.engines'.")
-
-    for submodule_name in engine_submodule_names:
-        # Construct the full package path for the module
-        full_module_path = f"fastbackfilter.engines.{submodule_name}"
-        try:
-            # Use importlib.import_module for a cleaner and more reliable dynamic import
-            module = importlib.import_module(full_module_path)
-            loaded_engines[submodule_name] = module # Store the module directly
-            print(f"Successfully loaded engine module: {full_module_path}")
-        except ImportError as e:
-            print(f"ERROR: Could not load engine module '{full_module_path}': {e}.")
-            print(f"  Check if '{submodule_name}.py' exists in '{engines_dir}', has no syntax errors,")
-            print(f"  and verify all its internal imports (e.g., from ..types, from .base) are resolvable.")
-        except Exception as e:
-            print(f"ERROR: An unexpected error occurred while loading '{full_module_path}': {e}")
-            print(f"  This might indicate a runtime error or a deeper issue within {submodule_name}.py.")
+    # List all files in the engines directory
+    for item in os.listdir(engines_dir):
+        if item.endswith('.py') and item != '__init__.py':
+            module_name = item[:-3] # Remove .py extension
+            full_module_path = f"probium.engines.{module_name}"
+            
+            try:
+                # Use importlib.import_module for a cleaner and more reliable dynamic import
+                module = importlib.import_module(full_module_path)
+                loaded_engines[module_name] = module # Store the module directly
+                print(f"Successfully loaded engine module: {full_module_path}")
+            except ImportError as e:
+                print(f"ERROR: Could not load engine module '{full_module_path}': {e}.")
+                print(f"  Check if '{module_name}.py' exists in '{engines_dir}', has no syntax errors,")
+                print(f"  and verify all its internal imports (e.g., from ..types, from .base) are resolvable.")
+            except Exception as e:
+                print(f"ERROR: An unexpected error occurred while loading '{full_module_path}': {e}")
+                print(f"  This might indicate a runtime error or a deeper issue within {module_name}.py.")
 
     return loaded_engines
 
@@ -94,7 +105,9 @@ if __name__ == "__main__":
     loaded_engines_standalone = load_all_engines_for_harness()
     print("\n--- Engine Loading Complete (Standalone Test) ---")
     if loaded_engines_standalone:
-        print(f"{len(loaded_engines_standalone)} engine modules were successfully loaded.")
+        print(f"{len(loaded_engines_standalone)} engine modules were successfully loaded:")
+        for name in loaded_engines_standalone.keys():
+            print(f"- {name}")
     else:
         print("No engine modules were successfully loaded.")
     print("\nStandalone script finished.")
