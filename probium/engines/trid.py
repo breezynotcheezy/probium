@@ -13,6 +13,7 @@ from ..registry import register
 logger = logging.getLogger(__name__)
 
 _TRID_CMD = shutil.which("trid")
+
 _missing_warning_logged = False
 
 @register
