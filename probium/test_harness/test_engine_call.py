@@ -1,5 +1,5 @@
 # test_engine_call.py
-# Located at probium-x.x.x/probium/engines/test_harness/test_engine_call.py
+# Located at probium-x.x.x/test_harness/test_engine_call.py (NEW LOCATION)
 
 import sys
 import os
@@ -7,19 +7,18 @@ import importlib # Required for dynamic module loading
 
 # --- Path Configuration ---
 # Get the absolute path of the current script's directory.
-# This script is now at probium-x.x.x/probium/engines/test_harness
+# This script is now at probium-x.x.x/test_harness
 current_script_dir = os.path.dirname(os.path.abspath(__file__))
 
-# Navigate up to the 'engines' directory (parent of test_harness)
-engines_dir = os.path.dirname(current_script_dir)
+# The 'probium-x.x.x' project root is now the parent of test_harness.
+# This is typically where main_harness.py would also reside.
+project_root_dir = os.path.dirname(current_script_dir)
 
-# Navigate up two more levels to the 'probium-x.x.x' project root.
-# This is typically where main_harness.py would reside.
-project_root_dir = os.path.dirname(os.path.dirname(engines_dir))
-
-# The actual 'probium' package directory itself (e.g., probium-x.x.x/probium)
+# The actual 'probium' package directory (e.g., probium-x.x.x/probium)
 probium_package_dir = os.path.join(project_root_dir, 'probium')
 
+# The 'engines' directory is now inside the 'probium' package.
+engines_dir = os.path.join(probium_package_dir, 'engines')
 
 # Add the 'probium' package root to Python's system path.
 # This is crucial for Python to correctly resolve imports like probium.types or probium.engines.base
