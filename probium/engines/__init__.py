@@ -11,4 +11,4 @@ for _file in _pkg_dir.glob("*.py"):
         try:
             import_module(f"{__name__}.{_file.stem}")
         except Exception as exc:  # pragma: no cover - best effort logging
-            logger.warning("Engine %s failed to load: %s", _file.stem, exc)
+            logger.debug("Engine %s failed to load", _file.stem, exc_info=exc)
