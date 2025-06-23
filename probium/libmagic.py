@@ -17,14 +17,15 @@ def load_magic():
     try:
         import magic  # type: ignore
     except Exception as exc:  # pragma: no cover - optional dep missing
-        logger.warning("python-magic not installed: %s", exc)
+        logger.debug("python-magic not installed", exc_info=exc)
 
         _cached_magic = None
         return None
     try:
         _cached_magic = magic.Magic(mime=True)
     except Exception as exc:  # pragma: no cover - runtime failure
-        logger.warning("libmagic unavailable: %s", exc)
+
+        logger.debug("libmagic unavailable", exc_info=exc)
         _cached_magic = None
     return _cached_magic  # type: ignore[return-value]
 
