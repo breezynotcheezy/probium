@@ -67,6 +67,7 @@ def scan_file_with_engines(file_path: str, engines_to_use: dict, base_class: typ
     """
     Scans a single file's content using provided engines until a match is found.
     The 'fallback' engine is only used if no other engine provides a match.
+    Only the final result (match or no match) is displayed.
     Returns the first successful result or None if no match.
     """
     try:
@@ -80,18 +81,17 @@ def scan_file_with_engines(file_path: str, engines_to_use: dict, base_class: typ
         return None
 
     file_size = len(file_content)
-    print(f"  Scanning file: {os.path.basename(file_path)} (Size: {file_size} bytes)")
+    # print(f"  Scanning file: {os.path.basename(file_path)} (Size: {file_size} bytes)") # Keep or remove as desired
 
     # Separate fallback engine from others
     fallback_engine_module = engines_to_use.get('fallback')
     other_engines = {k: v for k, v in engines_to_use.items() if k != 'fallback' and k != 'base'}
 
-    found_match = False
     result = None
 
     # First, try all engines except 'base' and 'fallback'
     for name, engine_module in other_engines.items():
-        print(f"    Trying engine: {name} (primary)...")
+        # print(f"    Trying engine: {name} (primary)...") # Suppressed
         try:
             current_engine_class = None
             if base_class:
@@ -108,42 +108,32 @@ def scan_file_with_engines(file_path: str, engines_to_use: dict, base_class: typ
                     scan_result = engine_instance(file_content) # Call the __call__ method
                     elapsed_time = (time.time() - start_time) * 1000 # Convert to milliseconds
 
-                    print(f"      Result from {name}: {scan_result}")
+                    # print(f"      Result from {name}: {scan_result}") # Suppressed
                     if scan_result and hasattr(scan_result, 'candidates') and scan_result.candidates:
-                        # Check if it's a specific match (not just a generic 'octet-stream' from a non-fallback engine)
                         if scan_result.candidates[0].media_type != 'application/octet-stream' or scan_result.candidates[0].confidence > 0.0:
-                            print(f"    MATCH FOUND by {name} engine for {os.path.basename(file_path)}!")
-                            print(f"    Detected type: {scan_result.candidates[0].media_type}")
-                            print(f"    Elapsed: {elapsed_time:.2f} ms")
+                            print(f"  {os.path.basename(file_path)}: MATCH FOUND by {name} (Type: {scan_result.candidates[0].media_type}, Elapsed: {elapsed_time:.2f} ms)")
                             return scan_result # Return immediately on specific match
-                        else:
-                            print(f"      {name} returned generic octet-stream or low confidence. Continuing to next engine.")
-                    else:
-                        print(f"      No specific match from {name}.")
-                else:
-                    print(f"      Warning: {name} Engine instance ('{current_engine_class.__name__}') is not callable.")
+                # else:
+                    # print(f"      Warning: {name} Engine instance ('{current_engine_class.__name__}') is not callable.") # Suppressed
             elif hasattr(engine_module, 'detect_content'): # Fallback for standalone functions
                 start_time = time.time()
                 scan_result = engine_module.detect_content(file_content)
                 elapsed_time = (time.time() - start_time) * 1000 # Convert to milliseconds
-                print(f"      Result from {name} (detect_content): {scan_result}")
-                if scan_result and scan_result.get('type') and scan_result.get('type') != 'application/octet-stream': # Assuming standalone returns a dict with 'type'
-                    print(f"    MATCH FOUND by {name} engine for {os.path.basename(file_path)} (standalone)!")
-                    print(f"    Detected type: {scan_result.get('type')}")
-                    print(f"    Elapsed: {elapsed_time:.2f} ms")
+                # print(f"      Result from {name} (detect_content): {scan_result}") # Suppressed
+                if scan_result and scan_result.get('type') and scan_result.get('type') != 'application/octet-stream':
+                    print(f"  {os.path.basename(file_path)}: MATCH FOUND by {name} (Type: {scan_result.get('type')}, Elapsed: {elapsed_time:.2f} ms)")
                     return scan_result
-                else:
-                    print(f"      No specific match from {name} (standalone).")
-            else:
-                print(f"      {name} module has no suitable EngineBase subclass or 'detect_content' function.")
+            # else:
+                # print(f"      {name} module has no suitable EngineBase subclass or 'detect_content' function.") # Suppressed
 
         except Exception as e:
-            print(f"    ERROR calling {name} engine: {e}")
-            print(f"    Skipping {name} for this file.")
-    
+            # print(f"    ERROR calling {name} engine: {e}") # Suppressed
+            # print(f"    Skipping {name} for this file.") # Suppressed
+            pass # Suppress error details for cleaner output
+
     # If no specific engine found a match, then try the fallback engine
     if fallback_engine_module:
-        print(f"    No specific match found. Trying fallback engine...")
+        # print(f"    No specific match found. Trying fallback engine...") # Suppressed
         name = 'fallback' # Explicitly set name for printing
         try:
             current_engine_class = None
@@ -161,36 +151,29 @@ def scan_file_with_engines(file_path: str, engines_to_use: dict, base_class: typ
                     result = engine_instance(file_content)
                     elapsed_time = (time.time() - start_time) * 1000
 
-                    print(f"      Result from {name}: {result}")
+                    # print(f"      Result from {name}: {result}") # Suppressed
                     if result and hasattr(result, 'candidates') and result.candidates:
-                        print(f"    FALLBACK MATCH by {name} engine for {os.path.basename(file_path)}!")
-                        print(f"    Detected type: {result.candidates[0].media_type}")
-                        print(f"    Elapsed: {elapsed_time:.2f} ms")
+                        print(f"  {os.path.basename(file_path)}: FALLBACK MATCH by {name} (Type: {result.candidates[0].media_type}, Elapsed: {elapsed_time:.2f} ms)")
                         return result
-                    else:
-                        print(f"      No match from {name}.")
-                else:
-                    print(f"      Warning: {name} Engine instance ('{current_engine_class.__name__}') is not callable.")
+            # else:
+                # print(f"      Warning: {name} Engine instance ('{current_engine_class.__name__}') is not callable.") # Suppressed
             elif hasattr(fallback_engine_module, 'detect_content'):
                 start_time = time.time()
                 result = fallback_engine_module.detect_content(file_content)
                 elapsed_time = (time.time() - start_time) * 1000
-                print(f"      Result from {name} (detect_content): {result}")
+                # print(f"      Result from {name} (detect_content): {result}") # Suppressed
                 if result and result.get('type'):
-                    print(f"    FALLBACK MATCH by {name} engine for {os.path.basename(file_path)} (standalone)!")
-                    print(f"    Detected type: {result.get('type')}")
-                    print(f"    Elapsed: {elapsed_time:.2f} ms")
+                    print(f"  {os.path.basename(file_path)}: FALLBACK MATCH by {name} (Type: {result.get('type')}, Elapsed: {elapsed_time:.2f} ms)")
                     return result
-                else:
-                    print(f"      No match from {name} (standalone).")
-            else:
-                print(f"      {name} module has no suitable EngineBase subclass or 'detect_content' function.")
+            # else:
+                # print(f"      {name} module has no suitable EngineBase subclass or 'detect_content' function.") # Suppressed
 
         except Exception as e:
-            print(f"    ERROR calling {name} engine: {e}")
-            print(f"    Skipping {name} for this file.")
+            # print(f"    ERROR calling {name} engine: {e}") # Suppressed
+            # print(f"    Skipping {name} for this file.") # Suppressed
+            pass # Suppress error details for cleaner output
 
-    print(f"  No engine found a match for {os.path.basename(file_path)} (including fallback).")
+    print(f"  {os.path.basename(file_path)}: No engine found a match (including fallback).")
     return None
 
 def scan_all_files(directory_path: str, engines: dict, base_class: type):
@@ -203,7 +186,8 @@ def scan_all_files(directory_path: str, engines: dict, base_class: type):
         for filename in files:
             file_path = os.path.join(root, filename)
             files_scanned += 1
-            print(f"\nScanning: {file_path}")
+            # Print only the file being scanned for context, then the single result
+            print(f"Processing: {os.path.basename(file_path)}")
             result = scan_file_with_engines(file_path, engines, base_class)
             if result:
                 matches_found += 1

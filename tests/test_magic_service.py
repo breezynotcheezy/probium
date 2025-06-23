@@ -16,3 +16,4 @@ def test_load_magic_cached():
     first = mod.load_magic()
     second = mod.load_magic()
     assert first is second
+

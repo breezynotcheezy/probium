@@ -16,7 +16,9 @@ __all__ = [
     "EngineFailure",
     "detect_with_trid",
     "detect_magic",
+
     "watch",
+
 ]
 try:
     from .core import detect_async
