@@ -4,15 +4,11 @@ from .base import EngineBase
 from ..registry import register
 import logging
 import mimetypes
-import magic
+from ..libmagic import load_magic
 
 logger = logging.getLogger(__name__)
 
-try:
-    _magic = magic.Magic(mime=True)
-except Exception as exc:  # pragma: no cover
-    logger.warning("libmagic unavailable: %s", exc)
-    _magic = None
+_magic = load_magic()
 
 @register
 class XMLEngine(EngineBase):
