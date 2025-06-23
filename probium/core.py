@@ -11,6 +11,7 @@ from typing import Any, Iterable, Sequence
 DEFAULT_IGNORES = {".git", "venv", ".venv", "__pycache__"}
 from .cache import get as cache_get, put as cache_put
 from .registry import list_engines, get_instance
+from .magic_service import MAGIC_SIGNATURES, _MAX_SCAN
 from .models import Result, Candidate
 logger = logging.getLogger(__name__)
 def _load_bytes(source: str | Path | bytes, cap: int | None) -> bytes:
@@ -73,7 +74,10 @@ def detect(
         p = Path(source)
         if p.is_dir():
             return Result(candidates=[Candidate(media_type="inode/directory", confidence=1.0)])
-    payload = _load_bytes(source, cap_bytes)
+    scan_cap = cap_bytes
+    if engine == "auto" and only is None:
+        scan_cap = max(cap_bytes or 0, _MAX_SCAN)
+    payload = _load_bytes(source, scan_cap)
 
     if engine != "auto":
         return get_instance(engine)(payload)
@@ -82,6 +86,11 @@ def detect(
     if only is not None:
         allowed = set(only)
         engines = [e for e in engines if e in allowed]
+    elif engine == "auto":
+        for sig, off, en in MAGIC_SIGNATURES:
+            end = off + len(sig)
+            if len(payload) >= end and payload[off:end] == sig:
+                return get_instance(en)(payload)
 
     best: Result | None = None
     for name in engines:
