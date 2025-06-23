@@ -2,6 +2,11 @@ from __future__ import annotations
 from ..models import Candidate, Result
 from .base import EngineBase
 from ..registry import register
+from ..magicdb import match_magic
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 @register
 class XMLEngine(EngineBase):
@@ -10,6 +15,10 @@ class XMLEngine(EngineBase):
     _MAGIC = [b'\xEF\xBB\xBF', b'\xFF\xFE', b'\xFE\xFF', b"<?xml"]
 
     def sniff(self, payload: bytes) -> Result:
+        cand = match_magic(payload)
+        if cand:
+            return Result(candidates=[cand])
+
         window = payload[:64]
         cand = []
 
