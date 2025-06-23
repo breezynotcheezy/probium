@@ -30,11 +30,13 @@ Probium is a fast, modular content analysis tool that detects and classifies fil
 
 
 ### 1) Import
-from probium import detect, scan_dir
+from probium import detect, detect_magic, scan_dir
 
 ### 2) Peek at one file
 meta = detect("sample.pdf")            # returns a rich Pydantic model
 print("SHA-256 🔮", meta.hash.sha256)  # 🍇 easy attribute access
+
+meta_fast = detect_magic(b"%PDF-1.4\n...")  # use magic-number lookup
 
 ### 3) Fine-tune if you like
 meta = detect(
