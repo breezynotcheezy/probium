@@ -27,7 +27,7 @@ class TridEngine(EngineBase):
         global _missing_warning_logged
         if _TRID_CMD is None:
             if not _missing_warning_logged:
-                logger.warning("trid command not found")
+                logger.debug("trid command not found")
                 _missing_warning_logged = True
             return Result(candidates=[])
         with tempfile.NamedTemporaryFile(delete=False) as tmp:
