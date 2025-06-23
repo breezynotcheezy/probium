@@ -6,6 +6,7 @@ from typing import Optional
 
 from platformdirs import user_cache_dir
 from cachetools import LRUCache
+from threading import RLock
 
 from .models import Result
 
@@ -24,6 +25,7 @@ with sqlite3.connect(DB, timeout=_DB_TIMEOUT) as con:
     con.commit()
 
 _mem: LRUCache[str, str] = LRUCache(maxsize=1024)
+_mem_lock = RLock()
 TTL = 24 * 3600  # 1 day
 
 
@@ -43,8 +45,9 @@ def get(path: Path) -> Optional[Result]:
     key = str(path.resolve())
 
     # L1: RAM
-    if key in _mem:
-        return _des(_mem[key])
+    with _mem_lock:
+        if key in _mem:
+            return _des(_mem[key])
 
     # L2: SQLite (own connection per thread)
     with sqlite3.connect(DB, timeout=_DB_TIMEOUT) as con:
@@ -57,14 +60,16 @@ def get(path: Path) -> Optional[Result]:
         if _now() - ts > TTL:
             return None
 
-    _mem[key] = raw
+    with _mem_lock:
+        _mem[key] = raw
     return _des(raw)
 
 
 def put(path: Path, result: Result) -> None:
     key = str(path.resolve())
     raw = _ser(result)
-    _mem[key] = raw
+    with _mem_lock:
+        _mem[key] = raw
     with sqlite3.connect(DB, timeout=_DB_TIMEOUT) as con:
         con.execute(
             "INSERT OR REPLACE INTO r (p, t, j) VALUES (?,?,?)",
