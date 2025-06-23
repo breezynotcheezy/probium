@@ -1,5 +1,5 @@
 from __future__ import annotations
-import abc, time, logging, hashlib
+import abc, time, logging, hashlib, threading
 from cachetools import LRUCache
 from ..models import Result
 from ..exceptions import EngineFailure
@@ -12,12 +12,15 @@ class EngineBase(abc.ABC):
 
     def __init__(self) -> None:
         self._cache: LRUCache[str, Result] = LRUCache(maxsize=self.cache_size)
+        self._lock = threading.RLock()
 
     def __call__(self, payload: bytes) -> Result:
         t0 = time.perf_counter()
         digest = hashlib.md5(payload).hexdigest()
-        if digest in self._cache:
-            cached = self._cache[digest].model_copy(deep=True)
+        with self._lock:
+            cached = self._cache.get(digest)
+        if cached is not None:
+            cached = cached.model_copy(deep=True)
             cached.engine = self.name
             cached.elapsed_ms = (time.perf_counter() - t0) * 1000
             cached.bytes_analyzed = len(payload)
@@ -32,7 +35,8 @@ class EngineBase(abc.ABC):
         res.elapsed_ms = (time.perf_counter() - t0) * 1000
         res.bytes_analyzed = len(payload)
         res.hash = digest
-        self._cache[digest] = res
+        with self._lock:
+            self._cache[digest] = res
         return res
     @abc.abstractmethod
     def sniff(self, payload: bytes) -> Result: ...
