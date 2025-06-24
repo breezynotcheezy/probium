@@ -33,6 +33,11 @@ def _reset_db() -> None:
         DB.unlink()
     except FileNotFoundError:
         pass
+
+    except PermissionError:
+        # another process may still have the file open
+        return
+
     _init_db()
 
 
@@ -63,7 +68,7 @@ def get(path: Path) -> Optional[Result]:
         if key in _mem:
             return _des(_mem[key])
 
-    # L2: SQLite (thread-specific)
+
     try:
         with sqlite3.connect(DB, timeout=_DB_TIMEOUT) as con:
             row = con.execute("SELECT t, j FROM r WHERE p = ?", (key,)).fetchone()
