@@ -1,5 +1,6 @@
 from __future__ import annotations
 from ..models import Candidate, Result
+from ..scoring import score_magic, score_tokens
 from .base import EngineBase
 from ..registry import register
 

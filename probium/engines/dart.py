@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from ..scoring import score_magic, score_tokens
 from ..models import Candidate, Result
 from .base import EngineBase
 from ..registry import register
@@ -15,5 +16,11 @@ class DartEngine(EngineBase):
         except Exception:
             return Result(candidates=[])
         if "void main()" in text and "print(" in text:
-            return Result(candidates=[Candidate(media_type="text/x-dart", extension="dart", confidence=0.9)])
+            cand = Candidate(
+                media_type="text/x-dart",
+                extension="dart",
+                confidence=score_tokens(1.0),
+                breakdown={"token_ratio": 1.0},
+            )
+            return Result(candidates=[cand])
         return Result(candidates=[])

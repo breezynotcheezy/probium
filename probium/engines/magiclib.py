@@ -1,5 +1,6 @@
 from __future__ import annotations
 import logging
+from ..scoring import score_magic, score_tokens
 import mimetypes
 from ..models import Candidate, Result
 from .base import EngineBase
@@ -30,5 +31,10 @@ class MagicLibEngine(EngineBase):
         if not mime:
             return Result(candidates=[])
         ext = (mimetypes.guess_extension(mime) or "").lstrip(".") or None
-        cand = Candidate(media_type=mime, extension=ext, confidence=0.9)
+        cand = Candidate(
+            media_type=mime,
+            extension=ext,
+            confidence=score_tokens(1.0),
+            breakdown={"token_ratio": 1.0},
+        )
         return Result(candidates=[cand])

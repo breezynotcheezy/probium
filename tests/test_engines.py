@@ -307,3 +307,31 @@ def test_python_precedence():
     res = detect(BASE_SAMPLES["python"], cap_bytes=None)
     assert res.candidates
     assert res.candidates[0].media_type == "text/x-python"
+
+
+def test_python_without_shebang():
+    res = detect(b"def foo():\n    pass\n", cap_bytes=None)
+    assert res.candidates
+    assert res.candidates[0].media_type == "text/x-python"
+
+
+def test_python_bytecode_detection():
+    import importlib.util
+    payload = importlib.util.MAGIC_NUMBER + b"\x00\x00\x00\x00"
+    res = detect(payload, cap_bytes=None)
+    assert res.candidates
+    assert res.candidates[0].media_type == "application/x-python-bytecode"
+
+
+def test_extensionless_file_with_extension_filter(tmp_path):
+    p = tmp_path / "sample"
+    p.write_bytes(BASE_SAMPLES["pdf"])
+    res = detect(p, extensions=["pdf"])
+    assert res.candidates
+    assert res.candidates[0].media_type == "application/pdf"
+
+
+def test_magic_confidence_scoring():
+    res = detect(BASE_SAMPLES["pdf"], engine="pdf", cap_bytes=None)
+    assert res.candidates
+    assert 0.5 <= res.candidates[0].confidence <= 1.0

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from ..scoring import score_magic, score_tokens
 from ..models import Candidate, Result
 from .base import EngineBase
 from ..registry import register
@@ -42,14 +43,14 @@ class CSVEngine(EngineBase):
             row_lengths = {len(r) for r in rows}
             if len(row_lengths) == 1 and list(row_lengths)[0] > 1:
                 has_header = csv.Sniffer().has_header(sample_text)
-                confidence = 0.96 if has_header else 0.96
-                return Result(
-                    candidates=[
-                        Candidate(
-                            media_type="text/csv", extension="csv", confidence=confidence
-                        )
-                    ]
+                ratio = 1.0 if has_header else 0.5
+                cand = Candidate(
+                    media_type="text/csv",
+                    extension="csv",
+                    confidence=score_tokens(ratio),
+                    breakdown={"token_ratio": ratio},
                 )
+                return Result(candidates=[cand])
         except Exception:
             pass
         return Result(candidates=[])
