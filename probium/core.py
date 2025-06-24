@@ -86,7 +86,7 @@ def detect(
             return Result(candidates=[Candidate(media_type="inode/directory", confidence=1.0)])
     
     ext = Path(source).suffix.lower().lstrip('.')
-    if ext in {"docx", "docm", "pptx", "pptm", "xlsx", "xlsm", "odt", "odp", "ods", "zip", "jar"}:
+    if ext in {"docx", "docm", "pptx", "pptm", "xlsx", "xlsm", "xltx", "odt", "odp", "ods", "zip", "jar", "doc", "ppt", "xls"}:
         cap_bytes = 10000000
     scan_cap = cap_bytes
         

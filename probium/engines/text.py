@@ -20,6 +20,6 @@ class TextEngine(EngineBase):
         ratio = printable_count / max(len(text), 1)
         if ratio > 0.95 and "<" not in text and ">" not in text:
             conf = round(ratio, 2)
-            cand = Candidate(media_type="text/plain", extension="txt", confidence=conf)
+            cand = Candidate(media_type="text/plain", extension="txt", confidence=0.1)
             return Result(candidates=[cand])
         return Result(candidates=[])
