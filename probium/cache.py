@@ -69,7 +69,7 @@ def get(path: Path) -> Optional[Result]:
             return _des(_mem[key])
 
 
-    try:
+    try: #fixed locked/corrupted sqlite3 db issue
         with sqlite3.connect(DB, timeout=_DB_TIMEOUT) as con:
             row = con.execute("SELECT t, j FROM r WHERE p = ?", (key,)).fetchone()
             if not row:
