@@ -16,7 +16,6 @@ __all__ = [
     "EngineFailure",
     "detect_with_trid",
     "detect_magic",
-
     "watch",
 
 ]
