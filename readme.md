@@ -22,6 +22,7 @@ Probium is a fast, modular content analysis tool that detects and classifies fil
 
 
 
+
 ### To recursively scan a folder
 "probium all path/to/folder"
 

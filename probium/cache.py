@@ -36,6 +36,7 @@ def _reset_db() -> None:
     except PermissionError:
         # another process may still have the file open
         return
+
     _init_db()
 
 
@@ -68,6 +69,7 @@ def get(path: Path) -> Optional[Result]:
 
     # L2: SQLite (own connection per thread)
     try:
+
         with sqlite3.connect(DB, timeout=_DB_TIMEOUT) as con:
             row = con.execute("SELECT t, j FROM r WHERE p = ?", (key,)).fetchone()
             if not row:

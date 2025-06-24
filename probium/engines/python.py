@@ -23,12 +23,14 @@ class PythonEngine(EngineBase):
 
     def sniff(self, payload: bytes) -> Result:
         if payload.startswith(_PYC_MAGIC):
+
             conf = score_magic(len(_PYC_MAGIC))
             cand = Candidate(
                 media_type="application/x-python-bytecode",
                 extension="pyc",
                 confidence=conf,
                 breakdown={"magic_len": float(len(_PYC_MAGIC))},
+
             )
             return Result(candidates=[cand])
 
@@ -73,4 +75,5 @@ class PythonEngine(EngineBase):
                 breakdown={"token_ratio": ratio},
             )
             return Result(candidates=[cand])
+
         return Result(candidates=[])

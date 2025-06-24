@@ -87,8 +87,8 @@ def _build_parser() -> argparse.ArgumentParser:
     p_one.set_defaults(func=cmd_one)
 
 
-    # all 
-    p_all = sub.add_parser("all", help="Scan directory recursively")
+    # all
+    p_all = sub.add_parser("all", help="Scan directory")
     p_all.add_argument("root", type=Path, help="Root folder")
     p_all.add_argument("--pattern", default="**/*", help="Glob pattern (default **/*)")
     p_all.add_argument("--workers", type=int, default=8, help="Thread-pool size")

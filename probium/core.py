@@ -12,6 +12,7 @@ DEFAULT_IGNORES = {".git", "venv", ".venv", "__pycache__"}
 from .cache import get as cache_get, put as cache_put
 from .registry import list_engines, get_instance
 from .magic_service import MAGIC_SIGNATURES, _MAX_SCAN
+
 from .scoring import score_magic
 from .models import Result, Candidate
 logger = logging.getLogger(__name__)
@@ -71,12 +72,21 @@ def detect(
 
 
 
+
     p: Path | None = None
     if isinstance(source, (str, Path)):
         p = Path(source)
+        if not p.exists():
+            #logger.warning(f"File does not exists: {p}")
+            return Result(candidates=[Candidate(media_type="application/x-missing", confidence=0.0)], error=f"File or Directory does not exist: {p}")
         if p.is_dir():
             return Result(candidates=[Candidate(media_type="inode/directory", confidence=1.0)])
+    
+    ext = Path(source).suffix.lower().lstrip('.')
+    if ext in {"docx", "docm", "pptx", "pptm", "xlsx", "xlsm", "xltx", "odt", "odp", "ods", "zip", "jar", "doc", "ppt", "xls"}:
+        cap_bytes = 10000000
     scan_cap = cap_bytes
+        
     if engine == "auto" and only is None:
         scan_cap = max(cap_bytes or 0, _MAX_SCAN)
     payload = _load_bytes(source, scan_cap)
@@ -170,7 +180,23 @@ def scan_dir(
         Additional arguments passed to :func:`detect`.
     """
 
+    
     root = Path(root)
+
+    if not root.exists() or not root.is_dir():
+        # Simulate detect-style failure result
+        yield root, Result(
+            candidates=[
+                Candidate(
+                    media_type="application/x-missing",
+                    extension=None,
+                    confidence=0.0,
+                )
+            ],
+            error=f"Path does not exist or is not a directory: {root}"
+        )
+        return
+
     ignore_set = set(DEFAULT_IGNORES)
     if ignore:
         ignore_set.update(Path(d).name for d in ignore)
@@ -181,6 +207,7 @@ def scan_dir(
         paths.append(p)
     if extensions is not None:
         allowed = {e.lower().lstrip('.') for e in extensions}
+
         paths = [
             p
             for p in paths
@@ -191,6 +218,7 @@ def scan_dir(
             ex.submit(detect, p, only=only, extensions=extensions, **kw): p
             for p in paths
         }
+
 
         for fut in cf.as_completed(futs):
             yield futs[fut], fut.result()
