@@ -5,6 +5,8 @@ import sys
 from pathlib import Path
 from .core import detect, scan_dir
 from .trid_multi import detect_with_trid
+from .watch import watch
+import time
 
 def cmd_one(ns: argparse.Namespace) -> None:
     """Detect a single file and emit JSON."""
@@ -50,6 +52,31 @@ def cmd_all(ns: argparse.Namespace) -> None:
     sys.stdout.write("\n")
 
 
+def cmd_watch(ns: argparse.Namespace) -> None:
+    """Watch a directory and print detection results for new files."""
+
+    def _handle(path: Path, res) -> None:
+        entry = {"path": str(path), **res.model_dump()}
+        json.dump(entry, sys.stdout, indent=None if ns.raw else 2)
+        sys.stdout.write("\n")
+        sys.stdout.flush()
+
+    print(f"Watching {ns.root}... Press Ctrl+C to stop", file=sys.stderr)
+    wc = watch(
+        ns.root,
+        _handle,
+        recursive=ns.recursive,
+        only=ns.only,
+        extensions=ns.ext,
+    )
+    try:
+        while True:
+            time.sleep(0.5)
+    except KeyboardInterrupt:
+        wc.stop()
+        print("Stopped", file=sys.stderr)
+
+
 
 def _build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="probium", description="Content-type detector")
@@ -73,6 +100,19 @@ def _build_parser() -> argparse.ArgumentParser:
     )
     _add_common_options(p_all)
     p_all.set_defaults(func=cmd_all)
+
+    # watch
+    p_watch = sub.add_parser("watch", help="Monitor directory for new files")
+    p_watch.add_argument("root", type=Path, help="Root folder")
+    p_watch.add_argument(
+        "--no-recursive",
+        dest="recursive",
+        action="store_false",
+        help="Do not watch subdirectories",
+    )
+    p_watch.set_defaults(recursive=True)
+    _add_common_options(p_watch)
+    p_watch.set_defaults(func=cmd_watch)
 
 
 
