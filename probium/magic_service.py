@@ -1,6 +1,7 @@
 """High performance detection using custom magic numbers."""
 from __future__ import annotations
 from pathlib import Path
+import importlib.util
 
 from .models import Result
 
@@ -34,6 +35,7 @@ MAGIC_SIGNATURES: list[tuple[bytes, int, str]] = [
     (b"PK\x03\x04", 0, "zipoffice"),
     (b"ustar", 257, "tar"),
     (b"<?xml", 0, "xml"),
+    (importlib.util.MAGIC_NUMBER, 0, "python"),
 ]
 
 _MAX_SCAN = max(off + len(sig) for sig, off, _ in MAGIC_SIGNATURES) + 1
