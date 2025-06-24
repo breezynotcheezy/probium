@@ -81,8 +81,8 @@ def detect(
     if isinstance(source, (str, Path)):
         p = Path(source)
         if not p.exists():
-            logger.warning(f"File does not exists: {p}")
-            return Result(candidates=[Candidate(media_type="application/x-missing", confidence=0.0)], error=f"File does not exist: {p}")
+            #logger.warning(f"File does not exists: {p}")
+            return Result(candidates=[Candidate(media_type="application/x-missing", confidence=0.0)], error=f"File or Directory does not exist: {p}")
         if p.is_dir():
             return Result(candidates=[Candidate(media_type="inode/directory", confidence=1.0)])
     scan_cap = cap_bytes
@@ -175,7 +175,23 @@ def scan_dir(
         Additional arguments passed to :func:`detect`.
     """
 
+    
     root = Path(root)
+
+    if not root.exists() or not root.is_dir():
+        # Simulate detect-style failure result
+        yield root, Result(
+            candidates=[
+                Candidate(
+                    media_type="application/x-missing",
+                    extension=None,
+                    confidence=0.0,
+                )
+            ],
+            error=f"Path does not exist or is not a directory: {root}"
+        )
+        return
+
     ignore_set = set(DEFAULT_IGNORES)
     if ignore:
         ignore_set.update(Path(d).name for d in ignore)
