@@ -1,8 +1,10 @@
 """High performance detection using custom magic numbers."""
 from __future__ import annotations
 from pathlib import Path
+import importlib.util
 
 from .models import Result
+from .scoring import score_magic
 
 from .cache import get as cache_get
 
@@ -34,6 +36,7 @@ MAGIC_SIGNATURES: list[tuple[bytes, int, str]] = [
     (b"PK\x03\x04", 0, "zipoffice"),
     (b"ustar", 257, "tar"),
     (b"<?xml", 0, "xml"),
+    (importlib.util.MAGIC_NUMBER, 0, "python"),
 ]
 
 _MAX_SCAN = max(off + len(sig) for sig, off, _ in MAGIC_SIGNATURES) + 1
@@ -56,7 +59,11 @@ def detect_magic(source: str | Path | bytes, *, cap_bytes: int | None = None) ->
     for sig, off, engine in MAGIC_SIGNATURES:
         end = off + len(sig)
         if len(payload) >= end and payload[off:end] == sig:
-            return get_instance(engine)(payload)
+            res = get_instance(engine)(payload)
+            if res.candidates:
+                res.candidates[0].breakdown = {"magic_len": float(len(sig))}
+                res.candidates[0].confidence = score_magic(len(sig))
+            return res
     # fallback to standard autodetection
 
     from .core import detect
