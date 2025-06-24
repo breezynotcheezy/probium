@@ -10,7 +10,7 @@ Probium is a fast, modular content analysis tool that detects and classifies fil
 - Parallel scanning with thread pools ✔
 - JSON output for easy integration ✔
 
-### Usage: 
+### Usage:
 "*pip install probium*"
 
 
@@ -62,5 +62,3 @@ def handle(path, result):
 wc = watch("incoming", handle, extensions=["pdf", "docx"])
 
 wc.stop()
-
-
