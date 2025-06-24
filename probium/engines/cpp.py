@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from ..scoring import score_magic, score_tokens
 from ..models import Candidate, Result
 from .base import EngineBase
 from ..registry import register
@@ -25,7 +26,12 @@ class CppEngine(EngineBase):
             else:
                 if mime and ("c++" in mime or "cpp" in mime):
                     ext = (mimetypes.guess_extension(mime) or "").lstrip(".") or "cpp"
-                    cand = Candidate(media_type=mime, extension=ext, confidence=0.95)
+                    cand = Candidate(
+                        media_type=mime,
+                        extension=ext,
+                        confidence=score_tokens(1.0),
+                        breakdown={"token_ratio": 1.0},
+                    )
                     return Result(candidates=[cand])
 
         try:
@@ -34,5 +40,11 @@ class CppEngine(EngineBase):
             return Result(candidates=[])
         head = text[:512]
         if "#include <iostream>" in head or "std::" in text:
-            return Result(candidates=[Candidate(media_type="text/x-c++", extension="cpp", confidence=0.9)])
+            cand = Candidate(
+                media_type="text/x-c++",
+                extension="cpp",
+                confidence=score_tokens(1.0),
+                breakdown={"token_ratio": 1.0},
+            )
+            return Result(candidates=[cand])
         return Result(candidates=[])

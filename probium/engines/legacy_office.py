@@ -1,5 +1,6 @@
 from __future__ import annotations
 from ..models import Candidate, Result
+from ..scoring import score_magic, score_tokens
 from .base import EngineBase
 from ..registry import register
 import io
@@ -35,7 +36,9 @@ class LegacyOfficeEngine(EngineBase):
                 else:
                     ext, mtype = "cfb", "application/vnd.ms-office"
 
-                conf = 1.0 if idx == 0 else 0.90 - min(idx / (1 << 20), 0.1)
+                conf = score_magic(len(self._MAGIC))
+                if idx != 0:
+                    conf *= 0.9
                 cand.append(
                     Candidate(
                         media_type=mtype,

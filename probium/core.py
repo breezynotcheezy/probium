@@ -1,3 +1,4 @@
+
 from __future__ import annotations
 
 import asyncio
@@ -12,26 +13,20 @@ DEFAULT_IGNORES = {".git", "venv", ".venv", "__pycache__"}
 from .cache import get as cache_get, put as cache_put
 from .registry import list_engines, get_instance
 from .magic_service import MAGIC_SIGNATURES, _MAX_SCAN
+from .scoring import score_magic
+
 from .models import Result, Candidate
 logger = logging.getLogger(__name__)
 def _load_bytes(source: str | Path | bytes, cap: int | None) -> bytes:
     """Return raw bytes, never a Result (guards against cache mix-ups)."""
     if isinstance(source, (str, Path)):
         p = Path(source)
-        if not p.exists():
-            #logger.warning(f"Source file does not exist: {p}")
-            return b""
         cached = cache_get(p)
         if isinstance(cached, (bytes, bytearray)):
             return cached[:cap] if cap else bytes(cached)
-        try:
-            data = p.read_bytes() if cap is None else p.read_bytes()[:cap]
-            return data
-        except Exception as e:
-            #logger.error(f"Failed to read file {p}: {e}")
-            return b""
+        data = p.read_bytes() if cap is None else p.read_bytes()[:cap]
+        return data
     return source[:cap] if cap else source
-
 def detect(
     source: str | Path | bytes,
     engine: str = "auto",
@@ -70,26 +65,21 @@ def detect(
     """
 
 
+
     if extensions is not None and isinstance(source, (str, Path)):
         allowed = {e.lower().lstrip('.') for e in extensions}
-        if Path(source).suffix.lower().lstrip('.') not in allowed:
+        suffix = Path(source).suffix.lower().lstrip('.')
+        if suffix and suffix not in allowed:
             return Result(candidates=[Candidate(media_type="application/octet-stream", confidence=0.0)])
+
 
 
     p: Path | None = None
     if isinstance(source, (str, Path)):
         p = Path(source)
-        if not p.exists():
-            #logger.warning(f"File does not exists: {p}")
-            return Result(candidates=[Candidate(media_type="application/x-missing", confidence=0.0)], error=f"File or Directory does not exist: {p}")
         if p.is_dir():
             return Result(candidates=[Candidate(media_type="inode/directory", confidence=1.0)])
-    
-    ext = Path(source).suffix.lower().lstrip('.')
-    if ext in {"docx", "docm", "pptx", "pptm", "xlsx", "xlsm", "xltx", "odt", "odp", "ods", "zip", "jar", "doc", "ppt", "xls"}:
-        cap_bytes = 10000000
     scan_cap = cap_bytes
-        
     if engine == "auto" and only is None:
         scan_cap = max(cap_bytes or 0, _MAX_SCAN)
     payload = _load_bytes(source, scan_cap)
@@ -105,7 +95,11 @@ def detect(
         for sig, off, en in MAGIC_SIGNATURES:
             end = off + len(sig)
             if len(payload) >= end and payload[off:end] == sig:
-                return get_instance(en)(payload)
+                res = get_instance(en)(payload)
+                if res.candidates:
+                    res.candidates[0].breakdown = {"magic_len": float(len(sig))}
+                    res.candidates[0].confidence = score_magic(len(sig))
+                return res
 
     best: Result | None = None
     for name in engines:
@@ -122,6 +116,7 @@ def detect(
             if res.candidates:
                 best = res
                 break
+
     if best is None:
         best = Result(
             candidates=[Candidate(media_type="application/octet-stream", confidence=0.0)]
@@ -182,20 +177,6 @@ def scan_dir(
     
     root = Path(root)
 
-    if not root.exists() or not root.is_dir():
-        # Simulate detect-style failure result
-        yield root, Result(
-            candidates=[
-                Candidate(
-                    media_type="application/x-missing",
-                    extension=None,
-                    confidence=0.0,
-                )
-            ],
-            error=f"Path does not exist or is not a directory: {root}"
-        )
-        return
-
     ignore_set = set(DEFAULT_IGNORES)
     if ignore:
         ignore_set.update(Path(d).name for d in ignore)
@@ -206,12 +187,18 @@ def scan_dir(
         paths.append(p)
     if extensions is not None:
         allowed = {e.lower().lstrip('.') for e in extensions}
-        paths = [p for p in paths if p.is_dir() or p.suffix.lower().lstrip('.') in allowed]
+        paths = [
+            p
+            for p in paths
+            if p.is_dir() or not p.suffix or p.suffix.lower().lstrip('.') in allowed
+        ]
+
     with cf.ThreadPoolExecutor(max_workers=workers) as ex:
         futs = {
             ex.submit(detect, p, only=only, extensions=extensions, **kw): p
             for p in paths
         }
+
 
         for fut in cf.as_completed(futs):
             yield futs[fut], fut.result()
@@ -243,7 +230,7 @@ async def scan_dir_async(
             continue
         if extensions is not None and p.is_file():
             allowed = {e.lower().lstrip('.') for e in extensions}
-            if p.suffix.lower().lstrip('.') not in allowed:
+            if p.suffix and p.suffix.lower().lstrip('.') not in allowed:
                 continue
         paths.append(p)
 
@@ -257,3 +244,4 @@ async def scan_dir_async(
     tasks = [asyncio.create_task(_run(p)) for p in paths]
     for coro in asyncio.as_completed(tasks):
         yield await coro
+

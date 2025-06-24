@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from ..scoring import score_magic, score_tokens
 from ..models import Candidate, Result
 from .base import EngineBase
 from ..registry import register
@@ -13,6 +14,11 @@ class IcoEngine(EngineBase):
 
     def sniff(self, payload: bytes) -> Result:
         if payload.startswith(_ICO_MAGIC):
-            cand = Candidate(media_type="image/x-icon", extension="ico", confidence=0.95)
+            cand = Candidate(
+                media_type="image/x-icon",
+                extension="ico",
+                confidence=score_magic(len(_ICO_MAGIC)),
+                breakdown={"magic_len": float(len(_ICO_MAGIC))},
+            )
             return Result(candidates=[cand])
         return Result(candidates=[])

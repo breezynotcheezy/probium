@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from ..scoring import score_magic, score_tokens
 from ..models import Candidate, Result
 from .base import EngineBase
 from ..registry import register
@@ -15,7 +16,19 @@ class GoEngine(EngineBase):
         except Exception:
             return Result(candidates=[])
         if text.startswith("package ") and "func main()" in text:
-            return Result(candidates=[Candidate(media_type="text/x-go", extension="go", confidence=0.95)])
+            cand = Candidate(
+                media_type="text/x-go",
+                extension="go",
+                confidence=score_tokens(1.0),
+                breakdown={"token_ratio": 1.0},
+            )
+            return Result(candidates=[cand])
         if "package main" in text and "fmt." in text:
-            return Result(candidates=[Candidate(media_type="text/x-go", extension="go", confidence=0.8)])
+            cand = Candidate(
+                media_type="text/x-go",
+                extension="go",
+                confidence=score_tokens(0.05),
+                breakdown={"token_ratio": 0.05},
+            )
+            return Result(candidates=[cand])
         return Result(candidates=[])

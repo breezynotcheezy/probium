@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from ..scoring import score_magic, score_tokens
 from ..models import Candidate, Result
 from .base import EngineBase
 from ..registry import register
@@ -25,7 +26,12 @@ class ZigEngine(EngineBase):
             else:
                 if mime and "zig" in mime:
                     ext = (mimetypes.guess_extension(mime) or "").lstrip(".") or "zig"
-                    cand = Candidate(media_type=mime, extension=ext, confidence=0.95)
+                    cand = Candidate(
+                        media_type=mime,
+                        extension=ext,
+                        confidence=score_tokens(1.0),
+                        breakdown={"token_ratio": 1.0},
+                    )
                     return Result(candidates=[cand])
 
         try:
@@ -33,5 +39,11 @@ class ZigEngine(EngineBase):
         except Exception:
             return Result(candidates=[])
         if "pub fn main" in text and "std.debug" in text:
-            return Result(candidates=[Candidate(media_type="text/x-zig", extension="zig", confidence=0.9)])
+            cand = Candidate(
+                media_type="text/x-zig",
+                extension="zig",
+                confidence=score_tokens(1.0),
+                breakdown={"token_ratio": 1.0},
+            )
+            return Result(candidates=[cand])
         return Result(candidates=[])
