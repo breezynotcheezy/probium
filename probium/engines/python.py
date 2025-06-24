@@ -7,6 +7,7 @@ import logging
 import mimetypes
 import importlib.util
 from ..libmagic import load_magic
+from ..scoring import score_magic, score_tokens
 
 logger = logging.getLogger(__name__)
 
@@ -22,10 +23,14 @@ class PythonEngine(EngineBase):
 
     def sniff(self, payload: bytes) -> Result:
         if payload.startswith(_PYC_MAGIC):
+
+            conf = score_magic(len(_PYC_MAGIC))
             cand = Candidate(
                 media_type="application/x-python-bytecode",
                 extension="pyc",
-                confidence=0.99,
+                confidence=conf,
+                breakdown={"magic_len": float(len(_PYC_MAGIC))},
+
             )
             return Result(candidates=[cand])
 
@@ -36,7 +41,13 @@ class PythonEngine(EngineBase):
                 logger.warning("libmagic failed: %s", exc)
             else:
                 if mime and "python" in mime:
-                    cand = Candidate(media_type="text/x-python", extension="py", confidence=0.99)
+                    conf = score_magic(len(_PYC_MAGIC))
+                    cand = Candidate(
+                        media_type="text/x-python",
+                        extension="py",
+                        confidence=conf,
+                        breakdown={"magic_len": float(len(_PYC_MAGIC))},
+                    )
                     return Result(candidates=[cand])
 
         try:
@@ -45,13 +56,24 @@ class PythonEngine(EngineBase):
             return Result(candidates=[])
         first_line = text.splitlines()[0] if text else ""
         if first_line.startswith("#!") and "python" in first_line:
-            return Result(candidates=[Candidate(media_type="text/x-python", extension="py", confidence=0.99)])
+            cand = Candidate(
+                media_type="text/x-python",
+                extension="py",
+                confidence=score_tokens(1.0),
+                breakdown={"token_ratio": 1.0},
+            )
+            return Result(candidates=[cand])
         head = text[:512]
         tokens = ["def ", "import ", "class ", "__name__", "from ", "async def "]
         if any(tok in head for tok in tokens):
-            return Result(
-                candidates=[
-                    Candidate(media_type="text/x-python", extension="py", confidence=0.99)
-                ]
+            hits = sum(tok in head for tok in tokens)
+            ratio = hits / len(tokens)
+            cand = Candidate(
+                media_type="text/x-python",
+                extension="py",
+                confidence=score_tokens(ratio),
+                breakdown={"token_ratio": ratio},
             )
+            return Result(candidates=[cand])
+
         return Result(candidates=[])

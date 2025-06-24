@@ -4,6 +4,7 @@ from pathlib import Path
 import importlib.util
 
 from .models import Result
+from .scoring import score_magic
 
 from .cache import get as cache_get
 
@@ -58,7 +59,11 @@ def detect_magic(source: str | Path | bytes, *, cap_bytes: int | None = None) ->
     for sig, off, engine in MAGIC_SIGNATURES:
         end = off + len(sig)
         if len(payload) >= end and payload[off:end] == sig:
-            return get_instance(engine)(payload)
+            res = get_instance(engine)(payload)
+            if res.candidates:
+                res.candidates[0].breakdown = {"magic_len": float(len(sig))}
+                res.candidates[0].confidence = score_magic(len(sig))
+            return res
     # fallback to standard autodetection
 
     from .core import detect

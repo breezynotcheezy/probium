@@ -33,7 +33,6 @@ def _reset_db() -> None:
         DB.unlink()
     except FileNotFoundError:
         pass
-
     except PermissionError:
         # another process may still have the file open
         return
@@ -67,7 +66,6 @@ def get(path: Path) -> Optional[Result]:
     with _mem_lock:
         if key in _mem:
             return _des(_mem[key])
-
 
     # L2: SQLite (own connection per thread)
     try:
