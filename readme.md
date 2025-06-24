@@ -56,7 +56,7 @@ def handle(path, result):
     print(path, "→", result.candidates[0].media_type)
 
 wc = watch("incoming", handle, extensions=["pdf", "docx"])
-# ... later
+
 wc.stop()
 
 
