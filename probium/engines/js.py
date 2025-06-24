@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from ..scoring import score_magic, score_tokens
 from ..models import Candidate, Result
 from .base import EngineBase
 from ..registry import register
@@ -16,5 +17,11 @@ class JavaScriptEngine(EngineBase):
             return Result(candidates=[])
         head = text[:256]
         if "function " in head or "console.log" in head or "=>" in head:
-            return Result(candidates=[Candidate(media_type="application/javascript", extension="js", confidence=0.9)])
+            cand = Candidate(
+                media_type="application/javascript",
+                extension="js",
+                confidence=score_tokens(1.0),
+                breakdown={"token_ratio": 1.0},
+            )
+            return Result(candidates=[cand])
         return Result(candidates=[])

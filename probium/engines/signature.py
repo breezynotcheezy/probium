@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from ..scoring import score_magic, score_tokens
 from ..models import Candidate, Result
 from .base import EngineBase
 from ..registry import register
@@ -52,12 +53,22 @@ class SignatureEngine(EngineBase):
             else:
                 if mime:
                     ext = (mimetypes.guess_extension(mime) or "").lstrip(".") or None
-                    cand = Candidate(media_type=mime, extension=ext, confidence=0.9)
+                    cand = Candidate(
+                        media_type=mime,
+                        extension=ext,
+                        confidence=score_tokens(1.0),
+                        breakdown={"token_ratio": 1.0},
+                    )
                     return Result(candidates=[cand])
 
         head = payload[:_MAX_SIG_LEN]
         for sig, (mime, ext) in _SIGNATURES.items():
             if head.startswith(sig):
-                cand = Candidate(media_type=mime, extension=ext, confidence=0.99)
+                cand = Candidate(
+                    media_type=mime,
+                    extension=ext,
+                    confidence=score_magic(len(sig)),
+                    breakdown={"magic_len": float(len(sig))},
+                )
                 return Result(candidates=[cand])
         return Result(candidates=[])

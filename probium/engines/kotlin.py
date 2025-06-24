@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from ..scoring import score_magic, score_tokens
 from ..models import Candidate, Result
 from .base import EngineBase
 from ..registry import register
@@ -15,7 +16,19 @@ class KotlinEngine(EngineBase):
         except Exception:
             return Result(candidates=[])
         if "fun main" in text and "println(" in text:
-            return Result(candidates=[Candidate(media_type="text/x-kotlin", extension="kt", confidence=0.95)])
+            cand = Candidate(
+                media_type="text/x-kotlin",
+                extension="kt",
+                confidence=score_tokens(1.0),
+                breakdown={"token_ratio": 1.0},
+            )
+            return Result(candidates=[cand])
         if "class " in text and "val " in text:
-            return Result(candidates=[Candidate(media_type="text/x-kotlin", extension="kt", confidence=0.8)])
+            cand = Candidate(
+                media_type="text/x-kotlin",
+                extension="kt",
+                confidence=score_tokens(0.05),
+                breakdown={"token_ratio": 0.05},
+            )
+            return Result(candidates=[cand])
         return Result(candidates=[])

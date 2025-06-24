@@ -1,5 +1,6 @@
 from __future__ import annotations
 from ..models import Candidate, Result
+from ..scoring import score_magic, score_tokens
 from .base import EngineBase
 from ..registry import register
 
@@ -14,7 +15,9 @@ class PDFEngine(EngineBase):
         idx = window.find(self._MAGIC)
         cand = []
         if idx != -1:
-            conf = 1.0 if idx == 0 else 0.90 - min(idx / (1 << 20), 0.1)
+            conf = score_magic(len(self._MAGIC))
+            if idx != 0:
+                conf *= 0.9
 
             eof = b'%%EOF' in payload[-1024:]
             xref = b'xref' in payload[-4096:]
@@ -23,6 +26,7 @@ class PDFEngine(EngineBase):
             conf -= 0.2 if not eof else 0
             conf -= 0.2 if not xref else 0
             conf -= 0.2 if not trailer else 0
+            conf = max(conf, 0.5)
 
             #print(f"conf: {conf}")
             cand.append(
@@ -30,7 +34,7 @@ class PDFEngine(EngineBase):
                     media_type="application/pdf",
                     extension="pdf",
                     confidence=conf,
-                    breakdown={"offset": float(idx)},
+                    breakdown={"offset": float(idx), "magic_len": float(len(self._MAGIC))},
                 )
             )
         return Result(candidates=cand)

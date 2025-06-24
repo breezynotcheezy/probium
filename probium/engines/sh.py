@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from ..scoring import score_magic, score_tokens
 from ..models import Candidate, Result
 from .base import EngineBase
 from ..registry import register
@@ -14,6 +15,11 @@ class SHEngine(EngineBase):
     def sniff(self, payload: bytes) -> Result:
         for magic in _SHEBANGS:
             if payload.startswith(magic):
-                cand = Candidate(media_type="application/x-sh", extension="sh", confidence=0.95)
+                cand = Candidate(
+                    media_type="application/x-sh",
+                    extension="sh",
+                    confidence=score_tokens(1.0),
+                    breakdown={"token_ratio": 1.0},
+                )
                 return Result(candidates=[cand])
         return Result(candidates=[])

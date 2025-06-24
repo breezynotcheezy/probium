@@ -1,5 +1,6 @@
 from __future__ import annotations
 import string
+from ..scoring import score_magic, score_tokens
 from ..models import Candidate, Result
 from .base import EngineBase
 from ..registry import register
@@ -18,8 +19,15 @@ class TextEngine(EngineBase):
         printable = set(string.printable)
         printable_count = sum(1 for c in text if c in printable or c in "\n\r\t")
         ratio = printable_count / max(len(text), 1)
+
         if ratio > 0.95 and "<" not in text and ">" not in text:
-            conf = round(ratio, 2)
-            cand = Candidate(media_type="text/plain", extension="txt", confidence=0.1)
+            conf = score_tokens(ratio)
+            cand = Candidate(
+                media_type="text/plain",
+                extension="txt",
+                confidence=conf,
+                breakdown={"token_ratio": ratio},
+            )
             return Result(candidates=[cand])
+
         return Result(candidates=[])

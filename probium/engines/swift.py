@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from ..scoring import score_magic, score_tokens
 from ..models import Candidate, Result
 from .base import EngineBase
 from ..registry import register
@@ -25,7 +26,12 @@ class SwiftEngine(EngineBase):
             else:
                 if mime and "swift" in mime:
                     ext = (mimetypes.guess_extension(mime) or "").lstrip(".") or "swift"
-                    cand = Candidate(media_type=mime, extension=ext, confidence=0.95)
+                    cand = Candidate(
+                        media_type=mime,
+                        extension=ext,
+                        confidence=score_tokens(1.0),
+                        breakdown={"token_ratio": 1.0},
+                    )
                     return Result(candidates=[cand])
 
         try:
@@ -33,7 +39,19 @@ class SwiftEngine(EngineBase):
         except Exception:
             return Result(candidates=[])
         if "import Swift" in text or "import Foundation" in text:
-            return Result(candidates=[Candidate(media_type="text/x-swift", extension="swift", confidence=0.95)])
+            cand = Candidate(
+                media_type="text/x-swift",
+                extension="swift",
+                confidence=score_tokens(1.0),
+                breakdown={"token_ratio": 1.0},
+            )
+            return Result(candidates=[cand])
         if "func " in text and "let " in text:
-            return Result(candidates=[Candidate(media_type="text/x-swift", extension="swift", confidence=0.8)])
+            cand = Candidate(
+                media_type="text/x-swift",
+                extension="swift",
+                confidence=score_tokens(0.05),
+                breakdown={"token_ratio": 0.05},
+            )
+            return Result(candidates=[cand])
         return Result(candidates=[])

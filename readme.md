@@ -11,6 +11,7 @@ Probium is a fast, modular content analysis tool that detects and classifies fil
 - JSON output for easy integration ✔
 - Automatic confidence scoring using signature length ✔
 
+
 ### Usage: 
 "*pip install probium*"
 
@@ -25,6 +26,13 @@ Probium is a fast, modular content analysis tool that detects and classifies fil
 
 ### To recursively scan a folder
 "probium all path/to/folder"
+
+### Extensionless files are scanned by default when filtering by extension
+
+
+### To monitor a folder for new files
+"probium watch path/to/folder"
+
 
 ### Extensionless files are scanned by default when filtering by extension
 
