@@ -76,7 +76,6 @@ def detect(
             return Result(candidates=[Candidate(media_type="application/octet-stream", confidence=0.0)])
 
 
-
     p: Path | None = None
     if isinstance(source, (str, Path)):
         p = Path(source)
@@ -85,7 +84,12 @@ def detect(
             return Result(candidates=[Candidate(media_type="application/x-missing", confidence=0.0)], error=f"File or Directory does not exist: {p}")
         if p.is_dir():
             return Result(candidates=[Candidate(media_type="inode/directory", confidence=1.0)])
+    
+    ext = Path(source).suffix.lower().lstrip('.')
+    if ext in {"docx", "docm", "pptx", "pptm", "xlsx", "xlsm", "odt", "odp", "ods", "zip", "jar"}:
+        cap_bytes = 10000000
     scan_cap = cap_bytes
+        
     if engine == "auto" and only is None:
         scan_cap = max(cap_bytes or 0, _MAX_SCAN)
     payload = _load_bytes(source, scan_cap)
