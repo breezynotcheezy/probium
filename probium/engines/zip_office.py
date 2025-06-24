@@ -47,5 +47,6 @@ class ZipOfficeEngine(EngineBase):
                 if not found_type:
                     cand.append(Candidate(media_type="application/zip", extension="zip", confidence=0.98))
         except Exception:
-            pass
+            cand.append(Candidate(media_type="application/zip", extension="zip", confidence=0.98))
+            return Result(candidates=cand, error="Couldn't read entire zip file")
         return Result(candidates=cand)
