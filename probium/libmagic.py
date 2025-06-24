@@ -7,7 +7,6 @@ logger = logging.getLogger(__name__)
 _SENTINEL = object()
 _cached_magic: object | None = _SENTINEL
 
-
 def load_magic():
     """Return a cached libmagic detector or ``None`` if unavailable."""
     global _cached_magic
