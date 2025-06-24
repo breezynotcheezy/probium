@@ -9,7 +9,7 @@ from .cache import get as cache_get
 
 from .registry import get_instance
 
-# tuples of (signature bytes, offset, engine name)
+# tuples
 MAGIC_SIGNATURES: list[tuple[bytes, int, str]] = [
     (b"MZ", 0, "exe"),
     (b"%PDF", 0, "pdf"),
