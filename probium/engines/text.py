@@ -19,6 +19,7 @@ class TextEngine(EngineBase):
         printable = set(string.printable)
         printable_count = sum(1 for c in text if c in printable or c in "\n\r\t")
         ratio = printable_count / max(len(text), 1)
+
         if ratio > 0.95 and "<" not in text and ">" not in text:
             conf = score_tokens(ratio)
             cand = Candidate(
@@ -28,4 +29,5 @@ class TextEngine(EngineBase):
                 breakdown={"token_ratio": ratio},
             )
             return Result(candidates=[cand])
+
         return Result(candidates=[])

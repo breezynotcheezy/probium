@@ -323,6 +323,7 @@ def test_python_bytecode_detection():
     assert res.candidates[0].media_type == "application/x-python-bytecode"
 
 
+
 def test_extensionless_file_with_extension_filter(tmp_path):
     p = tmp_path / "sample"
     p.write_bytes(BASE_SAMPLES["pdf"])
@@ -335,3 +336,4 @@ def test_magic_confidence_scoring():
     res = detect(BASE_SAMPLES["pdf"], engine="pdf", cap_bytes=None)
     assert res.candidates
     assert 0.5 <= res.candidates[0].confidence <= 1.0
+

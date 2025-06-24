@@ -8,6 +8,7 @@ import logging
 import mimetypes
 import importlib.util
 from ..libmagic import load_magic
+from ..scoring import score_magic, score_tokens
 
 logger = logging.getLogger(__name__)
 
@@ -23,12 +24,14 @@ class PythonEngine(EngineBase):
 
     def sniff(self, payload: bytes) -> Result:
         if payload.startswith(_PYC_MAGIC):
+
             conf = score_magic(len(_PYC_MAGIC))
             cand = Candidate(
                 media_type="application/x-python-bytecode",
                 extension="pyc",
                 confidence=conf,
                 breakdown={"magic_len": float(len(_PYC_MAGIC))},
+
             )
             return Result(candidates=[cand])
 
@@ -73,4 +76,5 @@ class PythonEngine(EngineBase):
                 breakdown={"token_ratio": ratio},
             )
             return Result(candidates=[cand])
+
         return Result(candidates=[])

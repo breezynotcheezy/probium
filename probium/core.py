@@ -1,3 +1,4 @@
+
 from __future__ import annotations
 
 import asyncio
@@ -13,6 +14,7 @@ from .cache import get as cache_get, put as cache_put
 from .registry import list_engines, get_instance
 from .magic_service import MAGIC_SIGNATURES, _MAX_SCAN
 from .scoring import score_magic
+
 from .models import Result, Candidate
 logger = logging.getLogger(__name__)
 def _load_bytes(source: str | Path | bytes, cap: int | None) -> bytes:
@@ -61,6 +63,7 @@ def detect(
     cache:
         Whether to store and retrieve results from the cache.
     """
+
 
 
     if extensions is not None and isinstance(source, (str, Path)):
@@ -113,6 +116,7 @@ def detect(
             if res.candidates:
                 best = res
                 break
+
     if best is None:
         best = Result(
             candidates=[Candidate(media_type="application/octet-stream", confidence=0.0)]
@@ -170,7 +174,9 @@ def scan_dir(
         Additional arguments passed to :func:`detect`.
     """
 
+    
     root = Path(root)
+
     ignore_set = set(DEFAULT_IGNORES)
     if ignore:
         ignore_set.update(Path(d).name for d in ignore)
@@ -186,11 +192,13 @@ def scan_dir(
             for p in paths
             if p.is_dir() or not p.suffix or p.suffix.lower().lstrip('.') in allowed
         ]
+
     with cf.ThreadPoolExecutor(max_workers=workers) as ex:
         futs = {
             ex.submit(detect, p, only=only, extensions=extensions, **kw): p
             for p in paths
         }
+
 
         for fut in cf.as_completed(futs):
             yield futs[fut], fut.result()
@@ -236,3 +244,4 @@ async def scan_dir_async(
     tasks = [asyncio.create_task(_run(p)) for p in paths]
     for coro in asyncio.as_completed(tasks):
         yield await coro
+
