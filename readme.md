@@ -25,6 +25,10 @@ Probium is a fast, modular content analysis tool that detects and classifies fil
 "probium all path/to/folder"
 
 
+### To monitor a folder for new files
+"probium watch path/to/folder"
+
+
 
 ## ☑️ Python Library ☑️
 
