@@ -3,6 +3,13 @@ from typing import Dict, List, Optional
 from pydantic import BaseModel, Field, ConfigDict
 
 class Candidate(BaseModel):
+    """Single MIME guess with an optional extension and confidence score.
+
+    Example
+    -------
+    ``Candidate(media_type="application/pdf", extension="pdf", confidence=0.92)``
+    """
+
     media_type: str
     extension: Optional[str] = None
     confidence: float = Field(ge=0, le=1)
@@ -22,10 +29,10 @@ class Result(BaseModel):
 
 
 class DetectionResult(BaseModel):
+    """Flattened API payload returned by web/CLI commands."""
+
     file_name: str
     detected_type: str
-
-    
     confidence_score: float = Field(ge=0, le=100)
     detection_method: str
     timestamp: str
