@@ -21,12 +21,20 @@ def _load_bytes(source: str | Path | bytes, cap: int | None) -> bytes:
     """Return raw bytes, never a Result (guards against cache mix-ups)."""
     if isinstance(source, (str, Path)):
         p = Path(source)
+        if not p.exists():
+            #logger.warning(f"Source file does not exist: {p}")
+            return b""
         cached = cache_get(p)
         if isinstance(cached, (bytes, bytearray)):
             return cached[:cap] if cap else bytes(cached)
-        data = p.read_bytes() if cap is None else p.read_bytes()[:cap]
-        return data
+        try:
+            data = p.read_bytes() if cap is None else p.read_bytes()[:cap]
+            return data
+        except Exception as e:
+            #logger.error(f"Failed to read file {p}: {e}")
+            return b""
     return source[:cap] if cap else source
+
 def detect(
     source: str | Path | bytes,
     engine: str = "auto",
@@ -73,12 +81,19 @@ def detect(
             return Result(candidates=[Candidate(media_type="application/octet-stream", confidence=0.0)])
 
 
-
     p: Path | None = None
     if isinstance(source, (str, Path)):
         p = Path(source)
+        if not p.exists():
+            return Result(candidates=[Candidate(media_type="application/x-missing", confidence=0.0)], error=f"File or Directory does not exist: {p}")
         if p.is_dir():
             return Result(candidates=[Candidate(media_type="inode/directory", confidence=1.0)])
+    
+
+    ext = Path(source).suffix.lower().lstrip('.')
+    if ext in {"docx", "docm", "pptx", "pptm", "xlsx", "xlsm", "xltx", "odt", "odp", "ods", "zip", "jar", "doc", "ppt", "xls"}:
+        cap_bytes = 10000000
+    
     scan_cap = cap_bytes
     if engine == "auto" and only is None:
         scan_cap = max(cap_bytes or 0, _MAX_SCAN)
@@ -176,6 +191,20 @@ def scan_dir(
 
     
     root = Path(root)
+
+    if not root.exists() or not root.is_dir():
+        # Simulate detect-style failure result
+        yield root, Result(
+            candidates=[
+                Candidate(
+                    media_type="application/x-missing",
+                    extension=None,
+                    confidence=0.0,
+                )
+            ],
+            error=f"Path does not exist or is not a directory: {root}"
+        )
+        return
 
     ignore_set = set(DEFAULT_IGNORES)
     if ignore:
