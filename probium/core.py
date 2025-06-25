@@ -143,11 +143,20 @@ try:
     import anyio as _anyio
 
     async def detect_async(source: Any, **kw) -> Result:
+        """Asynchronously call :func:`detect` in a worker thread.
+
+        Parameters and return value are identical to :func:`detect`. The
+        implementation uses ``anyio.to_thread`` when the optional ``anyio``
+        package is installed.
+        """
+
         return await _anyio.to_thread.run_sync(detect, source, **kw)
 except ImportError:  # pragma: no cover - optional dependency
     import asyncio
 
     async def detect_async(source: Any, **kw) -> Result:
+        """Fallback asyncio-based implementation of :func:`detect_async`."""
+
         return await asyncio.to_thread(detect, source, **kw)
 def scan_dir(
     root: str | Path,

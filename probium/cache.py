@@ -60,6 +60,8 @@ def _des(raw: str) -> Result:
 
 
 def get(path: Path) -> Optional[Result]:
+    """Return a cached :class:`Result` for ``path`` if present."""
+
     key = str(path.resolve())
 
     # L1: RAM
@@ -87,6 +89,8 @@ def get(path: Path) -> Optional[Result]:
 
 
 def put(path: Path, result: Result) -> None:
+    """Store ``result`` in the on-disk and in-memory caches."""
+
     key = str(path.resolve())
     raw = _ser(result)
     with _mem_lock:

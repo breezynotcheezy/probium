@@ -5,10 +5,18 @@ from .exceptions import UnsupportedType
 
 _engines: dict[str, type] = {}
 _engine_instances: dict[str, "EngineBase"] = {}
+
+
 def register(cls):
+    """Decorator to add an engine class to the global registry."""
+
     _engines[cls.name] = cls
     return cls
+
+
 def get(name: str):
+    """Return the engine class associated with ``name``."""
+
     try:
         return _engines[name]
     except KeyError as exc:

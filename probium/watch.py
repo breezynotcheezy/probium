@@ -66,10 +66,14 @@ class WatchContainer:
         self.observer = Observer()
 
     def start(self) -> None:
+        """Begin monitoring ``root`` for filesystem events."""
+
         self.observer.schedule(self.handler, str(self.root), recursive=self.recursive)
         self.observer.start()
 
     def stop(self) -> None:
+        """Stop the observer and wait for the thread to exit."""
+
         self.observer.stop()
         self.observer.join()
 

@@ -15,6 +15,8 @@ class EngineBase(abc.ABC):
         self._lock = threading.RLock()
 
     def __call__(self, payload: bytes) -> Result:
+        """Run :meth:`sniff` with caching and timing instrumentation."""
+
         t0 = time.perf_counter()
         digest = hashlib.md5(payload).hexdigest()
         with self._lock:
@@ -39,4 +41,7 @@ class EngineBase(abc.ABC):
             self._cache[digest] = res
         return res
     @abc.abstractmethod
-    def sniff(self, payload: bytes) -> Result: ...
+    def sniff(self, payload: bytes) -> Result:
+        """Examine ``payload`` and return a :class:`~probium.models.Result`."""
+
+        ...
