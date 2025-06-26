@@ -1,5 +1,4 @@
 __pycache__/
 probium.egg-info/
-tests/__pycache__/
 .pytest_cache/
-tests/
+tests/results.json
