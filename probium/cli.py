@@ -86,7 +86,6 @@ def _build_parser() -> argparse.ArgumentParser:
     _add_common_options(p_one)
     p_one.set_defaults(func=cmd_one)
 
-
     # all
     p_all = sub.add_parser("all", help="Scan directory")
     p_all.add_argument("root", type=Path, help="Root folder")
