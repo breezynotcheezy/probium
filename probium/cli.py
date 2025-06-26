@@ -131,8 +131,6 @@ def _add_common_options(ap: argparse.ArgumentParser) -> None:
     ap.add_argument("--raw", action="store_true", help="Emit compact JSON")
     ap.add_argument("--trid", action="store_true", help="Include TRiD engine")
 
-
-
 def main() -> None:
     ns = _build_parser().parse_args()
     ns.func(ns)
