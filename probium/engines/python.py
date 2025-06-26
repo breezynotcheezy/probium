@@ -69,12 +69,13 @@ class PythonEngine(EngineBase):
         if any(tok in head for tok in tokens):
             hits = sum(tok in head for tok in tokens)
             ratio = hits / len(tokens)
-            cand = Candidate(
-                media_type="text/x-python",
-                extension="py",
-                confidence=score_tokens(ratio),
-                breakdown={"token_ratio": ratio},
-            )
-            return Result(candidates=[cand])
+            if ratio > 0.51:
+                cand = Candidate(
+                    media_type="text/x-python",
+                    extension="py",
+                    confidence=score_tokens(ratio),
+                    breakdown={"token_ratio": ratio},
+                )
+                return Result(candidates=[cand])
 
         return Result(candidates=[])
