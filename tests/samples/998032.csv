@@ -1,0 +1,116 @@
+Table 2. Person Control Totals and Adjustment Factors Used in Weighting of Post-9/11 NHTS Data,,,
+Cell ID,Control Total,Adjustment for Useable Households,Sample Size
+First Raking Dimension (Black/Non-Black by Month),,,
+"Black, January","4,701,900",0.89,317
+"Black, February","4,246,877",0.88,455
+"Black, March","4,701,900",0.86,510
+"Black, April and May","5,005,248",1.49,449
+"Black, September and October","5,460,271",1.07,250
+"Black, November","4,550,226",1.08,204
+"Black, December","4,701,900",0.91,308
+"Non-Black, January","34,359,251",0.91,4574
+"Non-Black, February","31,034,162",0.91,6544
+"Non-Black, March","34,359,252",0.93,7238
+"Non-Black, April and May","36,575,977",1.74,5806
+"Non-Black, September and October","39,901,066",1.03,3268
+"Non-Black, November","33,250,888",0.89,3510
+"Non-Black, December","34,359,251",0.91,4645
+Total,"277,208,169",1,38078
+Second Raking Dimension (Black/Non-Black),,,
+Black,"33,368,322",1,2493
+Non-Black,"243,839,847",1,35585
+Total,"277,208,169",1,38078
+Fourth Raking Dimension (Hispanic/Non-Hispanic by Month),,,
+"Hispanic, January","4,937,907",0.93,387
+"Hispanic, February","4,460,045",0.93,548
+"Hispanic, March","4,937,906",0.95,622
+"Hispanic, April and May","5,256,481",1.4,535
+"Hispanic, September and October","5,734,343",1.05,314
+"Hispanic, November","4,778,619",0.93,319
+"Hispanic, December","4,937,906",0.93,421
+"Non-Hispanic, January","34,123,245",0.9,4504
+"Non-Hispanic, February","30,820,995",0.9,6451
+"Non-Hispanic, March","34,123,245",0.92,7126
+"Non-Hispanic, April and May","36,324,744",1.77,5720
+"Non-Hispanic, September and October","39,626,993",1.03,3204
+"Non-Hispanic, November","33,022,495",0.91,3395
+"Non-Hispanic, December","34,123,245",0.9,4532
+Total,"277,208,169",1,38078
+Third Raking Dimension (Hispanic/Non-Hispanic),,,
+Hispanic,"35,043,208",1,3146
+Non-Hispanic,"242,164,961",1,34932
+Total,"277,208,169",1,38078
+Fifth Raking Dimension (Sex by Age),,,
+"Male, 0 to 17 years","37,324,345",1,4687
+"Male, 18 to 34 years","32,949,783",0.96,3177
+"Male, 35 to 44 years","21,758,024",0.99,2810
+"Male, 45 to 64 years","29,216,368",0.99,4934
+"Male, 65 and over","14,042,687",1.06,2493
+"Female, 0 to 17 years","35,584,159",0.99,4607
+"Female, 18 to 34 years","32,812,831",0.99,3515
+"Female, 35 to 44 years","22,544,089",1.01,3067
+"Female, 45 to 64 years","31,590,554",1,5567
+"Female, 65 and over","19,385,329",1.06,3221
+Total,"277,208,169",1,38078
+Sixth Raking Dimension (Census Region),,,
+Northeast,"52,603,089",0.98,7377
+Midwest,"63,416,498",1,9979
+South,"98,669,031",1.01,12568
+West,"62,519,551",0.99,8154
+Total,"277,208,169",1,38078
+Seventh Raking Dimension (MSA),,,
+1+ million,"159,966,575",1,20359
+< 1 million,"63,141,416",1,9288
+Non-MSA,"54,100,178",1,8431
+Total,"277,208,169",1,38078
+Eighth Raking Dimension (Month by Day of Week),,,
+"January, Mondays","5,040,148",0.86,670
+"January, Tuesdays","6,300,185",1.18,639
+"January, Wednesdays","6,300,186",0.89,762
+"January, Thursdays","6,300,186",0.92,851
+"January, Fridays","5,040,148",0.74,769
+"January, Saturdays","5,040,149",0.85,634
+"January, Sundays","5,040,149",0.96,566
+"February, Mondays","5,040,148",0.96,927
+"February, Tuesdays","5,040,148",0.87,1064
+"February, Wednesdays","5,040,148",0.93,961
+"February, Thursdays","5,040,149",0.89,1078
+"February, Fridays","5,040,149",0.88,1013
+"February, Saturdays","5,040,148",0.97,930
+"February, Sundays","5,040,149",0.87,1026
+"March, Mondays","5,040,148",0.69,1198
+"March, Tuesdays","5,040,149",0.97,1092
+"March, Wednesdays","5,040,148",0.99,972
+"March, Thursdays","5,040,149",1.04,2284
+"March, Fridays","6,300,185",1.13,622
+"March, Saturdays","6,300,186",0.82,847
+"March, Sundays","6,300,186",0.96,733
+"April and May, Mondays","6,300,186",1.51,767
+"April and May, Tuesdays","6,300,185",1.31,1150
+"April and May, Wednesdays","6,300,186",1.74,818
+"April and May, Thursdays","6,300,186",0.93,2881
+"April and May, Fridays","5,040,147",2.55,237
+"April and May, Saturdays","6,300,186",4.71,180
+"April and May, Sundays","5,040,148",3.07,222
+"September and October, Mondays","6,300,185",0.96,505
+"September and October, Tuesdays","6,300,186",0.89,524
+"September and October, Wednesdays","7,560,223",1.23,515
+"September and October, Thursdays","6,300,186",0.9,620
+"September and October, Fridays","6,300,186",1.05,466
+"September and October, Saturdays","6,300,185",1.15,435
+"September and October, Sundays","6,300,186",1.1,453
+"November, Mondays","5,040,149",1.02,493
+"November, Tuesdays","5,040,148",0.95,522
+"November, Wednesdays","5,040,148",0.88,543
+"November, Thursdays","6,300,186",1.05,491
+"November, Fridays","6,300,185",0.82,628
+"November, Saturdays","5,040,149",0.74,598
+"November, Sundays","5,040,149",0.98,439
+"December, Mondays","6,300,186",0.84,892
+"December, Tuesdays","5,040,149",0.7,903
+"December, Wednesdays","5,040,148",0.95,666
+"December, Thurs","5,040,149",0.98,533
+"December, Fridays","5,040,149",1.04,543
+"December, Saturdays","6,300,186",1.11,628
+"December, Sundays","6,300,186",0.86,788
+Total,"277,208,169",1,38078

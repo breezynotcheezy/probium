@@ -1,0 +1,903 @@
+
+<html>
+<title>C453 -- Quad Ramp Generator</title>
+
+<body>
+	<h1>C453 -- Quad Ramp Generator</h1>
+	<cite>M. Glass,11-29-89<br>R. Neswold, 7-17-97 (rev)<br>B. Hendricks, 2-12-03 (rev)<br>B. Hendricks, 8-16-04 (rev)</cite>
+
+	<p>Some support points:
+
+	<ol>
+		<li>There is one set of devices per channel / regulator.  Just
+		one of these devices (two if you include the reference) will
+		ordinarily appear on parameter pages.  The rest are for
+		special application programs.
+
+		<p><li>There is another set of devices, one per 453 card.  One of
+		these devices, dedicated primarily to the bulk power supply,
+		appears on parameter pages.  The rest of the devices in this
+		set support the common elements of the waveforms (which are
+		the same for all four waveforms on the one card).
+
+		<p>Thus each 453 card sports five sets of devices.
+
+		<p><li>There is one family device per channel / regulator,
+		pointing to ALL devices needed to define an entire ramp.  Note
+		that this means that there will be a certain amount of overlap
+		between families, because some devices are common to the
+		entire card (four ramps).
+
+		<p><li>Alarms reflect a similar structure: there is one per
+		channel and one for the bulk supply plus special bits.  Each
+		453 card has a few special alarm bits.  They are grouped
+		in with the bulk supply alarm.
+
+		<p><li>There are fifteen waveform tables per channel.  The
+		array devices which return the waveform data can be any size.
+		In particular, if you want to support only one set of tables
+		per channel you can set the maximum size parameters in the
+		data base to reflect only one table.
+
+		<p><li>The main parameter page device returns the entire
+		<b>G(i)</b> table in its setting property.  The parameter
+		page supports indexing into this table using standard C
+		array index notation, both for single devices and for
+		bumps, so that the operators can knob single slots.
+	
+		<p><li>CAMAC stop/continue is supported, even though it will
+		probably never get used.
+	</ol>
+
+	<h2>DEVICES PER WAVEFORM</h2>
+
+		<p>There are presently eleven devices in the per-waveform set:
+
+		<ol>
+			<li><a href="#PPDEV">Parameter page device</a> (reading,
+			setting, status, control, alarms) (SSDN subtype code 1)
+
+			<li><a href="#FTDEV"><b>F(t)</b> tables</a> (SSDN subtype
+			code 2)
+
+			<li><a href="#GHDEV"><b>G(i)</b> tables</a> (SSDN subtype
+			code 3)
+
+			<li><a href="#GHDEV"><b>H(i)</b> tables</a> (SSDN subtype
+			code 4)
+
+			<li><a href="#MPDEV">Ramp table map</a> data, MDAT
+			multiplier map, Scale factor map (SSDN subtype code 5)
+
+			<li><a href="#SCDEV">Scale factors</a> (SSDN subtype code 6)
+
+			<li><a href="#VNDEV">Version number</a> and current
+			conditions (SSDN subtype code 7)
+
+			<li><a href="#RFDEV">Mux of DAC</a> (SSDN subtype code 8)
+
+			<li><a href="#FMDEV">Family</a>
+
+			<li><a href="#GSDEV"><b>G(i)</b> tables</a> scaled to amps (SSDN subtype code 13)
+
+			<li><a href="#RFDEV">Reference</a> (SSDN subtype code 14)
+			<li><a href="#KNBDEV">Knobbable</a> or ganged setting devices (SSDN subtype code 15)
+		</ol>
+
+		<h3><a name="PPDEV">Parameter page device</h3>
+
+			<p>This device gets a name like I:H100 (no suffix).
+
+			<h4>SSDN: (Reading)</h4>
+
+				<table width=300 border=1>
+					<tr>
+						<td align=center width=150>0</td>
+						<td align=center width=150>0</td>
+					</tr>
+					<tr>
+						<td align=center width=150>0</td>
+						<td align=center width=150>42 (hex)</td>
+					</tr>
+					<tr>
+						<td align=center width=150>madc</td>
+						<td align=center width=150>channel</td>
+					</tr>
+					<tr>
+						<td align=center width=150>0</td>
+						<td align=center width=150>0</td>
+					</tr>
+				</table>
+
+			<h4>SSDN (Setting, Status, Control, Digital alarm):</h4>
+
+				<table width=300 border=1>
+					<tr>
+						<td align=center width=150>0</td>
+						<td align=center width=150>0</td>
+					</tr>
+					<tr>
+						<td align=center width=150>0</td>
+						<td align=center width=150>70 (hex)</td>
+					</tr>
+					<tr>
+						<td align=center width=150>crate</td>
+						<td align=center width=150>slot</td>
+					</tr>
+					<tr>
+						<td align=center width=150>0</td>
+						<td align=center width=150>1x (hex)<br>
+						x = channel (0-3)</td>
+					</tr>
+				</table>
+
+				<p>The '1' in the 2nd nibble of the 4th word is the
+				code that the special application page can key off of
+				to identify this device.
+
+				<p>
+				<table border=1 cellpadding=8>
+					<tr>
+						<td width=100 align=right valign=top>
+						<i>Readings</i></td>
+						<td>MADC channel.</td>
+					</tr>
+					<tr>
+						<td align=right valign=top><i>Settings</i></td>
+						<td>
+							<b>G(i)</b> table as an array
+							device. There are fifteen tables per 453
+							channel, each 64 words long. Thus the
+							maximum length parameter is either 128
+							bytes (one table) or 1920 (fifteen tables).
+
+							<p>The parameter page picks an individual
+							number out of this array for display.
+<pre>
+	PRO SETTNG (2, 1920, 60)	! for 15 tables
+	PDB SETTNG ('VOLT', 'UNIT', 0, 6, 2, 0, 0, 0, 12.5, 1.0) ! -128 to +127
+</pre>
+						</td>
+					</tr>
+					<tr>
+						<td align=right valign=top><i>Status</i></td>
+						<td>
+						Regulator Power Supply status. 2 words
+						long. Lower 6 bits: <b>F(4)A(1)</b> word
+<pre>
+	     Bit 0: Tracking error alarm
+	     Bit 1: Overcurrent
+	     Bit 2: Magnet overpower
+	     Bit 3: Amplifier overvoltage
+	     Bit 4: Enable / disable
+	     Bit 5: Calculation error
+	    Bit 15: Stop/continue word (which seems to need only 1 bit).
+	Upper word: Special configuration word.
+</pre>
+						<p>The stop/continue and special configuration
+						words are placed here for convenience.
+	
+						<p>It seems to to me that the PDB scaling
+						includes only ON/OFF and READY/NOT READY.
+
+						<p>I have assigned all the error bits to "not
+						ready" PDB scaling.  I'm not sure of the sense
+						of these, so the PDB may have to change.
+<pre>
+	PRO BASTAT (4, 4, 60)
+	PDB BASTAT (3, 1, 0010, 000F, 0, 0, 4)
+</pre>
+						</td>
+					</tr>
+					<tr>
+						<td align=right valign=top><i>Control</i></td>
+						<td>
+						Basic control codes are two words long. In
+						general the upper word is zero. The codes can
+						be placed in the basic control PDB with upper
+						word zero to achieve normal basic control. The
+						codes are as follows:
+<pre>
+	Code  Meaning        PDB Slot  Camac Function
+	----  -------        --------  --------------
+	  1   Ramp Disable   OFF       F24A5
+	  2   Ramp Enable    ON        F26A5
+	  3   Reg. Reset     RESET     F26A8
+	  4   Ramp Enable    POL +     F26A5
+	  5   Ramp Disable   POL -     F24A5
+	  6   Continue       none      F18A6 (FFFF)
+	  7   Stop           none      F18A6 (0000)
+	  8   Special configuration word follows.
+</pre>
+						<p>The Continue and Stop commands are included
+						for completeness.
+
+						<p>Code 8 in the lower word of the basic
+						control setting value means that the upper
+						word contains the special configuration word
+						to be written with <b>F(18)A(5)</b>.
+<pre>
+	PRO BCNTRL (4, 4, 60)
+	PDB BCNTRL (1F, 3, 2, 1, 4, 5)
+</pre>
+						</td>
+					</tr>
+					<tr>
+						<td align=right valign=top><i>Alarms</i></td>
+						<td>
+						We are supporting digital alarms only. There
+						is presently no way to have meaningful analog
+						alarms on a ramped device. If it should be
+						desirable to support an analog alarm on event
+						(e.g. reset) then it is possible to use the
+						existing facilities.
+
+						<p>The alarm mask, nominal, and reset will
+						follow the lower 6 bits of the basic status,
+						i.e. the Special Power Supply Status word.
+
+						<p>The other status information (stop/continue
+						stuff) placed in the basic status for programmer
+						convenience is not alarmed.
+<pre>
+	PRO DGALBL (4, 20, 60, 0010, 0010,
+	            2, 1, 1, 0, 0, 0, 0,
+	            0, 0, 0)
+	PRO DGALTX (0, 0, 5, '')
+</pre>
+						</td>
+					</tr>
+				</table>
+
+		<h3><a name="FTDEV">F(t) Tables</a></h3>
+
+			<h4>SSDN: (Setting)</h4>
+
+				<table width=300 border=1>
+					<tr>
+						<td align=center width=150>0</td>
+						<td align=center width=150>0</td>
+					</tr>
+					<tr>
+						<td align=center width=150>0</td>
+						<td align=center width=150>70 (hex)</td>
+					</tr>
+					<tr>
+						<td align=center width=150>crate</td>
+						<td align=center width=150>slot</td>
+					</tr>
+					<tr>
+						<td align=center width=150>0</td>
+						<td align=center width=150>2x (hex)
+						<br>x = channel (0-3)</td>
+					</tr>
+				</table>
+
+				<p>There are 128 words per table, which have 64 pairs
+				of (f(t), t). Thus the data base entry will be either
+				256 bytes long (for one table) or 3840 bytes long (for
+				all fifteen). The default length is four bytes, a single
+				entry.
+<pre>
+	 PRO (4, 3840, 60)	! No PDB necessary?
+</pre>
+				<p>Proposed suffix:  "T", as in I:H100T
+
+		<h3><a name="GHDEV">G(i) and H(i) tables</a></h3>
+
+			<h4>SSDN: (Setting)</h4>
+
+				<table width=300 border=1>
+					<tr>
+						<td align=center width=150>0</td>
+						<td align=center width=150>0</td>
+					</tr>
+					<tr>
+						<td align=center width=150>0</td>
+						<td align=center width=150>70 (hex)</td>
+					</tr>
+					<tr>
+						<td align=center width=150>crate</td>
+						<td align=center width=150>slot</td>
+					</tr>
+					<tr>
+						<td align=center width=150>0</td>
+						<td align=center width=150>3x (hex) <- G(i)<br>
+						4x (hex) <- H(i)<br>
+						x = channel (0-3)</td>
+					</tr>
+				</table>
+
+				<p>There are 64 words per table, which have 64 single
+				G(i) or H(i) ordinate values.  There is only one set
+				of abscissa values per 453 card, which is why we are
+				linking the two sets of devices (per channel and per
+				card) via the family device in the database.
+
+				<p>If we are supporting only one table these devices
+				are 64 words long in the database.  If we are
+				supporting all fifteen tables these devices are 960
+				words long.
+
+				<p>For both devices we have:
+<pre>
+	PRO (2, 1920, 60)	! No PDB necessary?
+</pre>
+				<p>Proposed names:  I:H100G and I:H100H
+
+		<h3><a name="MPDEV">Maps device</a></h3>
+
+			<h4>SSDN: (Setting)</h4>
+
+				<table width=300 border=1>
+					<tr>
+						<td align=center width=150>0</td>
+						<td align=center width=150>0</td>
+					</tr>
+					<tr>
+						<td align=center width=150>0</td>
+						<td align=center width=150>70 (hex)</td>
+					</tr>
+					<tr>
+						<td align=center width=150>crate</td>
+						<td align=center width=150>slot</td>
+					</tr>
+					<tr>
+						<td align=center width=150>0</td>
+						<td align=center width=150>5x (hex)<br>
+						x = channel (0-3)</td>
+					</tr>
+				</table>
+
+				<p>112 words, separated into 3 sections.
+
+				<ol>
+					<li>Ramp table map data (one word for each of 32
+					interrupt levels) = 32 words
+
+					<li>MDAT multiplier map (three words per interrupt
+					level) = 96 words
+
+					<li>Scale factor map (also three words per
+					interrupt level) = 96 words
+				</ol>
+<pre>
+	PRO SETTNG (2, 448, 60)
+	No PDB necessary.
+</pre>
+				<p>Proposed name:  I:H100M
+
+		<h3><a name="SCDEV">Scale factors device</a></h3>
+
+			<h4>SSDN: (Setting)</h4>
+
+				<table width=300 border=1>
+					<tr>
+						<td align=center width=150>0</td>
+						<td align=center width=150>0</td>
+					</tr>
+					<tr>
+						<td align=center width=150>0</td>
+						<td align=center width=150>70 (hex)</td>
+					</tr>
+					<tr>
+						<td align=center width=150>crate</td>
+						<td align=center width=150>slot</td>
+					</tr>
+					<tr>
+						<td align=center width=150>0</td>
+						<td align=center width=150>6x (hex)<br>
+						x = channel (0-3)</td>
+					</tr>
+				</table>
+
+				<p>15 words of scale factors.
+
+				<p>Proposed name:  I:H100S
+
+		<h3><a name="VNDEV">Version number</a> and operating
+		conditions device</h3>
+
+			<h4>SSDN: (Setting)</h4>
+
+				<table width=300 border=1>
+					<tr>
+						<td align=center width=150>0</td>
+						<td align=center width=150>0</td>
+					</tr>
+					<tr>
+						<td align=center width=150>0</td>
+						<td align=center width=150>70 (hex)</td>
+					</tr>
+					<tr>
+						<td align=center width=150>crate</td>
+						<td align=center width=150>slot</td>
+					</tr>
+					<tr>
+						<td align=center width=150>0</td>
+						<td align=center width=150>7x (hex)<br>
+						x = channel (0-3)</td>
+					</tr>
+				</table>
+
+				<p>Reading: 48 words of general status, as follows:
+<pre>
+	Word 1:  F(6)A(1) Version Number
+	     2:  F(2)A(2) Current Ramp Tables
+	     3:  F(2)A(3) Current Scale Factors
+	     4:  F(2)A(4) Current MDAT Selections
+	   5,6:  0 (not used)
+	     7:  F(0)A(10) F(t) End of Table Flag
+	     8:  F(0)A(11) F(t) Segment Number
+	     9:  F(0)A(12) G(i) Segment Number
+	    10:  F(0)A(13) H(i) Segment Number
+	    11:  F(2)A(5) Special Configuration Word
+	    12:  0 (not used)
+	    13:  F(6)A(0) Card Type
+	 14-34:  F(3)A(3) Calculation Archive
+	    35:  F(4)A(2) Current Interrupt Level
+	    36:  F(1)A(14) Last TCLK Event
+	 37-42:  F(4)A(4) Copy Table Info
+	 43-48:  F(5)A(4) Add Table Info
+</pre>
+				<p>We are supporting BOTH setting and reading
+				properties for this device.  The setting property
+				cannot be set (imagine being able to adjust the
+				version number), but it can be read via the setting
+				property as a convenience to the application page.
+
+				<p>Proposed name:  I:H100U
+
+		<h3><a name="RFDEV">Reference device</a></h3>
+
+			<h4>SSDN: (Reading)</h4>
+
+				<table width=300 border=1>
+					<tr>
+						<td align=center width=150>madc channel #</td>
+						<td align=center width=150>madc #</td>
+					</tr>
+					<tr>
+						<td align=center width=150>0</td>
+						<td align=center width=150>36 (hex)</td>
+					</tr>
+					<tr>
+						<td align=center width=150>crate</td>
+						<td align=center width=150>slot</td>
+					</tr>
+					<tr>
+						<td align=center width=150>0</td>
+						<td align=center width=150>0x (hex)<br>
+						x = channel (0-3)</td>
+					</tr>
+				</table>
+
+				<p>Fundamentally this device will read an MADC
+				channel. However we need to set the analog mux on
+				the B board before we can start plotting values,
+				so this device gets a special front end device
+				handler (with a special SSDN).
+
+				<p>It will be possible to fast time plot this
+				device.
+
+				<p>I do not propose to detect user conflicts over
+				the mux settings.  When you first type it in on a
+				page the mux gets set, but subsequent users of the
+				same mux can mess up your plot.
+<pre>
+	PRO READNG (2, 2, 60)
+	PDB READNG ('VOLT', 'UNIT', 0, 6, 2, 0, 0, 0,
+	            12.5, 1.0)                         ! -128 to +127
+</pre>
+
+			<h4>SSDN: (Setting)</h4>
+
+				<table width=300 border=1>
+					<tr>
+						<td align=center width=150>0</td>
+						<td align=center width=150>0</td>
+					</tr>
+					<tr>
+						<td align=center width=150>0</td>
+						<td align=center width=150>36 (hex)</td>
+					</tr>
+					<tr>
+						<td align=center width=150>crate</td>
+						<td align=center width=150>slot</td>
+					</tr>
+					<tr>
+						<td align=center width=150>0</td>
+						<td align=center width=150>0x (hex)<br>
+						x = channel (0-3)</td>
+					</tr>
+				</table>
+
+				<p>*** NOTE: USE THE 'A' BOARD SLOT
+
+				<p>Writing to the setting property of this device
+				will write directly to the DAC with an F(17)A(2)
+				command.  Reading-the-setting will return the
+				"reference channel converted values" from the "B"
+				board.
+<pre>
+	PRO SETTNG the same
+	PDB SETTNG the same
+</pre>
+			<p>Propsed name: I:H100F
+
+		<h3><a name="FMDEV">Family device</a></h3>
+
+			<p>This device supports only a "family" property, which is
+			a version of a subsystems device record. Seven of the
+			devices for the individual channel, as well as the common
+			devices for the whole card, are represented here. Thus
+			there will be some overlap between the four family devices
+			for a single 453 card.
+<pre>
+	PRO FAMILY (I:H100, I:H100T, I:H100G
+	            I:H100H, I:H100M, I:H100S I:H100U,
+	            I:14RC5, I:14RC5G, I:14RC5H, I:14RC5C,
+	            I:14RC5M)
+</pre>
+			<p>Proposed name: I:H100Z
+
+		<h3><a name="GSDEV">G(i) Scaled in Amps</h3>
+
+			<p>This device returns and accepts scaled data. The
+			hardware contains the scaling factor used to convert
+			between raw and cooked values.
+
+			<h4>SSDN: (Setting, Reading)</h4>
+
+				<table width=300 border=1>
+					<tr>
+						<td align=center width=150>0</td>
+						<td align=center width=150>0</td>
+					</tr>
+					<tr>
+						<td align=center width=150>0</td>
+						<td align=center width=150>36 (hex)</td>
+					</tr>
+					<tr>
+						<td align=center width=150>crate</td>
+						<td align=center width=150>slot</td>
+					</tr>
+					<tr>
+						<td align=center width=150>kk</td>
+						<td align=center width=150>Dx (hex)<br>
+						x = channel (0-3)</td>
+					</tr>
+				</table>
+
+			<h4>SSDN: (Basic Status, Basic Control)</h4>
+
+				<table width=300 border=1>
+					<tr>
+						<td align=center width=150>0</td>
+						<td align=center width=150>0</td>
+					</tr>
+					<tr>
+						<td align=center width=150>0</td>
+						<td align=center width=150>36 (hex)</td>
+					</tr>
+					<tr>
+						<td align=center width=150>crate</td>
+						<td align=center width=150>slot</td>
+					</tr>
+					<tr>
+						<td align=center width=150>kk</td>
+						<td align=center width=150>Dx (hex)<br>
+						x = channel (0-3)</td>
+					</tr>
+				</table>
+
+			<p>Where <tt>kk</tt> is the interrupt number.
+
+		<h3><a name="KNBDEV">Knobbable or ganged devices</h3>
+
+			<p>These are wholly optional.  You can create these
+			devices, if you wish, for the purpose of knobbing
+			groups of slots in a table all at the same time.
+			They are NOT included in the family device.  The
+			reading property is typically set up the same as the
+			parameter page device.
+
+			<h4>SSDN: (Reading)</h4>
+
+				<table width=300 border=1>
+					<tr>
+						<td align=center width=150>0</td>
+						<td align=center width=150>0</td>
+					</tr>
+					<tr>
+						<td align=center width=150>0</td>
+						<td align=center width=150>42 (hex)</td>
+					</tr>
+					<tr>
+						<td align=center width=150>madc</td>
+						<td align=center width=150>channel</td>
+					</tr>
+					<tr>
+						<td align=center width=150>0</td>
+						<td align=center width=150>0</td>
+					</tr>
+				</table>
+
+			<h4>SSDN: (Setting)</h4>
+
+				<table width=300 border=1>
+					<tr>
+						<td align=center width=150>delta slot (0-15)<br>
+						(high nibble)<br>
+						total slots (1-15)<br>
+						(low nibble)</td>
+						<td align=center width=150>initial slot (0-64)<br>
+						(0 -> use data offset)</td>
+					</tr>
+					<tr>
+						<td align=center width=150>0</td>
+						<td align=center width=150>70 (hex)</td>
+					</tr>
+					<tr>
+						<td align=center width=150>crate</td>
+						<td align=center width=150>slot</td>
+					</tr>
+					<tr>
+						<td align=center width=150>kk</td>
+						<td align=center width=150>Fx (hex)<br>
+						x = channel (0-3)</td>
+					</tr>
+				</table>
+
+			<p>Where <tt>kk</tt> is a combination of the table type
+			(top 2 bits) and the table number (0-15) (bottom 6 bits) (0 -> use data offset).<br>
+			(Table types: 0 -> F(t), 1 -> G(i), 2 -> H(i))<br>
+			The setting property should always have a length of 2 bytes.
+
+	<h2>DEVICES PER 453 CARD</h2>
+
+		<p>There are presently five devices in the per-card set:
+
+		<ol>
+			<li>Bulk Power Supply parameter page device (SSDN code 8)
+
+			<li>G(i) abcissa values (SSDN code 9)
+
+			<li>H(i) abcissa values (SSDN code 10)
+
+			<li>Clock events (SSDN code 11)
+	
+			<li>MDAT selections (SSDN code 12)
+		</ol>
+
+		<h3>Bulk Power Supply device</h3>
+
+			<p>Actually, there will be one of these devices in the
+			data base for every 453 card, whether or not there is a
+			bulk power supply attached.  The reason is that there are
+			several status bits, some of which may be alarmable, which
+			the 453 card can generate on its own.
+
+			<p>I know of no reading or setting properties for this
+			device.
+
+			<p>Proposed name: I:14RCx (for the cards in crate 14)
+
+			<h4>SSDN: (All Properties)</h4>
+
+				<table width=300 border=1>
+					<tr>
+						<td align=center width=150>0</td>
+						<td align=center width=150>0</td>
+					</tr>
+					<tr>
+						<td align=center width=150>0</td>
+						<td align=center width=150>70 (hex)</td>
+					</tr>
+					<tr>
+						<td align=center width=150>crate</td>
+						<td align=center width=150>slot</td>
+					</tr>
+					<tr>
+						<td align=center width=150>0</td>
+						<td align=center width=150>80 (hex)</td>
+					</tr>
+				</table>
+
+				<h5> Basic Status</h5>
+
+					<p>Two words long.
+
+					<p><b>Low word:</b> The bulk PS status word,
+					obtained from <b>F(1)A(0)</b>.
+
+					<p><b>High word:</b> LAM status word, obtained
+					from <b>F(4)A(12)</b>.  This word contains a
+					number of error bits which are not related to the
+					bulk PS, and is the primary reason we have this
+					device in the database even if there is no bulk PS
+					attached to the card.
+<pre>
+	PRO BASTAT (4, 4, 60)
+	PDB BASTST (to be determined)
+</pre>
+
+				<h5>Basic Control</h5>
+
+					<p>Two words long, but only the lower word is
+					used. The basic control codes, which can be placed
+					in a PDB for parameter page use, are:
+<pre>
+	Code  Meaning           PDB Slot  Camac Function
+	----  -------           --------  --------------
+	  1   PS OFF            OFF       F24A1
+	  2   PS ON             ON        F26A1
+	  3   PS Reset          RESET     F26A7
+	  4   unused		           
+	  5   Toggle polarity   POL -     F24A3
+
+	PRO BCNTRL (2, 2, 60)
+	PDB BCNTRL (to be determined)
+</pre>
+
+				<h5>Alarms</h5>
+
+					<p>The digital alarm follows the basic status
+					property, with the execption of four bits which we
+					ignore.
+
+					<p>There is a single bit for each channel which is
+					funneled through the LAM word.  These bits are the
+					alarm bypass bits for the individual waveform
+					devices, and thus I will not permit operators to
+					use them here.  They will always appear to be
+					masked.
+<pre>
+	PRO DGALBL (2, 20, 60, 0000, 0000,
+	            4, 1, 1, 0, 0, 0, 0,
+	            0, 0, 0)
+	PRO DGALTX (0, 0, 5, '')
+</pre>
+
+				<h5>Setting</h5>
+
+					<p>Not needed, but quite convenient for calling
+					DBAREQ in application pages.  The setting property
+					on this device reads and sets the 'B' board analog
+					mux. Note that the reference signal device
+					controls this mux automatically.
+
+		<h3>G(i) and H(i) abcissa values</h3>
+
+			<h4>SSDN: (Setting)</h4>
+
+				<table width=300 border=1>
+					<tr>
+						<td align=center width=150>0</td>
+						<td align=center width=150>0</td>
+					</tr>
+					<tr>
+						<td align=center width=150>0</td>
+						<td align=center width=150>70 (hex)</td>
+					</tr>
+					<tr>
+						<td align=center width=150>crate</td>
+						<td align=center width=150>slot</td>
+					</tr>
+					<tr>
+						<td align=center width=150>0</td>
+						<td align=center width=150>90 (hex) <- G(i)<br>
+						A0 (hex) <- H(i)</td>
+					</tr>
+				</table>
+
+			<p>There are 32 words in each of these devices, containing
+			MDAT values for the waveform function abcissas.
+<pre>
+	PRO SETTNG (2, 64, 60) ! no PDB needed
+</pre>
+			<p>Proposed names: Following the above, I:14RC5G and
+			I:14RC5H.
+
+		<h3>Clock events</h3>
+
+			<h4>SSDN: (Setting, Basic Status, Basic Control)</h4>
+
+				<table width=300 border=1>
+					<tr>
+						<td align=center width=150>0</td>
+						<td align=center width=150>0</td>
+					</tr>
+					<tr>
+						<td align=center width=150>0</td>
+						<td align=center width=150>70 (hex)</td>
+					</tr>
+					<tr>
+						<td align=center width=150>crate</td>
+						<td align=center width=150>slot</td>
+					</tr>
+					<tr>
+						<td align=center width=150>0</td>
+						<td align=center width=150>B0 (hex)</td>
+					</tr>
+				</table>
+
+				<h5>Setting:</h5>
+
+				<p>256 words long, containing 8 word blocks (= 8 clock
+				events) for each of 32 interrupt levels.
+<pre>
+	PRO SETTNG (2, 256, 60)
+</pre>
+
+				<h5>Status:</h5>
+
+				<p>A single word containing the F(4)A(15) clock event
+				enable flag.
+
+<pre>
+		Bit  0:  1=clock event interrupts disabled (OFF)
+
+	PRO BASTAT(2, 2, 60)
+	PDB BASTAT(1, 0, 1, 0, 0, 0, 2) ! ON/OFF status
+</pre>
+
+				<h5>Basic Control:</h5>
+
+				<p>The basic control for the reference device enables
+				and disables the clock event interrupts.
+
+				<p>Basic control codes are only one word long. The
+				front end ignores the upper word, but I recommend that
+				you keep it zero in case we want to support other
+				basic control options.
+
+				<p>The codes are as follows:
+
+<pre>
+		Code  Meaning            PDB Slot  Camac Function
+		----  -------            --------  --------------
+		  1   Disable interrupts   OFF        F24A4
+		  2   Enable interrupts    ON         F26A4
+		  3   unused               RESET
+		  4   unused               POL +     
+		  5   unused               POL -
+
+	PRO BCNTRL (4, 4, 60)
+	PDB BCNTRL (6, 0, 2, 1, 0, 0)
+</pre>
+
+			<p>Proposed name:  I:14RC5C
+
+		<h3>MDAT Selections</h3>
+
+			<h4>SSDN: (Setting)</h4>
+
+				<table width=300 border=1>
+					<tr>
+						<td align=center width=150>0</td>
+						<td align=center width=150>0</td>
+					</tr>
+					<tr>
+						<td align=center width=150>0</td>
+						<td align=center width=150>70 (hex)</td>
+					</tr>
+					<tr>
+						<td align=center width=150>crate</td>
+						<td align=center width=150>slot</td>
+					</tr>
+					<tr>
+						<td align=center width=150>0</td>
+						<td align=center width=150>C0 (hex)</td>
+					</tr>
+				</table>
+
+			<p>One word long.  Contains the sources of MDAT (the
+			standard MDAT codes, I think) for the G(i) function (high
+			byte) and H(i) function (low byte).
+<pre>
+	PRO SETTNG (2, 2, 60)
+</pre>
+			<p>Proposed name:  I:14RC5M
+<p><center><font size=2><a href='http://www.fnal.gov/pub/disclaim.html'><u>Security, Privacy, Legal</u></a></font></center>

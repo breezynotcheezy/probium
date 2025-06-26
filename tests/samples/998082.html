@@ -1,0 +1,321 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Style-Type" content="text/css">
+<link href="../css/main.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+<title>CPlant Portals</title>
+
+<hr>
+
+<h1>Portals</h1>
+
+<p>
+A portal consists of a portal table, possibly a matching list, and any combination of four
+types of memory descriptors. We regard these pieces as basic building blocks for other message
+passing paradigms. A library writer or runtime system designer should be able to pick the
+appropriate set of pieces and build a communication subsystem tailored to the needs of the
+particular library or runtime system being implemented.
+
+<p>
+As a proof of concept, and to make portals more user friendly to application programmers, we have
+implemented MPI, Intel NX, and nCUBE Vertex emulation libraries, as well as collective communication
+algorithms using portals as basic building blocks.
+
+<P>
+Portals have been designed to be efficient, portable, scalable, and flexible to support the
+above projects. The following discusses the portal table, the memory descriptors, and the matching
+list.  A simple example of how these building blocks can be combined to present a message passing
+system, like MPI, to an application is presented.
+
+<BR>
+<CENTER>
+<IMG ALT="Portal Table" SRC="../images/diagrams/portal-table.gif">
+</CENTER>
+<BR>
+
+<H2>The Portal Table</H2>
+
+<P>
+A message arriving at a node contains in its header the portal number for which it is destined. The
+kernel uses this number as an index into the portal table. The entries in the portal table are
+maintained by the user (application or library code) and point to a matching list or a memory
+ descriptor.
+
+<P>
+If a valid memory descriptor is present, the kernel sets up the DMA units and initiates transfer of
+the message body into the memory descriptor. If the portal table entry points to a matching list,
+the kernel traverses the matching list to find an entry that matches the criteria found in the
+current message head. If a match is found and the memory descriptor attached to that matching list
+entry is valid, then the kernel starts a DMA transfer directly into the memory descriptor.
+
+<P>
+User level code sets up the data structures that make up a portal to tell the kernel how and where
+to receive messages. These data structures reside in user space, and no expensive kernel calls are
+necessary to change them. Therefore, they can be rapidly built and torn down as the communication
+needs of an application change.
+
+<P>
+The kernel must validate pointers and indices as it traverses these structures. This strategy makes
+these structures somewhat difficult to use, since the slightest error in setup forces the kernel
+to discard the incoming message.  Most users will not use portals directly, but will benefit from
+their presence in libraries.
+
+<BR>
+<CENTER>
+<IMG ALT="Single Block" SRC="../images/diagrams/single-block.gif">
+</CENTER>
+<BR>
+
+<H2>Single Block Memory Descriptor</H2>
+
+<P>
+Four types of memory descriptors can be used by an application to tell the kernel how and where data
+should be deposited. This method gives applications and libraries complete control over incoming
+messages. A memory descriptor is laid over the exact area of user memory where the kernel should put
+incoming data. Most memory copies can be avoided through the appropriate use of memory descriptors.
+
+<P>
+The least complex memory descriptor is for a single, contiguous region of memory. Senders can
+specify an offset within this block. This descriptor enables protocols where a number of senders
+cooperate and deposit their individual data items at specific offsets in the single block memory
+descriptor.
+
+<P>
+For example, the individual nodes of a parallel file server can read their stripes from disk and
+send them to the memory descriptor set up by the user's I/O library. The library does not need to
+know how many nodes the parallel server consists of, and the server nodes do not need to synchronize
+access to the user's memory.
+
+<P>
+Several options can be specified with a single block memory descriptor. In the parallel file server
+example, the offset into the memory descriptor is specified by the sender. Alternatively, the
+application that sets up the memory descriptor may control the offset.  Instead of writing to the
+memory descriptor, other nodes have the option to read from it. It is also possible to have the
+kernel generate an acknowledgment when data is written to a portal.
+
+<BR>
+<CENTER>
+<IMG ALT="Independent Block" SRC="../images/diagrams/ind-block.gif">
+</CENTER>
+<BR>
+
+<H2>Independent Block Memory Descriptor</H2>
+<P>
+An independent block memory descriptor consists of a set of single blocks. Each block is written to
+or read from independently. That is, the first message will go into the first block, the second
+message into the second block, and so forth.
+
+<P>
+With a memory descriptor, if a message does not fit, it will be discarded and an error indicator on
+the receive side will be set. This is true for each individual block in the independent block memory
+descriptor.
+
+<P>
+No offset is specified for this type of memory descriptor, but it is now possible to save the
+message header, the message body and header, or only the message body. The user also specifies
+whether the independent blocks should be used in a circular or linear fashion.
+
+<BR>
+<CENTER>
+<IMG ALT="Combined Block" SRC="../images/diagrams/comb-block.gif">
+</CENTER>
+<BR>
+
+<H2>Combined Block Memory Descriptor</H2>
+
+<P>
+A combined block memory descriptor is almost the same as an independent block memory descriptor. The
+difference is, that data can flow from the end of one block into the next one in the list. A single
+message long enough to fill all blocks in a combined block memory descriptor will be scattered
+across all blocks. If the memory descriptor is read from, it can be used in gather operations.
+
+<BR>
+<CENTER>
+<IMG ALT="Dynamic Block" SRC="../images/diagrams/dyn-block.gif">
+</CENTER>
+<BR>
+
+<H2>Dynamic Memory Descriptor</H2>
+<P>
+The last memory descriptor is the dynamic memory descriptor. Here, the user specifies a region of
+memory and the kernel treats it as a heap. For each incoming message, the kernel allocates enough
+memory out of this heap to deposit the message.
+
+<P>
+This memory descriptor is not as fast as the others, but it is very convenient to use if a user
+application cannot predict the exact sequence, the number, or the type of messages that will arrive.
+It is the user's responsibility to remove messages from the heap that are no longer needed.
+
+<H2>Matching Lists</H2>
+
+<P>
+A matching list can be inserted in front of any memory descriptor. This list allows the kernel to
+screen incoming messages and put them into a memory descriptor only if a message matches the
+criteria specified by the user.
+
+<P>
+Matching occurs on source group identifier, source group rank, and 64 matching bits. A 64-bit mask
+selects the bits that must match the 64 match bits. Source group identifier and source group rank
+can be wild-carded.
+
+<P>
+The matching list consists of a series of entries. Each points to a memory descriptor into which the
+message is deposited if a match occurs. The entries are triply linked. If there is no match, the
+kernel follows the first link to the next match list entry to be checked.  If a match occurs, but
+the message is too long to fit into the memory descriptor, then the kernel follows the second link.
+If the memory descriptor is not valid, the kernel follows the third
+link.
+
+<P>
+Building a matching list with the appropriate set of links and memory descriptors allows the
+implementation of many message passing protocols.
+
+<BR>
+<CENTER>
+<IMG ALT="Portal Example" SRC="../images/diagrams/portal-example.gif">
+</CENTER>
+<BR>
+
+<H2>Portal Example</H2>
+
+<P>
+The above figure shows how the elements described in earlier sections can be combined to implement a
+message passing protocol.
+
+<P>
+Messages that are preposted by the user are inserted into the matching list. When a message arrives,
+the kernel goes through the matching list and tries to pair the message with an earlier receive
+request. If a match is found, the message is deposited directly into the memory specified by the
+user.
+
+<P>
+If the user has not posted a receive yet, the search will fail, and the kernel will reach the last
+entry in the matching list. It points to a dynamic memory descriptor. It is used as a large buffer
+for unmatched incoming messages. When the user issues a receive, this buffer is searched first (from
+user level). If nothing appropriate is found, the receive criteria are inserted into the matching
+list.
+
+<P>
+More complex and robust protocols can be built. For example, instead of storing the whole message in
+the dynamic memory descriptor and possibly filling it up very quickly, another scheme can be used.
+A second dynamic memory descriptor can be added at the end of the matching list. If the first one
+fills up, the kernel will continue down the matching list and then just save the message header in
+the second dynamic memory descriptor. When a receive is posted for one of these messages, the
+protocol can then request that the body of that message be sent again.
+
+<H2>Puma Portals</H2>
+
+Work in Progress.
+
+<H2>Linux Portals</H2>
+
+Work in Progress.
+
+<!--
+<P>
+    For example, an application sets up a portal to receive
+    messages. From that point on, the kernel handles data reception and
+    acknowledgments. The application does not need to be running when
+    the message arrives.
+<P>
+    While Puma provides much of the functionality provided by a
+    standard Unix system, it is not completely Unix compatible. Some
+    features were omitted because they do not scale to thousands of
+    nodes. Other features are not required by high-performance
+    MP applications.  Many of the features left out for performance
+    reasons are those dealing with direct user interactions or user
+    management. User logins, password management, screen control, and
+    keyboard or serial line protocols are examples of features left out
+    of Puma.
+<P>
+    Nearly all of the services a Puma application can request are
+    routed by the library and the QK into the service partition. The
+    Puma libraries and PCTs are aware of what services are available
+    and which nodes in the service partition provide them. This
+    strategy allows requests to be streamlined. Arguments are marshaled
+    up and the request is sent into the service partition. There are
+    no provisions in the kernel or the PCT to try to find the services
+    locally.  The reason we can simplify Puma's design in this manner
+    is that message passing is fast and the compute nodes do not have
+    any devices attached.
+<P>
+    Puma does not provide demand paged virtual memory. Most MP systems
+    do not have a disk attached to each node. Therefore, paging would
+    be prohibitively expensive and would interfere with the activities of
+    other nodes using the same network paths and disks. Well designed
+    applications can better determine which memory pages are not
+    needed anymore. These pages can be filled with more data from
+    disk. Taking advantage of high-performance I/O and network access is
+    much more efficient than a general memory page replacement strategy
+    implemented in the operating system&nbsp;[<A HREF="dp.html#CORE">37</A>].
+<P>
+    Under Puma, an application can send messages to any other node in
+    the system. The receiving kernel checks whether the destination
+    portal exists and whether the sending process has the right to
+    send to or receive from that portal. This improves send performance
+    and requires no state information on the sending node. For example,
+    there is no complicated protocol to ensure that the receiving process
+    will accept the message or that the receiving process even exists.
+    Performing the few checks that are necessary to ensure integrity of
+    the system, can be done faster on the receive side because information
+    about the sender (from the message header) and information about the
+    receiver (from the process' control structures) is available to the
+    kernel at the time it needs it to make the decision where to put the
+    message or whether to discard it. Eliminating message authentication
+    is only possible, if the network can be trusted.
+<P>
+    The main purpose of Puma portals is to avoid memory copies. In an
+    environment where network speed is equal or greater than the memory
+    copy speed, this is an absolute requirement. A single memory copy at
+    the same rate as the data streams in from the network, halves the
+    achievable bandwidth.
+<P>
+    Puma builds on the assumption that the nodes are homogeneous. There
+    are no provisions in the QK to handle byte swapping or to convert
+    to other protocols. This leads to a very shallow protocol stack and
+    allows streamlining of message passing operations.
+<P>
+    About one-third of the QK is devoted to handling messages, including
+    code to deal with the portal structures and highly tuned code
+    to access the network interface. Since the kernel is small and only
+    a few different types of nodes are supported, the message passing
+    code can be tuned for each architecture. Optimizations, such as
+    preventing the CPU from accessing the memory bus while the DMA
+    engines transfer data from the network into memory and making sure
+    that the cache contains a messages hader that is being assembled,
+    are possible.
+<P>
+    A homogeneous environment also allows Puma to efficiently access
+    unique resource, such as the second CPU on each Intel Paragon
+    node. Under Puma, it is possible to use the second CPU as a message
+    co-processor or as an additional compute processor. In the first case,
+    the two CPUs exchange information through a shared memory
+    region. One of the CPUs is always in the kernel and handles the
+    message passing. The other CPU remains at the user level and runs
+    the application. In the second mode, both CPUs are at the user
+    level running individual threads of the application.  One of the
+    CPU traps into the kernel to send and receive messages on behalf
+    of both threads&nbsp;[<A HREF="dp.html#Maccabe96">22</A>].
+<P>
+    For each application, Puma builds a node map that gives the
+    application exact information about the location and distances of
+    each node on which the application is running. We mentioned
+    earlier that this information is very important for applications
+    that need to optimize communication patterns. Puma can
+    provide this information easily because the environment is static.
+<P>
+    Puma and portals provide a very basic message passing paradigm.
+    Everything else is built on top of that. This core functionality is
+    available to all applications. Most of the time, a library, such as our
+    Intel NX and MPI libraries, hide the idiosyncrasies of the Puma
+    portal interface from the user. However, to get the very best
+    performance, applications can access this lowest level
+    directly, circumventing libraries that may provide functionality and
+    overhead not desired by a particular application.
+-->
+
+</html>

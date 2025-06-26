@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="billres.xsl"?>
+<!--<?xml version="1.0"?>-->
+<!--<!DOCTYPE bill PUBLIC "-//US Congress//DTDs/bill.dtd//EN" "C:\Program Files\Corel\rules\bill.dtd" []>-->
+<!DOCTYPE bill PUBLIC "-//US Congress//DTDs/bill v2.8 20020720//EN" "http://thomas.loc.gov/dtd/bill.dtd">
+<bill bill-stage="Introduced-in-House" bill-type="olc" dms-id="H7778C38B03504568A4E840A418CEC75C" public-private="public">
+<metadata xmlns:dc="http://purl.org/dc/elements/1.1/">
+<dublinCore>
+<dc:title>110 HR 2499 IH: SBDC Colonias Outreach Act of
+</dc:title>
+<dc:publisher>U.S. House of Representatives</dc:publisher>
+<dc:date>2007-05-24</dc:date>
+<dc:format>text/xml</dc:format>
+<dc:language>EN</dc:language>
+<dc:rights>Pursuant to Title 17 Section 105 of the United States Code, this file is not subject to copyright protection and is in the public domain.</dc:rights>
+</dublinCore>
+</metadata>
+	<form>
+		<distribution-code display="yes">I</distribution-code>
+		<congress>110th CONGRESS</congress>
+		<session>1st Session</session>
+		<legis-num>H. R. 2499</legis-num>
+		<current-chamber>IN THE HOUSE OF REPRESENTATIVES</current-chamber>
+		<action>
+			<action-date date="20070524">May 24, 2007</action-date>
+			<action-desc><sponsor name-id="C001063">Mr. Cuellar</sponsor> (for
+			 himself, <cosponsor name-id="R000170">Mr. Reyes</cosponsor>,
+			 <cosponsor name-id="G000551">Mr. Grijalva</cosponsor>,
+			 <cosponsor name-id="G000544">Mr. Gonzalez</cosponsor>,
+			 <cosponsor name-id="C001067">Ms. Clarke</cosponsor>,
+			 <cosponsor name-id="H000636">Mr. Hinojosa</cosponsor>,
+			 <cosponsor name-id="J000070">Mr. Jefferson</cosponsor>,
+			 <cosponsor name-id="O000107">Mr. Ortiz</cosponsor>,
+			 <cosponsor name-id="F000030">Mr. Farr</cosponsor>, <cosponsor name-id="T000460">Mr. Thompson of California</cosponsor>,
+			 <cosponsor name-id="R000568">Mr. Rodriguez</cosponsor>, and
+			 <cosponsor name-id="B000755">Mr. Brady of Texas</cosponsor>) introduced the
+			 following bill; which was referred to the <committee-name committee-id="HSM00">Committee on Small Business</committee-name></action-desc>
+		</action>
+		<legis-type>A BILL</legis-type>
+		<official-title>To amend the Small Business Act to expand and improve the
+		  assistance provided by Small Business Development Centers to
+		  Colonias.</official-title>
+	</form>
+	<legis-body id="H39339F92F5B846BEAF3020009321FC52" style="OLC">
+		<section id="H61CE326DEF474D61A27E16AF0053ABE2" section-type="section-one"><enum>1.</enum><header>Short title</header><text display-inline="no-display-inline">This Act may be cited as the
+			 <quote><short-title>SBDC Colonias Outreach Act of
+			 2007</short-title></quote>.</text>
+		</section><section id="H58F3E81DE1074E229FA81846A64914CB" section-type="subsequent-section"><enum>2.</enum><header>Findings and
+			 purposes</header>
+			<subsection id="H791B755318E647218E28C7AA1275F77F"><enum>(a)</enum><header>Findings</header><text>The
+			 Congress finds the following:</text>
+				<paragraph id="H2E196EFC09464A20AD3C348FED813E2B"><enum>(1)</enum><text display-inline="yes-display-inline">Colonias are found in Texas, New Mexico,
+			 Arizona and California and are composed of families with very low incomes and
+			 usually lack basic services such as clean and abundant water, roads, sewer
+			 systems, schools, and law enforcement.</text>
+				</paragraph><paragraph id="H542C75417BAD40F4B6A53EB71F7B0017"><enum>(2)</enum><text>Across the
+			 Southwest there are approximately 3,000 Colonias with nearly three quarters of
+			 a million people living in these communities.</text>
+				</paragraph><paragraph id="H358B212B17CC47C3B7649E85FC7D2CA4"><enum>(3)</enum><text>Improving the
+			 living situation within Colonias is not limited to fixing basic infrastructure
+			 but must also include spurring economic growth.</text>
+				</paragraph><paragraph id="H9E567A978A394D75AC5DB2F82859E55"><enum>(4)</enum><text>Studies have found
+			 that the unemployment rate in Colonias was upwards of 60 percent.</text>
+				</paragraph><paragraph id="HE001703990674364AE73AB7B2229004D"><enum>(5)</enum><text>The average yearly
+			 salary of people living in these communities is less than $10,000, well below
+			 the Nation’s poverty line.</text>
+				</paragraph><paragraph id="H387BCB2841314EB2887BCC426B19062C"><enum>(6)</enum><text>Many Colonias
+			 residents cannot find year-round work due to the seasonal nature of their
+			 primary occupations—fieldwork represents 29.5 percent of their jobs,
+			 construction work 24.4 percent, and factory work, 14.9 percent.</text>
+				</paragraph><paragraph id="H1273EED5096F4E928890F1431454C3D1"><enum>(7)</enum><text>The Small Business
+			 Development Center program has been proven to be a cost effective solution to
+			 providing the resources and technical assistance needed to grow existing
+			 businesses and to start new enterprises.</text>
+				</paragraph><paragraph id="HF699C6635D3A4C1E9ED8F27F1DFB9ED"><enum>(8)</enum><text>Business counseling
+			 and technical assistance is critical in Colonias where similar services are in
+			 short supply and are costly.</text>
+				</paragraph></subsection><subsection id="H8A6037F70E8D419D8D3C74D989C48BA"><enum>(b)</enum><header>Purposes</header><text>The
+			 purposes of this Act are the following:</text>
+				<paragraph id="HC95ECF7E605045D4B6FB5D5194995400"><enum>(1)</enum><text display-inline="yes-display-inline">To stimulate economic development in
+			 Colonias.</text>
+				</paragraph><paragraph id="HDBD918E54C754D96BE2600B9648DE4A3"><enum>(2)</enum><text>To assist in the
+			 creation of new small businesses located in Colonias and expand existing ones.</text>
+				</paragraph><paragraph id="HD22AA41218C941ACABD475890053005C"><enum>(3)</enum><text>To provide
+			 management, technical, and research assistance to entrepreneurs located in
+			 Colonias.</text>
+				</paragraph><paragraph id="H424F4B38D07E41388700CD7D9BA20272"><enum>(4)</enum><text>To ensure that
+			 residents of Colonias have full access to existing business counseling and
+			 technical assistance available through the Small Business Development Center
+			 program.</text>
+				</paragraph></subsection></section><section display-inline="no-display-inline" id="HE3EDA6BFCF4F4D5E86A6D4309FE52383" section-type="subsequent-section"><enum>3.</enum><header>Small Business
+			 Development Center assistance to Colonias</header><text display-inline="no-display-inline">Section 21(a) of the Small Business Act (15
+			 U.S.C. 648(a)) is amended by adding at the end the following:</text>
+			<quoted-block display-inline="no-display-inline" id="HB4B01A033487406CAA63E6031FC7C652" style="OLC">
+				<paragraph id="H6C7339EBD7194E58B2E83FD4046830C5"><enum>(8)</enum><header>Additional grant
+				to assist individuals residing in Colonias</header>
+					<subparagraph id="H7F545C253AE24C5B87EFF49DEBD02368"><enum>(A)</enum><header>In
+				general</header><text display-inline="yes-display-inline">Any applicant in an
+				eligible State that is funded by the Administration as a Small Business
+				Development Center may apply for an additional grant to be used solely to
+				provide services described in subsection (c)(3) to assist with outreach,
+				development, and enhancement of small business startups and expansions within
+				Colonias.</text>
+					</subparagraph><subparagraph id="H212AE3EC425B43AFAFDF003043CC75A2"><enum>(B)</enum><header>Eligible
+				States</header><text>For purposes of subparagraph (A), an eligible State is a
+				State along the United States-Mexico border that has individuals residing in
+				Colonias.</text>
+					</subparagraph><subparagraph id="H699BAFF56C4945DD97D99104EE5B2E9F"><enum>(C)</enum><header>Grant
+				applications</header><text>An applicant for a grant under subparagraph (A)
+				shall submit to the Administration an application that is in such form as the
+				Administration may require. The application shall include information regarding
+				the applicant's goals and objectives for the services to be provided using the
+				grant, including—</text>
+						<clause id="H6440DDD092404A59BBCC2EDA2EC402B8"><enum>(i)</enum><text>the capability of
+				the applicant to provide training and services to individuals residing in
+				Colonias;</text>
+						</clause><clause id="HED4ACE42AC0B446F80A149C5F78BF9CA"><enum>(ii)</enum><text>the location of
+				the Small Business Development Center site proposed by the applicant;
+				and</text>
+						</clause><clause id="H4CDFE52029494FE6805766A12959FBB9"><enum>(iii)</enum><text>the required
+				amount of grant funding needed by the applicant to implement the program.</text>
+						</clause></subparagraph><subparagraph id="HA7CC226972E943968600EA0662CB78E3"><enum>(D)</enum><header>Applicability of
+				grant requirements</header><text>An applicant for a grant under subparagraph
+				(A) shall comply with all of the requirements of this section, except that the
+				matching funds requirements under paragraph (4)(A) shall not apply.</text>
+					</subparagraph><subparagraph id="H2DA053FEF6954667BD525BBDDC212543"><enum>(E)</enum><header>Maximum amount
+				of grants</header><text>No applicant may receive more than $300,000 in grants
+				under this paragraph for one fiscal year.</text>
+					</subparagraph><subparagraph id="H938E0EEF83A1495EADB73B07BE18F4C5"><enum>(F)</enum><header>Regulations</header><text>After
+				providing notice and an opportunity for comment and after consulting with the
+				Association recognized by the Administration pursuant to paragraph (3)(A) (but
+				not later than 180 days after the date of enactment of this paragraph), the
+				Administration shall issue final regulations to carry out this paragraph,
+				including regulations that establish—</text>
+						<clause id="H8FF9C2BB2B2649FD9F2D98392B95ABCB"><enum>(i)</enum><text>standards relating
+				to educational, technical, and support services to be provided by Small
+				Business Development Centers receiving assistance under this paragraph; and</text>
+						</clause><clause id="HC217A72B92AE4F6D9E151452D1B8C556"><enum>(ii)</enum><text>standards
+				relating to any work plan that the Administration may require a Small Business
+				Development Center receiving assistance under this paragraph to develop.</text>
+						</clause></subparagraph><subparagraph id="H97F72A7C6345498DACFD3BB964DA8EFE"><enum>(G)</enum><header>Definitions</header><text>In
+				this paragraph:</text>
+						<clause id="HB51DCA6049F54DA7BA5D86407D05705D"><enum>(i)</enum><text>The term
+				<term>Colonias</term> means a community that—</text>
+							<subclause id="H6CBC86E6BE0D4BA700ED05629F450000"><enum>(I)</enum><text>is located within
+				150 miles of the United States-Mexico border;</text>
+							</subclause><subclause id="H6EE505A4DE084B5BA8353414C395FEB"><enum>(II)</enum><text>is a city or town
+				with a population of less than 10,000, according to the latest United States
+				Census, or is unincorporated;</text>
+							</subclause><subclause id="H8C7BCB10723944AEAB000538EB5C9E3B"><enum>(III)</enum><text>has a majority
+				population composed of individuals and families of low and very low income;
+				and</text>
+							</subclause><subclause id="H54EAD1FE18574C48B0F6F3B2BEF30624"><enum>(IV)</enum><text>generally lacks a
+				basic physical infrastructure.</text>
+							</subclause></clause><clause id="HDE586D2715734859BFECED0942FE5FF"><enum>(ii)</enum><text>The term
+				<term>basic physical infrastructure</term> means safe, sanitary, and sound
+				housing, as well as basic services such as potable water, adequate sewage
+				systems, drainage, paved streets and utilities.</text>
+						</clause></subparagraph><subparagraph id="H755A5CD04F3D493600BE643B09E20088"><enum>(H)</enum><header>Authorization of
+				appropriations</header><text>There is authorized to be appropriated to carry
+				out this paragraph $7,000,000 for each of fiscal years 2008 through 2010.</text>
+					</subparagraph><subparagraph id="H384299C7AB2740A9A53D5F2B0072D52"><enum>(I)</enum><header>Funding
+				limitations</header>
+						<clause id="H9CBFE393C97D432E8B5931E65F6117AC"><enum>(i)</enum><header>Nonapplicability
+				of certain limitations</header><text>Funding under this paragraph shall be in
+				addition to the dollar program limitations specified in paragraph (4).</text>
+						</clause><clause id="HF80087F600964AE7B1B39898E2002074"><enum>(ii)</enum><header>Limitation on
+				use of funds</header><text>The Administration may carry out this paragraph only
+				with amounts appropriated in advance specifically to carry out this
+				paragraph.</text>
+						</clause></subparagraph></paragraph><after-quoted-block>.</after-quoted-block></quoted-block>
+		</section></legis-body>
+</bill>
+
+

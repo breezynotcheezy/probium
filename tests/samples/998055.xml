@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="billres.xsl"?>
+<!--<?xml version="1.0"?>-->
+<!--<!DOCTYPE resolution PUBLIC "-//US Congress//DTDs/res.dtd//EN" "C:\Program Files\Corel\rules\res.dtd" []>-->
+<!DOCTYPE resolution PUBLIC "-//US Congress//DTDs/res v2.8 20020720//EN" "http://thomas.loc.gov/dtd/res.dtd">
+<resolution dms-id="HF3BFFE64EA6343ADA13C7C643748BC6E" key="H" public-private="public" resolution-stage="Introduced-in-House" resolution-type="house-joint" star-print="no-star-print">
+<metadata xmlns:dc="http://purl.org/dc/elements/1.1/">
+<dublinCore>
+<dc:title>110 HJ 27 IH: Providing for the reappointment of Roger W.
+</dc:title>
+<dc:publisher>U.S. House of Representatives</dc:publisher>
+<dc:date>2007-02-13</dc:date>
+<dc:format>text/xml</dc:format>
+<dc:language>EN</dc:language>
+<dc:rights>Pursuant to Title 17 Section 105 of the United States Code, this file is not subject to copyright protection and is in the public domain.</dc:rights>
+</dublinCore>
+</metadata>
+	<form>
+		<distribution-code display="yes">IA</distribution-code>
+		<congress display="yes">110th CONGRESS</congress>
+		<session display="yes">1st Session</session>
+		<legis-num>H. J. RES. 27</legis-num>
+		<current-chamber>IN THE HOUSE OF REPRESENTATIVES</current-chamber>
+		<action display="yes">
+			<action-date date="20070213">February 13, 2007</action-date>
+			<action-desc><sponsor name-id="B000287">Mr. Becerra</sponsor> (for
+			 himself, <cosponsor name-id="M001163">Ms. Matsui</cosponsor>, and
+			 <cosponsor name-id="J000174">Mr. Sam Johnson of Texas</cosponsor>) introduced
+			 the following joint resolution; which was referred to the
+			 <committee-name committee-id="HHA00">Committee on House
+			 Administration</committee-name></action-desc>
+		</action>
+		<legis-type>JOINT RESOLUTION</legis-type>
+		<official-title display="yes">Providing for the reappointment of Roger W.
+		  Sant as a citizen regent of the Board of Regents of the Smithsonian
+		  Institution.</official-title>
+	</form>
+	<resolution-body id="H437A5D6E654C42EE875C86A3B8C0C9D1" style="traditional">
+		<section display-inline="yes-display-inline" id="HE683A093BC004748A5AFFD2F4B3D8E44" section-type="undesignated-section"><enum></enum><text display-inline="yes-display-inline">That, in accordance with section 5581 of
+			 the Revised Statutes of the United States (<external-xref legal-doc="usc" parsable-cite="usc/20/43">20 U.S.C. 43</external-xref>), the vacancy on the
+			 Board of Regents of the Smithsonian Institution, in the class other than
+			 Members of Congress, occurring by reason of the expiration of the term of Roger
+			 W. Sant of the District of Columbia, is filled by reappointment of the
+			 incumbent for a term of 6 years, effective October 25, 2007.</text>
+		</section></resolution-body>
+</resolution>
+
+

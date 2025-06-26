@@ -1,0 +1,491 @@
+<?xml version="1.0"?>
+<metadata><Source>http://wa-node.gis.washington.edu/waf/uw/uwlib/Schoold.xml</Source>
+<idinfo>
+<citation>
+<citeinfo>
+<origin>Whatcom County GIS</origin>
+<pubdate>Unpublished Material</pubdate>
+<title>Whatcom County GIS Metadata - School Districts</title>
+<geoform>Map</geoform>
+<serinfo>
+<sername>none</sername>
+<issue>none</issue>
+</serinfo>
+<pubinfo>
+<pubplace>Whatcom County</pubplace>
+<publish>none</publish>
+</pubinfo>
+</citeinfo>
+</citation>
+<descript>
+<abstract>The School Districts coverage was created as part of the County s response to GMA.  When determining levels of service for various growth areas around the County it is important to know which school district serves each area in Whatcom County.</abstract>
+<purpose>The purpose of the School Districts coverage is to delineate school district boundaries for Whatcom County</purpose>
+</descript>
+<descript>
+<keywords>
+<theme>
+<themekt>None</themekt>
+<themekey>School Districts</themekey>
+</theme>
+<place>
+<placekt>None</placekt>
+<placekey>Washington</placekey>
+<placekey>Whatcom County</placekey>
+</place>
+<stratum>
+<stratkt>None</stratkt>
+</stratum>
+<temporal>
+<tempkt>None</tempkt>
+</temporal>
+</keywords>
+<accconst>None</accconst>
+<useconst>None</useconst>
+<ptcontac>
+<cntinfo>
+<cntperp>
+<cntper>Chris Behee</cntper>
+<cntorg>Whatcom County Planning and Development Services - GIS</cntorg>
+</cntperp>
+<cntorgp>
+<cntorg>Whatcom County Planning and Development Services - GIS</cntorg>
+<cntper>Chris Behee</cntper>
+</cntorgp>
+<cntpos>Planner II</cntpos>
+<cntaddr>
+<addrtype>Mailing Address</addrtype>
+<address>Northwest Annex, Suite A</address>
+<address>5280 Northwest Drive</address>
+<address>Bellingham, WA  98226-9099</address>
+<city>Bellingham</city>
+<state>WA</state>
+<postal>98226-9094</postal>
+<country>USA</country>
+</cntaddr>
+<cntvoice>(360) 676-6907</cntvoice>
+<cnttdd>Unavailable</cnttdd>
+<cntfax>(360) 738-2493</cntfax>
+<cntemail>cbehee@co.whatcom.wa.us</cntemail>
+<hours>8:00 A.M. TO 5:00 P.M MONDAY THRU FRIDAY</hours>
+<cntinst>none</cntinst>
+</cntinfo>
+</ptcontac>
+<datacred>Chris Behee and Sarah Watts</datacred>
+<native>UNIX-Arc/Info</native>
+</descript>
+<timeperd>
+<timeinfo>
+<sngdate>
+<caldate>19980402</caldate>
+</sngdate>
+<rngdates>
+<begdate>Unknown</begdate>
+<enddate>Present</enddate>
+</rngdates>
+</timeinfo>
+<current>Current as of 19980000</current>
+</timeperd>
+<status>
+<progress>Complete</progress>
+<update>As Needed</update>
+<geograph>Whatcom County</geograph>
+</status>
+<spdom>
+<bounding>
+<westbc>-123.333</westbc>
+<eastbc>-120.655</eastbc>
+<northbc>49.003</northbc>
+<southbc>48.626</southbc>
+</bounding>
+</spdom>
+</idinfo>
+<dataqual>
+<attracc>
+<attraccr>This coverage is accurate</attraccr>
+</attracc>
+<complete>This coverage is complete</complete>
+<posacc>
+<horizpa>
+<horizpar></horizpar>
+</horizpa>
+<horizpa></horizpa>
+<vertacc>
+<vertaccr>Not applicable</vertaccr>
+</vertacc>
+</posacc>
+<lineage>
+<procstep>
+<procdesc>The SCHOOL DISTRICTS coverage was created through a heads-up digitizing on-screen with the digital parcel coverage as a backround.  Changes to this coverage are all made using the Arc/Edit environment using the parcels as backround coverages.</procdesc>
+</procstep>
+</lineage>
+</dataqual>
+<spdoinfo>
+<direct>Vector</direct>
+</spdoinfo>
+<spref>
+<horizsys>
+<planar>
+<mapproj>
+<mapprojn>UTM</mapprojn>
+<mapprojn>UTM</mapprojn>
+<albers>
+<fnorth>-5000000</fnorth>
+</albers>
+</mapproj>
+<gridsys>
+<gridsysn>Universal Transverse Mercator(UTM)</gridsysn>
+<utm>
+<utmzone>10</utmzone>
+<transmer>
+<fnorth>-5000000</fnorth>
+</transmer>
+</utm>
+</gridsys>
+</planar>
+<geodetic>
+<horizdn>North American Datum of 1927</horizdn>
+<ellips>Clarke 1866</ellips>
+</geodetic>
+</horizsys>
+<vertdef>
+<altsys>
+<altdatum>National Geodedic Vertical Datum of 1929</altdatum>
+<altunits>Meters</altunits>
+<altenc>Attribute Values</altenc>
+</altsys>
+</vertdef>
+</spref>
+<eainfo>
+<detailed>
+<enttyp>
+<enttypl>arc</enttypl>
+<enttypd>arc identifier for line to poly relation</enttypd>
+<enttypds>user generated</enttypds>
+</enttyp>
+<attr>
+<attrlabl>rpoly#</attrlabl>
+<attrdef>input width=4, output width=5, type=binary</attrdef>
+<attrdefs>user generated</attrdefs>
+</attr>
+</detailed>
+<detailed>
+<enttyp>
+<enttypl>arc</enttypl>
+<enttypd>length of line in coverage units</enttypd>
+<enttypds>user generated</enttypds>
+</enttyp>
+<attr>
+<attrlabl>length</attrlabl>
+<attrdef>input width=4, output width=12, type=floating point, decimal=3</attrdef>
+<attrdefs>user generated</attrdefs>
+</attr>
+</detailed>
+<detailed>
+<enttyp>
+<enttypl>arc</enttypl>
+<enttypd>system assigned feature ID</enttypd>
+<enttypds>user generated</enttypds>
+</enttyp>
+<attr>
+<attrlabl>school district#</attrlabl>
+<attrdef>input width=4, output width=5, type=binary</attrdef>
+<attrdefs>user generated</attrdefs>
+</attr>
+</detailed>
+<detailed>
+<enttyp>
+<enttypl>arc</enttypl>
+<enttypd>system/user assigned feature ID</enttypd>
+<enttypds>user generated</enttypds>
+</enttyp>
+<attr>
+<attrlabl>school district-ID</attrlabl>
+<attrdef>input width=4, output width=5, type=binary</attrdef>
+<attrdefs>user generated</attrdefs>
+</attr>
+</detailed>
+<detailed>
+<enttyp>
+<enttypl>poly</enttypl>
+<enttypd>area of polygon in coverage units</enttypd>
+<enttypds>user generated</enttypds>
+</enttyp>
+<attr>
+<attrlabl>area</attrlabl>
+<attrdef>input width=4, output width=12, type=floating point, decimal=3</attrdef>
+<attrdefs>user generated</attrdefs>
+</attr>
+</detailed>
+<detailed>
+<enttyp>
+<enttypl>poly</enttypl>
+<enttypd>length of polygon perimeter in coverage units</enttypd>
+<enttypds>user generated</enttypds>
+</enttyp>
+<attr>
+<attrlabl>perimeter</attrlabl>
+<attrdef>input width=4, output width=12, type=floating point, decimal=3</attrdef>
+<attrdefs>user generated</attrdefs>
+</attr>
+</detailed>
+<detailed>
+<enttyp>
+<enttypl>poly</enttypl>
+<enttypd>system assigned feature ID</enttypd>
+<enttypds>user generated</enttypds>
+</enttyp>
+<attr>
+<attrlabl>school district#</attrlabl>
+<attrdef>input width=4, output width=5, type=binary</attrdef>
+<attrdefs>user generated</attrdefs>
+</attr>
+</detailed>
+<detailed>
+<enttyp>
+<enttypl>poly</enttypl>
+<enttypd>system/user assigned feature ID</enttypd>
+<enttypds>user generated</enttypds>
+</enttyp>
+<attr>
+<attrlabl>school district-ID</attrlabl>
+<attrdef>input width=4, output width=5, type=binary</attrdef>
+<attrdefs>user generated</attrdefs>
+</attr>
+</detailed>
+<detailed>
+<enttyp>
+<enttypl>poly</enttypl>
+<enttypd>School district number</enttypd>
+<enttypds>user generated</enttypds>
+</enttyp>
+<attr>
+<attrlabl>district</attrlabl>
+<attrdef>input width=4, output width=5, type=binary</attrdef>
+<attrdefs>user generated</attrdefs>
+<attrdomv>
+<edom>
+<edomv>507</edomv>
+<edomvd>Mt. Baker</edomvd>
+<edomvds>Mt. Baker school district</edomvds>
+</edom>
+<edom>
+<edomv>506</edomv>
+<edomvd>Nooksack Valley</edomvd>
+<edomvds>user generated</edomvds>
+</edom>
+<edom>
+<edomv>503</edomv>
+<edomvd>Blaine</edomvd>
+<edomvds>user generated</edomvds>
+</edom>
+<edom>
+<edomv>502</edomv>
+<edomvd>Ferndale</edomvd>
+<edomvds>user generated</edomvds>
+</edom>
+<edom>
+<edomv>501</edomv>
+<edomvd>Bellingham</edomvd>
+<edomvds>user generated</edomvds>
+</edom>
+<edom>
+<edomv>102</edomv>
+<edomvd>Concrete</edomvd>
+<edomvds>user generated</edomvds>
+</edom>
+<edom>
+<edomv>101</edomv>
+<edomvd>Sedro Wooley</edomvd>
+<edomvds>user generated</edomvds>
+</edom>
+<edom>
+<edomv>504</edomv>
+<edomvd>Lynden</edomvd>
+<edomvds>user generated</edomvds>
+</edom>
+<edom>
+<edomv>505</edomv>
+<edomvd>Meridian</edomvd>
+<edomvds>user generated</edomvds>
+</edom>
+</attrdomv>
+</attr>
+</detailed>
+<detailed>
+<enttyp>
+<enttypl>poly</enttypl>
+<enttypd>School district name</enttypd>
+<enttypds>user generated</enttypds>
+</enttyp>
+<attr>
+<attrlabl>name</attrlabl>
+<attrdef>input width=4, output width=5, type=binary</attrdef>
+<attrdefs>user generated</attrdefs>
+<attrdomv>
+<edom>
+<edomv>507</edomv>
+<edomvd>Bellingham School District</edomvd>
+<edomvds>Bellingham School District</edomvds>
+</edom>
+<edom>
+<edomv>506</edomv>
+<edomvd>Nooksack Valley School District</edomvd>
+<edomvds>Nooksack Valley School District</edomvds>
+</edom>
+<edom>
+<edomv>505</edomv>
+<edomvd>Meridian School District</edomvd>
+<edomvds>Meridian School District</edomvds>
+</edom>
+<edom>
+<edomv>504</edomv>
+<edomvd>Lynden School District</edomvd>
+<edomvds>Lynden School District</edomvds>
+</edom>
+<edom>
+<edomv>503</edomv>
+<edomvd>Blaine School District</edomvd>
+<edomvds>Blaine School District</edomvds>
+</edom>
+<edom>
+<edomv>502</edomv>
+<edomvd>Ferndale School District</edomvd>
+<edomvds>Ferndale School District</edomvds>
+</edom>
+<edom>
+<edomv>501</edomv>
+<edomvd>Bellingham School District</edomvd>
+<edomvds>Bellingham School District</edomvds>
+</edom>
+<edom>
+<edomv>102</edomv>
+<edomvd>Concrete School District</edomvd>
+<edomvds>Concrete School District</edomvds>
+</edom>
+<edom>
+<edomv>101</edomv>
+<edomvd>Sedro-Wooley School District</edomvd>
+<edomvds>Sedro-Wooley School District</edomvds>
+</edom>
+</attrdomv>
+</attr>
+</detailed>
+<detailed>
+<enttyp>
+<enttypl>arc</enttypl>
+<enttypd>"from" node number</enttypd>
+<enttypds>user generated</enttypds>
+</enttyp>
+<attr>
+<attrlabl>fnode#</attrlabl>
+<attrdef>input width=4, output width=5, type=binary</attrdef>
+<attrdefs>user generated</attrdefs>
+</attr>
+</detailed>
+<detailed>
+<enttyp>
+<enttypl>arc</enttypl>
+<enttypd>"to" node number</enttypd>
+<enttypds>user generated</enttypds>
+</enttyp>
+<attr>
+<attrlabl>tnode#</attrlabl>
+<attrdef>input width=4, output width=5, type=binary</attrdef>
+<attrdefs>user generated</attrdefs>
+</attr>
+</detailed>
+<detailed>
+<enttyp>
+<enttypl>arc</enttypl>
+<enttypd>arc identifier for line to poly relation</enttypd>
+<enttypds>user generated</enttypds>
+</enttyp>
+<attr>
+<attrlabl>lpoly#</attrlabl>
+<attrdef>input width=4, output width=5, type=binary</attrdef>
+<attrdefs>user generated</attrdefs>
+</attr>
+</detailed>
+</eainfo>
+<distinfo>
+<distrib>
+<cntinfo>
+<cntperp>
+<cntper>Chris Behee</cntper>
+<cntorg>Whatcom County Planning and Development Services - GIS</cntorg>
+</cntperp>
+<cntorgp>
+<cntorg>Whatcom County Planning and Development Services - GIS</cntorg>
+<cntper>Chris Behee</cntper>
+</cntorgp>
+<cntpos>Planner II</cntpos>
+<cntaddr>
+<addrtype>Mailing Address</addrtype>
+<address>Northwest Annex, Suite A</address>
+<address>5280 Northwest Drive</address>
+<address>Bellingham, WA  98226-9099</address>
+<city>Bellingham</city>
+<state>WA</state>
+<postal>98226-9094</postal>
+<country>USA</country>
+</cntaddr>
+<cntvoice>(360) 676-6907</cntvoice>
+<cnttdd>Unavailable</cnttdd>
+<cntfax>(360) 738-2493</cntfax>
+<cntemail>cbehee@co.whatcom.wa.us</cntemail>
+<hours>8:00 A.M. TO 5:00 P.M MONDAY THRU FRIDAY</hours>
+<cntinst>none</cntinst>
+</cntinfo>
+</distrib>
+<distliab>Use of Whatcom County's GIS Data Implies The User's Aggrement with The Following Statement:    Whatcom County disclaims any warranty of merchantibility or warranty of fitness of this map for any particular purpose, either express or implied.  No representation or warranty is made concerning the accuracy, currancy, completeness, or quality of data depicted on this map.  Any user of this map assumes all responsibility for the use thereof, and further agrees to hold Whatcom County harmless from and against any damage, loss, or liability arising from any use of this map.</distliab>
+<stdorder>
+<nondig>Map, standard e-size or custom size.</nondig>
+<fees>15 cents per linear inch b/w, color is 35 cents per linear inch.</fees>
+<turnarnd>Time:                             1-2 Working Days</turnarnd>
+</stdorder>
+<custom>Contact Whatcom CountyPlanning and Development Services - GIS, fee for labor $55/hr (1 hour min.) for any file manipulation other than copying</custom>
+</distinfo>
+<metainfo>
+<metd>19980402</metd>
+<metrd>Annually</metrd>
+<metfrd>Annually</metfrd>
+<metc>
+<cntinfo>
+<cntperp>
+<cntper>Chris Behee</cntper>
+<cntorg>Whatcom County Planning and Development Services - GIS</cntorg>
+</cntperp>
+<cntorgp>
+<cntorg>Whatcom County Planning and Development Services - GIS</cntorg>
+<cntper>Chris Behee</cntper>
+</cntorgp>
+<cntpos>Planner II</cntpos>
+<cntaddr>
+<addrtype>Mailing Address</addrtype>
+<address>Northwest Annex, Suite A</address>
+<address>5280 Northwest Drive</address>
+<address>Bellingham, WA  98226-9099</address>
+<city>Bellingham</city>
+<state>WA</state>
+<postal>98226-9094</postal>
+<country>USA</country>
+</cntaddr>
+<cntvoice>(360) 676-6907</cntvoice>
+<cnttdd>Unavailable</cnttdd>
+<cntfax>(360) 738-2493</cntfax>
+<cntemail>cbehee@co.whatcom.wa.us</cntemail>
+<hours>8:00 A.M. TO 5:00 P.M MONDAY THRU FRIDAY</hours>
+<cntinst>none</cntinst>
+</cntinfo>
+</metc>
+<metstdn>FGDC Content Standards For Digital Geospatial Metadata</metstdn>
+<metstdv>FGDC-STD-001-1998</metstdv>
+<mettc>Local Time</mettc>
+<metac>None</metac>
+<metsi>
+<metscs>None</metscs>
+<metsc>Unclassified</metsc>
+<metshd>None</metshd>
+</metsi>
+</metainfo>
+</metadata>

@@ -1,0 +1,37 @@
+<rdf:RDF
+    xmlns:j.0="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:pf="java:com.hp.hpl.jena.query.pfunction.library."
+    xmlns:owl="http://www.w3.org/2002/07/owl#" > 
+  <rdf:Description rdf:nodeID="A0">
+    <j.0:Link_End.end rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/R-C/C5/2524.xml"/>
+    <j.0:Link_End.link rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/L/Gene_Has_Physical_Location/NCI_Thesaurus/C5/2524/NCI_Thesaurus/C4/1713.xml"/>
+    <j.0:Link_End.role rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/R-R/Gene_Has_Physical_Location.HasPhysicalLocation.xml"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Link_End"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A1">
+    <j.0:Identification.identifier_context rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/admin/XMDR_Register.xml"/>
+    <j.0:Identification.item_identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">NCI_Thesaurus/L/Gene_Has_Physical_Location/NCI_Thesaurus/C5/2524/NCI_Thesaurus/C4/1713.xml</j.0:Identification.item_identifier>
+    <j.0:Identification.identifier_scope rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/L/Gene_Has_Physical_Location/NCI_Thesaurus/C5/2524/NCI_Thesaurus/C4/1713.xml"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Identification"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A2">
+    <j.0:Link_End.end rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/R-C/C4/1713.xml"/>
+    <j.0:Link_End.link rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/L/Gene_Has_Physical_Location/NCI_Thesaurus/C5/2524/NCI_Thesaurus/C4/1713.xml"/>
+    <j.0:Link_End.role rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/R-R/Gene_Has_Physical_Location.PhysicalLocationOf.xml"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Link_End"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/L/Gene_Has_Physical_Location/NCI_Thesaurus/C5/2524/NCI_Thesaurus/C4/1713.xml">
+    <j.0:Link.link_end_link rdf:nodeID="A2"/>
+    <j.0:Link.link_end_link rdf:nodeID="A0"/>
+    <j.0:Link.relation rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/R/Gene_Has_Physical_Location.xml"/>
+    <j.0:Link.container rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/CS.xml"/>
+    <j.0:Identified_Item.identification_identifier_scope rdf:nodeID="A1"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Link"/>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Identified_Item"/>
+  </rdf:Description>
+</rdf:RDF>

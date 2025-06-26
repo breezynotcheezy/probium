@@ -1,0 +1,286 @@
+<rdf:RDF
+    xmlns:j.0="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:pf="java:com.hp.hpl.jena.query.pfunction.library."
+    xmlns:owl="http://www.w3.org/2002/07/owl#" > 
+  <rdf:Description rdf:nodeID="A0">
+    <j.0:Identification.identifier_context rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/admin/XMDR_Register.xml"/>
+    <j.0:Identification.identifier_scope rdf:nodeID="A1"/>
+    <j.0:Identification.item_identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">NCI_Thesaurus/R-C/C1/2509.xml#P10</j.0:Identification.item_identifier>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Identification"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A2">
+    <j.0:Classification_Node.classified_item rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/R-C/C1/2509.xml"/>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Classification_Node"/>
+    <j.0:Facet.facet_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">CONCEPT_NAME</j.0:Facet.facet_name>
+    <j.0:Identified_Item.identification_identifier_scope rdf:nodeID="A3"/>
+    <j.0:Facet.facet_value rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Infratentorial_Brain</j.0:Facet.facet_value>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Facet"/>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Designatable_Item"/>
+    <j.0:Classification_Node.container rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/CS.xml"/>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Identified_Item"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A4">
+    <j.0:Designation.designation_sign rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Infratentorial Nervous System</j.0:Designation.designation_sign>
+    <j.0:Designation.item rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/R-C/C1/2509.xml"/>
+    <j.0:Designation.designation_language rdf:datatype="http://www.w3.org/2001/XMLSchema#string">en</j.0:Designation.designation_language>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Designation"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A5">
+    <j.0:Identified_Item.identification_identifier_scope rdf:nodeID="A6"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <j.0:Classification_Node.classified_item rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/R-C/C1/2509.xml"/>
+    <j.0:Facet.facet_value rdf:datatype="http://www.w3.org/2001/XMLSchema#string">CL028712</j.0:Facet.facet_value>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Designatable_Item"/>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Facet"/>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Classification_Node"/>
+    <j.0:Facet.facet_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">NCI_META_CUI</j.0:Facet.facet_name>
+    <j.0:Classification_Node.container rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/CS.xml"/>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Identified_Item"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A7">
+    <j.0:Link_End.link rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/L/Disease_Has_Associated_Anatomic_Site/NCI_Thesaurus/C/3139/NCI_Thesaurus/C1/2509.xml"/>
+    <j.0:Link_End.end rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/R-C/C1/2509.xml"/>
+    <j.0:Link_End.role rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/R-R/Disease_Has_Associated_Anatomic_Site.AssociatedAnatomicSiteOf.xml"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Link_End"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A8">
+    <j.0:Designation.designation_sign rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Infratentorial Anatomy</j.0:Designation.designation_sign>
+    <j.0:Designation.item rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/R-C/C1/2509.xml"/>
+    <j.0:Designation.designation_language rdf:datatype="http://www.w3.org/2001/XMLSchema#string">en</j.0:Designation.designation_language>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Designation"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A9">
+    <j.0:Link_End.link rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/L/Disease_Has_Primary_Anatomic_Site/NCI_Thesaurus/C/7372/NCI_Thesaurus/C1/2509.xml"/>
+    <j.0:Link_End.end rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/R-C/C1/2509.xml"/>
+    <j.0:Link_End.role rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/R-R/Disease_Has_Primary_Anatomic_Site.PrimaryAnatomicSiteOf.xml"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Link_End"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A10">
+    <j.0:Link_End.role rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/R-R/Anatomic_Structure_Is_Physical_Part_Of.PhysicalPartOfhas.xml"/>
+    <j.0:Link_End.end rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/R-C/C1/2509.xml"/>
+    <j.0:Link_End.link rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/L/Anatomic_Structure_Is_Physical_Part_Of/NCI_Thesaurus/C1/2676/NCI_Thesaurus/C1/2509.xml"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Link_End"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A6">
+    <j.0:Identification.identifier_context rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/admin/XMDR_Register.xml"/>
+    <j.0:Identification.identifier_scope rdf:nodeID="A5"/>
+    <j.0:Identification.item_identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">NCI_Thesaurus/R-C/C1/2509.xml#P11</j.0:Identification.item_identifier>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Identification"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A11">
+    <j.0:Identification.identifier_context rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/admin/XMDR_Register.xml"/>
+    <j.0:Identification.identifier_scope rdf:nodeID="A12"/>
+    <j.0:Identification.item_identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">NCI_Thesaurus/R-C/C1/2509.xml#P9</j.0:Identification.item_identifier>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Identification"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A13">
+    <j.0:Link_End.role rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/R-R/Anatomic_Structure_Is_Physical_Part_Of.IsPhysicalPartOf.xml"/>
+    <j.0:Link_End.end rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/R-C/C1/2509.xml"/>
+    <j.0:Link_End.link rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/L/Anatomic_Structure_Is_Physical_Part_Of/NCI_Thesaurus/C1/2509/NCI_Thesaurus/C1/2439.xml"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Link_End"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A14">
+    <j.0:Facet.facet_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Semantic_Type</j.0:Facet.facet_name>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Classification_Node"/>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Facet"/>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Designatable_Item"/>
+    <j.0:Classification_Node.classified_item rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/R-C/C1/2509.xml"/>
+    <j.0:Identified_Item.identification_identifier_scope rdf:nodeID="A15"/>
+    <j.0:Classification_Node.container rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/CS.xml"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <j.0:Facet.facet_value rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Body Part, Organ, or Organ Component</j.0:Facet.facet_value>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Identified_Item"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A16">
+    <j.0:Designation.designation_sign rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Infratentorial Nervous System</j.0:Designation.designation_sign>
+    <j.0:Designation.item rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/R-C/C1/2509.xml"/>
+    <j.0:Designation.designation_language rdf:datatype="http://www.w3.org/2001/XMLSchema#string">en</j.0:Designation.designation_language>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Designation"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A1">
+    <j.0:Facet.facet_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Display_Name</j.0:Facet.facet_name>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Designatable_Item"/>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Facet"/>
+    <j.0:Facet.facet_value rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Infratentorial Nervous System</j.0:Facet.facet_value>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Identified_Item"/>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Classification_Node"/>
+    <j.0:Classification_Node.classified_item rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/R-C/C1/2509.xml"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <j.0:Identified_Item.identification_identifier_scope rdf:nodeID="A0"/>
+    <j.0:Classification_Node.container rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/CS.xml"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A17">
+    <j.0:Submission.submission_contact rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/admin/XMDR_Registrar.xml"/>
+    <j.0:Submission.submitter rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/admin/XMDR_Registration_Authority.xml"/>
+    <j.0:Submission.submitted_item rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/R-C/C1/2509.xml"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Submission"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A18">
+    <j.0:Link_End.end rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/R-C/C1/2509.xml"/>
+    <j.0:Link_End.role rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/R-R/hasSubtype.isA.xml"/>
+    <j.0:Link_End.link rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/L/hasSubtype/NCI_Thesaurus/C1/3031/NCI_Thesaurus/C1/2509.xml"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Link_End"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A12">
+    <j.0:Classification_Node.container rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/CS.xml"/>
+    <j.0:Identified_Item.identification_identifier_scope rdf:nodeID="A11"/>
+    <j.0:Facet.facet_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Display_Name</j.0:Facet.facet_name>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Facet"/>
+    <j.0:Facet.facet_value rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Infratentorial Brain</j.0:Facet.facet_value>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Designatable_Item"/>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Identified_Item"/>
+    <j.0:Classification_Node.classified_item rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/R-C/C1/2509.xml"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Classification_Node"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A19">
+    <j.0:Designation.designation_sign rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Infratentorial Brain</j.0:Designation.designation_sign>
+    <j.0:Designation.item rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/R-C/C1/2509.xml"/>
+    <j.0:Designation.designation_language rdf:datatype="http://www.w3.org/2001/XMLSchema#string">en</j.0:Designation.designation_language>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Designation"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A20">
+    <j.0:Identified_Item.identification_identifier_scope rdf:nodeID="A21"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <j.0:Classification_Node.container rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/CS.xml"/>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Facet"/>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Identified_Item"/>
+    <j.0:Facet.facet_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">primitive</j.0:Facet.facet_name>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Designatable_Item"/>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Classification_Node"/>
+    <j.0:Classification_Node.classified_item rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/R-C/C1/2509.xml"/>
+    <j.0:Facet.facet_value rdf:datatype="http://www.w3.org/2001/XMLSchema#string">true</j.0:Facet.facet_value>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A22">
+    <j.0:Link_End.link rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/L/Disease_Has_Primary_Anatomic_Site/NCI_Thesaurus/C/5148/NCI_Thesaurus/C1/2509.xml"/>
+    <j.0:Link_End.end rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/R-C/C1/2509.xml"/>
+    <j.0:Link_End.role rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/R-R/Disease_Has_Primary_Anatomic_Site.PrimaryAnatomicSiteOf.xml"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Link_End"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A23">
+    <j.0:Identification.identifier_context rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/admin/XMDR_Register.xml"/>
+    <j.0:Identification.identifier_scope rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/R-C/C1/2509.xml"/>
+    <j.0:Identification.item_identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">NCI_Thesaurus/R-C/C1/2509.xml</j.0:Identification.item_identifier>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Identification"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A24">
+    <j.0:Designation.designation_sign rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Infratentorial Brain</j.0:Designation.designation_sign>
+    <j.0:Designation.item rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/R-C/C1/2509.xml"/>
+    <j.0:Designation.designation_context_relevant_designation rdf:nodeID="A25"/>
+    <j.0:Designation.designation_language rdf:datatype="http://www.w3.org/2001/XMLSchema#string">en</j.0:Designation.designation_language>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Designation"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A26">
+    <j.0:Link_End.link rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/L/Disease_Has_Primary_Anatomic_Site/NCI_Thesaurus/C/5300/NCI_Thesaurus/C1/2509.xml"/>
+    <j.0:Link_End.end rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/R-C/C1/2509.xml"/>
+    <j.0:Link_End.role rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/R-R/Disease_Has_Primary_Anatomic_Site.PrimaryAnatomicSiteOf.xml"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Link_End"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A27">
+    <j.0:Designation.designation_sign rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Infratentorial Anatomy</j.0:Designation.designation_sign>
+    <j.0:Designation.item rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/R-C/C1/2509.xml"/>
+    <j.0:Designation.designation_language rdf:datatype="http://www.w3.org/2001/XMLSchema#string">en</j.0:Designation.designation_language>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Designation"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A28">
+    <j.0:Link_End.link rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/L/Disease_Has_Primary_Anatomic_Site/NCI_Thesaurus/C/9041/NCI_Thesaurus/C1/2509.xml"/>
+    <j.0:Link_End.end rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/R-C/C1/2509.xml"/>
+    <j.0:Link_End.role rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/R-R/Disease_Has_Primary_Anatomic_Site.PrimaryAnatomicSiteOf.xml"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Link_End"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A21">
+    <j.0:Identification.identifier_context rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/admin/XMDR_Register.xml"/>
+    <j.0:Identification.identifier_scope rdf:nodeID="A20"/>
+    <j.0:Identification.item_identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">NCI_Thesaurus/R-C/C1/2509.xml#P12</j.0:Identification.item_identifier>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Identification"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A25">
+    <j.0:Designation_Context.relevant_designation rdf:nodeID="A24"/>
+    <j.0:Designation_Context.scope rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/CON/DEFAULT.xml"/>
+    <j.0:Designation_Context.preferred_designation_indicator rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">
+            true
+          </j.0:Designation_Context.preferred_designation_indicator>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Designation_Context"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A3">
+    <j.0:Identification.identifier_context rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/admin/XMDR_Register.xml"/>
+    <j.0:Identification.identifier_scope rdf:nodeID="A2"/>
+    <j.0:Identification.item_identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">NCI_Thesaurus/R-C/C1/2509.xml#P1</j.0:Identification.item_identifier>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Identification"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/R-C/C1/2509.xml">
+    <j.0:Designatable_Item.designation rdf:nodeID="A4"/>
+    <j.0:Designatable_Item.designation rdf:nodeID="A8"/>
+    <j.0:Concept.link_end_end rdf:nodeID="A10"/>
+    <j.0:Concept.link_end_end rdf:nodeID="A22"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <j.0:Identified_Item.identification_identifier_scope rdf:nodeID="A23"/>
+    <j.0:Concept.link_end_end rdf:nodeID="A13"/>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Identified_Item"/>
+    <j.0:Concept.container rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/CS.xml"/>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Designatable_Item"/>
+    <j.0:Classifiable_Item.classification rdf:nodeID="A20"/>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Classifiable_Item"/>
+    <j.0:Classifiable_Item.classification rdf:nodeID="A2"/>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Registered_Item"/>
+    <j.0:Classifiable_Item.classification rdf:nodeID="A5"/>
+    <j.0:Designatable_Item.designation rdf:nodeID="A24"/>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Documentable_Item"/>
+    <j.0:Classifiable_Item.classification rdf:nodeID="A1"/>
+    <j.0:Designatable_Item.designation rdf:nodeID="A27"/>
+    <j.0:Concept.link_end_end rdf:nodeID="A18"/>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Classification_Node"/>
+    <j.0:Designatable_Item.designation rdf:nodeID="A16"/>
+    <j.0:Classifiable_Item.classification rdf:nodeID="A12"/>
+    <j.0:Concept.link_end_end rdf:nodeID="A28"/>
+    <j.0:Concept.link_end_end rdf:nodeID="A7"/>
+    <j.0:Attached_Item.owner rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/CS.xml"/>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Reference_Concept"/>
+    <j.0:Registered_Item.submission_submitted_item rdf:nodeID="A17"/>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Attached_Item"/>
+    <j.0:Classifiable_Item.classification rdf:nodeID="A14"/>
+    <j.0:Designatable_Item.designation rdf:nodeID="A19"/>
+    <j.0:Concept.link_end_end rdf:nodeID="A26"/>
+    <j.0:Concept.link_end_end rdf:nodeID="A29"/>
+    <j.0:Concept.link_end_end rdf:nodeID="A9"/>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Concept"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A15">
+    <j.0:Identification.identifier_context rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/admin/XMDR_Register.xml"/>
+    <j.0:Identification.identifier_scope rdf:nodeID="A14"/>
+    <j.0:Identification.item_identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">NCI_Thesaurus/R-C/C1/2509.xml#P3</j.0:Identification.item_identifier>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Identification"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A29">
+    <j.0:Link_End.role rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/R-R/Anatomic_Structure_Is_Physical_Part_Of.PhysicalPartOfhas.xml"/>
+    <j.0:Link_End.end rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/R-C/C1/2509.xml"/>
+    <j.0:Link_End.link rdf:resource="http://bambam.lbl.gov:8080/xmdr/content/NCI_Thesaurus/L/Anatomic_Structure_Is_Physical_Part_Of/NCI_Thesaurus/C1/2441/NCI_Thesaurus/C1/2509.xml"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdf:type rdf:resource="http://xmdr.org/ont/iso11179-3e3draft_r4.owl#Link_End"/>
+  </rdf:Description>
+</rdf:RDF>
