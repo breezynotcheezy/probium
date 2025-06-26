@@ -51,7 +51,6 @@ def cmd_all(ns: argparse.Namespace) -> None:
     json.dump(results, sys.stdout, indent=None if ns.raw else 2)
     sys.stdout.write("\n")
 
-
 def cmd_watch(ns: argparse.Namespace) -> None:
     """Watch a directory and print detection results for new files."""
 
