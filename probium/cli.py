@@ -113,10 +113,6 @@ def _build_parser() -> argparse.ArgumentParser:
     p_watch.set_defaults(recursive=True)
     _add_common_options(p_watch)
     p_watch.set_defaults(func=cmd_watch)
-
-
-
-
     return p
 
 
