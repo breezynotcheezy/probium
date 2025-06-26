@@ -1,3 +1,0 @@
-specifically call from the main directory using python -m probium.test_harness.test_engine_call and python -m probium.test_harness.main_harness
-
-WILL NOT WORK OTHERWISE!!!!!
