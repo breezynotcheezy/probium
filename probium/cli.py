@@ -115,7 +115,6 @@ def _build_parser() -> argparse.ArgumentParser:
     p_watch.set_defaults(func=cmd_watch)
     return p
 
-
 def _add_common_options(ap: argparse.ArgumentParser) -> None:
     ap.add_argument(
         "--only",
