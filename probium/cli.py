@@ -76,7 +76,6 @@ def cmd_watch(ns: argparse.Namespace) -> None:
         wc.stop()
         print("Stopped", file=sys.stderr)
 
-
 def _build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="probium", description="Content-type detector")
     sub = p.add_subparsers(dest="cmd", required=True)
