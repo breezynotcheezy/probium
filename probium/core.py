@@ -141,16 +141,19 @@ def detect(
     return best
 try:
     import anyio as _anyio
+    from functools import partial
 
     async def detect_async(source: Any, **kw) -> Result:
         """Asynchronously call :func:`detect` in a worker thread.
 
         Parameters and return value are identical to :func:`detect`. The
         implementation uses ``anyio.to_thread`` when the optional ``anyio``
-        package is installed.
+        package is installed. ``anyio.to_thread.run_sync`` does not forward
+        keyword arguments, so we wrap the call with ``functools.partial`` to
+        ensure ``detect`` receives them.
         """
 
-        return await _anyio.to_thread.run_sync(detect, source, **kw)
+        return await _anyio.to_thread.run_sync(partial(detect, source, **kw))
 except ImportError:  # pragma: no cover - optional dependency
     import asyncio
 
