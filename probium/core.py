@@ -102,11 +102,14 @@ def detect(
     if engine != "auto":
         return get_instance(engine)(payload)
 
-    engines: Sequence[str] = engine_order or list_engines()
     if only is not None:
-        allowed = set(only)
-        engines = [e for e in engines if e in allowed]
-    elif engine == "auto":
+        if engine_order is not None:
+            allowed = set(only)
+            engines = [e for e in engine_order if e in allowed]
+        else:
+            engines = list(only)
+    else:
+        engines = engine_order or list_engines()
         for sig, off, en in MAGIC_SIGNATURES:
             end = off + len(sig)
             if len(payload) >= end and payload[off:end] == sig:
