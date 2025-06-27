@@ -36,7 +36,6 @@ try:
     __version__ = version("probium")
 except Exception:
     __version__ = "0.0.0-dev"
-from . import engines
 
 for ep in entry_points(group="probium.engines"):
     ep.load()
