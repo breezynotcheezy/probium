@@ -1,5 +1,7 @@
 from __future__ import annotations
 from types import MappingProxyType
+from importlib import import_module
+
 from .exceptions import UnsupportedType
 
 
@@ -16,7 +18,11 @@ def register(cls):
 
 def get(name: str):
     """Return the engine class associated with ``name``."""
-
+    if name not in _engines:
+        try:
+            import_module(f"probium.engines.{name}")
+        except Exception:
+            raise UnsupportedType(name)
     try:
         return _engines[name]
     except KeyError as exc:
@@ -31,6 +37,9 @@ def get_instance(name: str) -> "EngineBase":
     return _engine_instances[name]
 def list_engines() -> list[str]:
     """Return engine names ordered by ``cost`` attribute."""
+    if not _engines:
+        # Import all built-in engines on demand
+        import_module("probium.engines").load_all()
     return [
         name
         for name, cls in sorted(
