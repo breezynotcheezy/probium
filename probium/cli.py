@@ -13,7 +13,7 @@ def cmd_one(ns: argparse.Namespace) -> None:
     if ns.trid:
         res_map = detect_with_trid(
             ns.file,
-            cap_bytes=None,
+            cap_bytes=ns.capbytes,
             only=ns.only,
             extensions=ns.ext,
         )
@@ -21,7 +21,7 @@ def cmd_one(ns: argparse.Namespace) -> None:
     else:
         res = detect(
             ns.file,
-            cap_bytes=None,
+            cap_bytes=ns.capbytes,
             only=ns.only,
             extensions=ns.ext,
         )
@@ -37,7 +37,7 @@ def cmd_all(ns: argparse.Namespace) -> None:
         ns.root,
         pattern=ns.pattern,
         workers=ns.workers,
-        cap_bytes=None,
+        cap_bytes=ns.capbytes,
         only=ns.only,
         extensions=ns.ext,
         ignore=ns.ignore,
@@ -126,6 +126,7 @@ def _add_common_options(ap: argparse.ArgumentParser) -> None:
     )
     ap.add_argument("--raw", action="store_true", help="Emit compact JSON")
     ap.add_argument("--trid", action="store_true", help="Include TRiD engine")
+    ap.add_argument("--capbytes", type=int, default=4096, help="Max number of bytes to scan (default = 4096)")
 
 def main() -> None:
     ns = _build_parser().parse_args()
