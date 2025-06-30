@@ -1,3 +1,4 @@
+
 from __future__ import annotations
 
 import json
@@ -14,12 +15,14 @@ logger = logging.getLogger(__name__)
 
 _magic = load_magic()
 
+
 @register
 class JSONEngine(EngineBase):
     name = "json"
     #Identifier for this engine
 
     #Estimated cost to run this engine (used for prioritization or budgeting)
+
     cost = 0.05
 
     _TOKEN_RE = re.compile(r'[{}\[\]":,]')
@@ -38,11 +41,14 @@ class JSONEngine(EngineBase):
         breakdown = {"token_ratio": round(token_ratio, 3), "partial": partial}
         if magic_len is not None:
             breakdown["magic_len"] = float(magic_len)
+
         cand = Candidate(
             media_type="application/json",
             extension="json",
             confidence=conf,
+
             breakdown=breakdown,
+
         )
         return Result(candidates=[cand])
 
@@ -61,6 +67,7 @@ class JSONEngine(EngineBase):
         return None
 
     def sniff(self, payload: bytes) -> Result:
+
         """Detect JSON using libmagic, magic bytes and structural analysis."""
 
         if _magic is not None:
@@ -79,10 +86,12 @@ class JSONEngine(EngineBase):
                     )
                     return Result(candidates=[cand])
 
+
         try:
             text = payload.decode("utf-8", errors="ignore")
         except Exception:
             return Result(candidates=[])
+
 
         stripped = text.lstrip()
         magic_hit = None
@@ -90,6 +99,7 @@ class JSONEngine(EngineBase):
             if stripped.startswith(m.decode("latin1")):
                 magic_hit = m
                 break
+
 
         text = text.strip()
         if not text:
@@ -100,10 +110,12 @@ class JSONEngine(EngineBase):
 
         try:
             json.loads(text)
+
             conf = score_tokens(1.0)
             if magic_hit:
                 conf = max(conf, score_magic(len(magic_hit)))
             return self._make_result(conf, token_ratio, magic_len=len(magic_hit) if magic_hit else None)
+
         except Exception:
             pass
 
@@ -115,13 +127,16 @@ class JSONEngine(EngineBase):
                 if magic_hit:
                     conf = max(conf, score_magic(len(magic_hit)))
                 return self._make_result(conf, token_ratio, partial=True, magic_len=len(magic_hit) if magic_hit else None)
+
             except Exception:
                 pass
 
         if token_ratio > 0.3 and ":" in text:
             conf = score_tokens(min(token_ratio, 0.8))
+
             if magic_hit:
                 conf = max(conf, score_magic(len(magic_hit)))
             return self._make_result(conf, token_ratio, partial=True, magic_len=len(magic_hit) if magic_hit else None)
+
 
         return Result(candidates=[])
