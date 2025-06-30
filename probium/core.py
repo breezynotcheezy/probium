@@ -35,7 +35,7 @@ def _load_bytes(source: str | Path | bytes, cap: int | None) -> bytes:
             return b""
     return source[:cap] if cap else source
 
-def detect(
+def detect_file(
     source: str | Path | bytes,
     engine: str = "auto",
     *,
@@ -156,14 +156,46 @@ try:
         ensure ``detect`` receives them.
         """
 
-        return await _anyio.to_thread.run_sync(partial(detect, source, **kw))
+        return await _anyio.to_thread.run_sync(partial(detect_file, source, **kw))
 except ImportError:  # pragma: no cover - optional dependency
     import asyncio
 
     async def detect_async(source: Any, **kw) -> Result:
         """Fallback asyncio-based implementation of :func:`detect_async`."""
 
-        return await asyncio.to_thread(detect, source, **kw)
+        return await asyncio.to_thread(detect_file, source, **kw)
+
+def detect(
+    target: str | Path | bytes,
+    *,
+    pattern: str = "**/*",
+    workers: int = os.cpu_count() or 4,
+    only: Iterable[str] | None = None,
+    extensions: Iterable[str] | None = None,
+    ignore: Iterable[str] | None = None,
+    **kw,
+) -> Any:
+    """Detect a single file or scan a directory.
+
+    When ``target`` is a directory, this function yields ``(Path, Result)``
+    tuples like :func:`scan_dir`. Otherwise it returns a single
+    :class:`Result` from :func:`detect_file`.
+    """
+
+    if not isinstance(target, (bytes, bytearray)):
+        p = Path(target)
+        if p.is_dir():
+            return scan_dir(
+                p,
+                pattern=pattern,
+                workers=workers,
+                only=only,
+                extensions=extensions,
+                ignore=ignore,
+                **kw,
+            )
+    return detect_file(target, only=only, extensions=extensions, **kw)
+
 def scan_dir(
     root: str | Path,
     *,
@@ -239,7 +271,7 @@ def scan_dir(
 
     with cf.ThreadPoolExecutor(max_workers=workers) as ex:
         futs = {
-            ex.submit(detect, p, only=only, extensions=extensions, **kw): p
+            ex.submit(detect_file, p, only=only, extensions=extensions, **kw): p
             for p in paths
         }
 
