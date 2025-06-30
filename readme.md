@@ -66,10 +66,10 @@ Install the Node dependencies once:
 pnpm install
 ```
 
-Then start the full stack development environment with:
+Then start the UI with:
 
 ```
 probium-ui
 ```
 
-This command runs the FastAPI backend and the Next.js UI together. Your browser will open at `http://localhost:3000` with the UI connected to the API on port 8000.
+This command launches the Next.js interface which internally calls the `probium` library via built-in API routes. Your browser will open at `http://localhost:3000`.
