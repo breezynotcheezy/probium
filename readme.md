@@ -57,3 +57,19 @@ def handle(path, result):
 wc = watch("incoming", handle, extensions=["pdf", "docx"])
 
 wc.stop()
+
+## 🖥️ UI Launcher 🖥️
+
+Install the Node dependencies once:
+
+```
+pnpm install
+```
+
+Then start the UI with:
+
+```
+probium-ui
+```
+
+This command launches the Next.js interface which internally calls the `probium` library via built-in API routes. Your browser will open at `http://localhost:3000`.

@@ -17,6 +17,7 @@ requires = ["setuptools>=61", "wheel"]
 build-backend = "setuptools.build_meta"
 [project.scripts]
 probium = "probium.cli:main"
+probium-ui = "probium.launcher:main"
 
 [tool.setuptools]
 package-dir = {"" = "."}
