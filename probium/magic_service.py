@@ -66,6 +66,6 @@ def detect_magic(source: str | Path | bytes, *, cap_bytes: int | None = None) ->
             return res
     # fallback to standard autodetection
 
-    from .core import detect
+    from .core import _detect_file as detect
 
     return detect(payload if isinstance(source, (bytes, bytearray)) else source, cap_bytes=cap_bytes)

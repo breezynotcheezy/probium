@@ -21,6 +21,14 @@ TEST_CASES = {
         "media_type": "application/json",
         "extension": "json",
     },
+    "json_prefixed.txt": {
+        "media_type": "application/json",
+        "extension": "json",
+    },
+    "json_spoofed_pdf.txt": {
+        "media_type": "application/json",
+        "extension": "json",
+    },
     "empty.txt": {
         "media_type": "*UNSAFE* / *NO ENGINE*",
         "extension": None,

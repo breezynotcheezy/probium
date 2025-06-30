@@ -35,7 +35,7 @@ def _load_bytes(source: str | Path | bytes, cap: int | None) -> bytes:
             return b""
     return source[:cap] if cap else source
 
-def detect(
+def _detect_file(
     source: str | Path | bytes,
     engine: str = "auto",
     *,
@@ -49,6 +49,9 @@ def detect(
     cache: bool = True,
 ) -> Result:
     """Identify ``source`` using registered engines.
+
+    This low-level helper processes a single file or byte sequence. Use
+    :func:`detect` for auto-detection of paths that may be directories.
 
     Parameters
     ----------
@@ -110,6 +113,7 @@ def detect(
             engines = list(only)
     else:
         engines = engine_order or list_engines()
+        magic_best: Result | None = None
         for sig, off, en in MAGIC_SIGNATURES:
             end = off + len(sig)
             if len(payload) >= end and payload[off:end] == sig:
@@ -117,9 +121,12 @@ def detect(
                 if res.candidates:
                     res.candidates[0].breakdown = {"magic_len": float(len(sig))}
                     res.candidates[0].confidence = score_magic(len(sig))
-                return res
+                    magic_best = res
+                    if res.candidates[0].confidence >= 0.9:
+                        return res
+                break
 
-    best: Result | None = None
+    best: Result | None = magic_best
     for name in engines:
         res = get_instance(name)(payload)
         if res.candidates:
@@ -142,6 +149,27 @@ def detect(
     if cache and isinstance(source, (str, Path)):
         cache_put(Path(source), best)
     return best
+
+
+def detect(
+    source: str | Path | bytes,
+    *,
+    pattern: str = "**/*",
+    workers: int = os.cpu_count() or 4,
+    ignore: Iterable[str] | None = None,
+    **kw,
+) -> Result | Iterable[tuple[Path, Result]]:
+    """Detect a single file or recursively scan a directory.
+
+    If ``source`` is a directory path, this function yields ``(path, Result)``
+    tuples for each entry, delegating to :func:`scan_dir`. Otherwise a single
+    :class:`Result` is returned.
+    """
+
+    if isinstance(source, (str, Path)) and Path(source).is_dir():
+        return scan_dir(source, pattern=pattern, workers=workers, ignore=ignore, **kw)
+
+    return _detect_file(source, **kw)
 try:
     import anyio as _anyio
     from functools import partial
@@ -156,14 +184,14 @@ try:
         ensure ``detect`` receives them.
         """
 
-        return await _anyio.to_thread.run_sync(partial(detect, source, **kw))
+        return await _anyio.to_thread.run_sync(partial(_detect_file, source, **kw))
 except ImportError:  # pragma: no cover - optional dependency
     import asyncio
 
     async def detect_async(source: Any, **kw) -> Result:
         """Fallback asyncio-based implementation of :func:`detect_async`."""
 
-        return await asyncio.to_thread(detect, source, **kw)
+        return await asyncio.to_thread(_detect_file, source, **kw)
 def scan_dir(
     root: str | Path,
     *,
@@ -239,7 +267,7 @@ def scan_dir(
 
     with cf.ThreadPoolExecutor(max_workers=workers) as ex:
         futs = {
-            ex.submit(detect, p, only=only, extensions=extensions, **kw): p
+            ex.submit(_detect_file, p, only=only, extensions=extensions, **kw): p
             for p in paths
         }
 
