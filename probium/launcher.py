@@ -7,14 +7,33 @@ from pathlib import Path
 
 
 def _start_frontend() -> subprocess.Popen[bytes]:
-    """Start the Next.js development server."""
+
+    """Start the Next.js development server.
+
+    We prefer ``pnpm`` but fall back to ``npm`` if ``pnpm`` isn't installed.
+    ``FileNotFoundError`` is raised when neither tool exists.
+    """
     root = Path(__file__).resolve().parents[1]
-    return subprocess.Popen(
-        ["pnpm", "dev"],
-        cwd=str(root),
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
-    )
+
+    commands = [["pnpm", "dev"], ["npm", "run", "dev"]]
+    last_err: Exception | None = None
+    for cmd in commands:
+        try:
+            return subprocess.Popen(
+                cmd,
+                cwd=str(root),
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+            )
+        except FileNotFoundError as exc:  # command not found
+            last_err = exc
+
+    assert last_err is not None
+    raise FileNotFoundError(
+        "Neither 'pnpm' nor 'npm' was found. Please install Node.js and pnpm "
+        "(https://pnpm.io) before running the UI"
+    ) from last_err
+
 
 
 def main() -> None:
