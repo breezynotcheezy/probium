@@ -7,6 +7,7 @@ from pathlib import Path
 
 
 def _start_frontend() -> subprocess.Popen[bytes]:
+
     """Start the Next.js development server.
 
     We prefer ``pnpm`` but fall back to ``npm`` if ``pnpm`` isn't installed.
@@ -32,6 +33,7 @@ def _start_frontend() -> subprocess.Popen[bytes]:
         "Neither 'pnpm' nor 'npm' was found. Please install Node.js and pnpm "
         "(https://pnpm.io) before running the UI"
     ) from last_err
+
 
 
 def main() -> None:

@@ -1,6 +1,5 @@
 """File system watchers that run detection on new files."""
 from __future__ import annotations
-
 from pathlib import Path
 from typing import Callable, Iterable, Any
 import logging
