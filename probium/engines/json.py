@@ -105,13 +105,11 @@ class JSONEngine(EngineBase):
         text = text.strip()
         if not text:
             return Result(candidates=[])
-
         token_count = len(self._TOKEN_RE.findall(text))
         token_ratio = token_count / max(len(text), 1)
 
         try:
-            json.loads(text)
-
+            json.loads(text) #if not magic, check common JSON limiters, count those and then calc confidence score based on known variables.
             conf = score_tokens(1.0)
             if magic_hit:
                 conf = max(conf, score_magic(len(magic_hit)))
