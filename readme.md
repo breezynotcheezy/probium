@@ -57,3 +57,24 @@ def handle(path, result):
 wc = watch("incoming", handle, extensions=["pdf", "docx"])
 
 wc.stop()
+
+## 🖥️ UI Launcher 🖥️
+
+Install Node.js (version 18 or newer) and the ``pnpm`` package manager. If
+``pnpm`` isn't available, install it with ``npm install -g pnpm``. Then install
+the UI dependencies once:
+
+```
+pnpm install
+```
+
+Then start the UI with:
+
+```
+probium-ui
+```
+
+This command launches the Next.js interface which internally calls the
+``probium`` library via built‑in API routes. ``probium-ui`` tries to run ``pnpm
+dev`` and falls back to ``npm run dev`` if ``pnpm`` is missing. Your browser will
+open at `http://localhost:3000`.
