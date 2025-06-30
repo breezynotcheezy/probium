@@ -57,3 +57,19 @@ def handle(path, result):
 wc = watch("incoming", handle, extensions=["pdf", "docx"])
 
 wc.stop()
+
+## 🖥️ UI Launcher 🖥️
+
+Install the Node dependencies once:
+
+```
+pnpm install
+```
+
+Then start the full stack development environment with:
+
+```
+probium-ui
+```
+
+This command runs the FastAPI backend and the Next.js UI together. Your browser will open at `http://localhost:3000` with the UI connected to the API on port 8000.
