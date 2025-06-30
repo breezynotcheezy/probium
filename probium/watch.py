@@ -8,7 +8,7 @@ import logging
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler, FileSystemEvent
 
-from .core import detect
+from .core import _detect_file as detect
 from .models import Result
 
 logger = logging.getLogger(__name__)

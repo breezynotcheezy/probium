@@ -1,7 +1,7 @@
 from __future__ import annotations
 from pathlib import Path
 from typing import Any, Iterable
-from .core import detect
+from .core import _detect_file as detect
 from .models import Result
 
 

@@ -1,0 +1,2 @@
+/* header */
+{"name": "example", "value": 42}

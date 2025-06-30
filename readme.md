@@ -16,13 +16,8 @@ Probium is a fast, modular content analysis tool that detects and classifies fil
 
 ## ☑️ CLI ☑️
 
-### To scan a single file
-"probium one path/to/file"
-
-
-
-### To recursively scan a folder
-"probium all path/to/folder"
+### To scan a file or folder
+"probium detect path/to/file_or_folder"
 
 
 ### To monitor a folder for new files
