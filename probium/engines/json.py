@@ -26,6 +26,7 @@ class JSONEngine(EngineBase):
     cost = 0.05
 
     _TOKEN_RE = re.compile(r'[{}\[\]":,]')
+    #these are not magic number sigs, "_MAGIC" field is used as placeholding binary sig. (delimiter replacement)
     _MAGIC = [b'{', b'[']
 
     def _make_result(
