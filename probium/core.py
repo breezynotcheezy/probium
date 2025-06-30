@@ -113,6 +113,7 @@ def _detect_file(
             engines = list(only)
     else:
         engines = engine_order or list_engines()
+        magic_best: Result | None = None
         for sig, off, en in MAGIC_SIGNATURES:
             end = off + len(sig)
             if len(payload) >= end and payload[off:end] == sig:
@@ -120,9 +121,12 @@ def _detect_file(
                 if res.candidates:
                     res.candidates[0].breakdown = {"magic_len": float(len(sig))}
                     res.candidates[0].confidence = score_magic(len(sig))
-                return res
+                    magic_best = res
+                    if res.candidates[0].confidence >= 0.9:
+                        return res
+                break
 
-    best: Result | None = None
+    best: Result | None = magic_best
     for name in engines:
         res = get_instance(name)(payload)
         if res.candidates:
