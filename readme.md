@@ -16,13 +16,8 @@ Probium is a fast, modular content analysis tool that detects and classifies fil
 
 ## ☑️ CLI ☑️
 
-### To scan a single file
-"probium one path/to/file"
-
-
-
-### To recursively scan a folder
-"probium all path/to/folder"
+### To detect a file or folder
+"probium detect path/to/target"
 
 
 ### To monitor a folder for new files
@@ -35,7 +30,7 @@ Probium is a fast, modular content analysis tool that detects and classifies fil
 
 ### 1) Import
 
-from probium import detect, detect_magic, scan_dir
+from probium import detect, detect_magic, detect_file
 
 
 ### 2) Peek at one file
@@ -52,7 +47,7 @@ meta = detect(
 )
 
 ### 4) Stream-scan an entire folder
-for path, m in scan_dir("docs", pattern="**/*.pdf", workers=4):
+for path, m in detect("docs", pattern="**/*.pdf", workers=4):
     print(f"{path} → {m.mimetype} · {m.size:,} bytes 🍇")
 
 ### 5) Monitor a folder for new files
