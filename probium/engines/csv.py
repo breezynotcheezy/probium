@@ -8,7 +8,10 @@ import hashlib
 from functools import lru_cache
 from typing import Optional
 
-import chardet
+try:  # optional dependency
+    import chardet  # type: ignore
+except Exception:  # pragma: no cover - fallback when chardet isn't installed
+    chardet = None
 
 from ..scoring import score_magic, score_tokens
 from ..models import Candidate, Result
@@ -57,13 +60,15 @@ class CSVEngine(EngineBase):
             logger.debug("Detected UTF-16 BE BOM")
             return 'utf-16-be'
         else:
-            try:
-                encoding = chardet.detect(payload[:self.SAMPLE_SIZE])['encoding'] or 'utf-8'
-                logger.debug("Detected encoding via chardet: %s", encoding)
-                return encoding
-            except Exception:
-                logger.debug("Chardet failed, falling back to UTF-8")
-                return 'utf-8'
+            if chardet is not None:
+                try:
+                    enc = chardet.detect(payload[:self.SAMPLE_SIZE]).get('encoding')
+                    if enc:
+                        logger.debug("Detected encoding via chardet: %s", enc)
+                        return enc
+                except Exception:
+                    logger.debug("Chardet failed, falling back to UTF-8")
+            return 'utf-8'
 
     def detect_delimiter(self, sample: str) -> Optional[str]:
         """Fallback method to detect the delimiter if csv.Sniffer fails."""
@@ -87,7 +92,7 @@ class CSVEngine(EngineBase):
         sample = '\n'.join(lines)
         if not sample.strip():
             logger.debug("Sample is empty after stripping")
-            return None, None, [], 0.0
+            return None, None, [], 0.0, 0.0
 
         # Detect delimiter
         try:
@@ -97,7 +102,7 @@ class CSVEngine(EngineBase):
             delim = self.detect_delimiter(sample)
             if not delim:
                 logger.debug("Fallback delimiter detection failed")
-                return None, None, [], 0.0
+                return None, None, [], 0.0, 0.0
             dialect = csv.excel()
             dialect.delimiter = delim
 
@@ -107,23 +112,29 @@ class CSVEngine(EngineBase):
             rows = [row for row in reader if row]
         except Exception as e:
             logger.debug("CSV parsing failed: %s", e)
-            return None, None, [], 0.0
+            return None, None, [], 0.0, 0.0
 
         if len(rows) < self.MIN_ROWS:
             logger.debug("Too few rows: %d < %d", len(rows), self.MIN_ROWS)
-            return None, None, [], 0.0
+            return None, None, [], 0.0, 0.0
 
         # Analyze column consistency
         column_counts = [len(r) for r in rows]
         if not column_counts:
-            return None, None, [], 0.0
+            return None, None, [], 0.0, 0.0
         most_common_count = max(set(column_counts), key=column_counts.count)
         consistency_ratio = column_counts.count(most_common_count) / len(rows)
         token_count = sum(len(self._TOKEN_RE.findall(ln)) for ln in lines)
         total_chars = sum(len(ln) for ln in lines)
         token_ratio = token_count / total_chars if total_chars > 0 else 0
 
-        return dialect, csv.Sniffer().has_header(sample), rows, consistency_ratio, token_ratio
+        try:
+            has_header = csv.Sniffer().has_header(sample)
+        except Exception:
+            logger.debug("csv.Sniffer.has_header failed")
+            has_header = False
+
+        return dialect, has_header, rows, consistency_ratio, token_ratio
 
     def _make_result(
         self,
@@ -219,7 +230,12 @@ class CSVEngine(EngineBase):
         conf = min(base_conf, 1.0)
         logger.debug("Final confidence: %.2f", conf)
 
+        partial = False
         return self._make_result(
             conf,
             token_ratio,
-            partial
+            partial=partial,
+            magic_len=magic_len,
+            consistency_ratio=consistency_ratio
+        )
+
