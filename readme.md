@@ -82,3 +82,17 @@ This command launches the Next.js interface which internally calls the
 dev`` and falls back to ``npm run dev`` if ``pnpm`` is missing. Your browser will
 open at `http://localhost:3000`.
 
+### Backend API
+
+The frontend communicates with a FastAPI backend that exposes Probium's
+functionality. Start the backend with:
+
+```
+cd backend && ./start.sh
+```
+
+By default the UI expects the backend to be reachable at
+`http://localhost:8000`. You can override this by setting the environment
+variable `BACKEND_URL` (used by Next.js API routes) or
+`NEXT_PUBLIC_API_URL` when launching the UI.
+

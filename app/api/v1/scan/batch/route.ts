@@ -5,7 +5,7 @@ const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:8000'
 export async function POST(req: NextRequest) {
   try {
     const data = await req.formData()
-    const res = await fetch(`${BACKEND_URL}/api/v1/scan/file`, {
+    const res = await fetch(`${BACKEND_URL}/api/v1/scan/batch`, {
       method: 'POST',
       body: data,
     })
