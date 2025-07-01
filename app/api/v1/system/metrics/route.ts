@@ -1,14 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 
 const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:8000'
 
-export async function POST(req: NextRequest) {
+export async function GET() {
   try {
-    const data = await req.formData()
-    const res = await fetch(`${BACKEND_URL}/api/v1/scan/file`, {
-      method: 'POST',
-      body: data,
-    })
+    const res = await fetch(`${BACKEND_URL}/api/v1/system/metrics`)
     const text = await res.text()
     return new NextResponse(text, {
       status: res.status,
