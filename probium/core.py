@@ -120,7 +120,7 @@ def _detect_file(
                 res = get_instance(en)(payload)
                 if res.candidates:
                     res.candidates[0].breakdown = {"magic_len": float(len(sig))}
-                    res.candidates[0].confidence = score_magic(len(sig))
+                    #res.candidates[0].confidence = score_magic(len(sig))
                     magic_best = res
                     if res.candidates[0].confidence >= 0.9:
                         return res
