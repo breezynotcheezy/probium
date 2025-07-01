@@ -28,9 +28,13 @@ class _FilterHandler(FileSystemEventHandler):
         )
 
     def on_created(self, event: FileSystemEvent) -> None:
-        self._handle(event)
+        """Handle file creation events only.
 
-    def on_modified(self, event: FileSystemEvent) -> None:
+        ``watchdog`` typically emits a ``created`` event followed by a
+        ``modified`` event for the same file.  Calling the detection logic for
+        both events results in duplicate scans, so we only trigger on creation
+        to ensure each file is processed once.
+        """
         self._handle(event)
 
     def _handle(self, event: FileSystemEvent) -> None:

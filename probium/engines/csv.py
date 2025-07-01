@@ -87,7 +87,7 @@ class CSVEngine(EngineBase):
         sample = '\n'.join(lines)
         if not sample.strip():
             logger.debug("Sample is empty after stripping")
-            return None, None, [], 0.0
+            return None, None, [], 0.0, 0.0
 
         # Detect delimiter
         try:
@@ -97,7 +97,7 @@ class CSVEngine(EngineBase):
             delim = self.detect_delimiter(sample)
             if not delim:
                 logger.debug("Fallback delimiter detection failed")
-                return None, None, [], 0.0
+                return None, None, [], 0.0, 0.0
             dialect = csv.excel()
             dialect.delimiter = delim
 
@@ -107,16 +107,16 @@ class CSVEngine(EngineBase):
             rows = [row for row in reader if row]
         except Exception as e:
             logger.debug("CSV parsing failed: %s", e)
-            return None, None, [], 0.0
+            return None, None, [], 0.0, 0.0
 
         if len(rows) < self.MIN_ROWS:
             logger.debug("Too few rows: %d < %d", len(rows), self.MIN_ROWS)
-            return None, None, [], 0.0
+            return None, None, [], 0.0, 0.0
 
         # Analyze column consistency
         column_counts = [len(r) for r in rows]
         if not column_counts:
-            return None, None, [], 0.0
+            return None, None, [], 0.0, 0.0
         most_common_count = max(set(column_counts), key=column_counts.count)
         consistency_ratio = column_counts.count(most_common_count) / len(rows)
         token_count = sum(len(self._TOKEN_RE.findall(ln)) for ln in lines)
@@ -219,7 +219,12 @@ class CSVEngine(EngineBase):
         conf = min(base_conf, 1.0)
         logger.debug("Final confidence: %.2f", conf)
 
+        partial = False
         return self._make_result(
             conf,
             token_ratio,
-            partial
+            partial=partial,
+            magic_len=magic_len,
+            consistency_ratio=consistency_ratio
+        )
+
