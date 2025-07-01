@@ -36,7 +36,8 @@ class LegacyOfficeEngine(EngineBase):
                 else:
                     ext, mtype = "cfb", "application/vnd.ms-office"
 
-                conf = score_magic(len(self._MAGIC))
+                #conf = score_magic(len(self._MAGIC))
+                conf = 1.0
                 if idx != 0:
                     conf *= 0.9
                 cand.append(
