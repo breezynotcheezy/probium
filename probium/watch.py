@@ -18,28 +18,35 @@ class _FilterHandler(FileSystemEventHandler):
         self,
         callback: Callable[[Path, Result], Any],
         *,
+        recursive: bool = True,
         only: Iterable[str] | None = None,
         extensions: Iterable[str] | None = None,
     ) -> None:
         self.callback = callback
+        self.recursive = recursive
         self.only = set(only) if only else None
         self.extensions = (
             {e.lower().lstrip(".") for e in extensions} if extensions else None
         )
 
     def on_created(self, event: FileSystemEvent) -> None:
-        """Handle file creation events only.
 
-        ``watchdog`` typically emits a ``created`` event followed by a
-        ``modified`` event for the same file.  Calling the detection logic for
-        both events results in duplicate scans, so we only trigger on creation
-        to ensure each file is processed once.
-        """
-        self._handle(event)
+        """Handle created paths."""
+        self._handle_path(event.src_path)
 
-    def _handle(self, event: FileSystemEvent) -> None:
-        path = Path(event.src_path)
+    def on_moved(self, event: FileSystemEvent) -> None:
+        """Handle paths moved into the watched directory."""
+        self._handle_path(event.dest_path)
+
+
+    def _handle_path(self, raw: str | Path) -> None:
+        path = Path(raw)
         if path.is_dir():
+            if not self.recursive:
+                return
+            for p in path.rglob("*"):
+                if p.is_file():
+                    self._handle_path(p)
             return
         if self.extensions and path.suffix.lower().lstrip(".") not in self.extensions:
             return
@@ -65,7 +72,12 @@ class WatchContainer:
         self.root = Path(root)
         self.callback = callback
         self.recursive = recursive
-        self.handler = _FilterHandler(callback, only=only, extensions=extensions)
+        self.handler = _FilterHandler(
+            callback,
+            recursive=recursive,
+            only=only,
+            extensions=extensions,
+        )
         self.observer = Observer()
 
     def start(self) -> None:

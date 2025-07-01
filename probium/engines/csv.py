@@ -8,7 +8,10 @@ import hashlib
 from functools import lru_cache
 from typing import Optional
 
-import chardet
+try:  # optional dependency
+    import chardet  # type: ignore
+except Exception:  # pragma: no cover - fallback when chardet isn't installed
+    chardet = None
 
 from ..scoring import score_magic, score_tokens
 from ..models import Candidate, Result
@@ -57,13 +60,15 @@ class CSVEngine(EngineBase):
             logger.debug("Detected UTF-16 BE BOM")
             return 'utf-16-be'
         else:
-            try:
-                encoding = chardet.detect(payload[:self.SAMPLE_SIZE])['encoding'] or 'utf-8'
-                logger.debug("Detected encoding via chardet: %s", encoding)
-                return encoding
-            except Exception:
-                logger.debug("Chardet failed, falling back to UTF-8")
-                return 'utf-8'
+            if chardet is not None:
+                try:
+                    enc = chardet.detect(payload[:self.SAMPLE_SIZE]).get('encoding')
+                    if enc:
+                        logger.debug("Detected encoding via chardet: %s", enc)
+                        return enc
+                except Exception:
+                    logger.debug("Chardet failed, falling back to UTF-8")
+            return 'utf-8'
 
     def detect_delimiter(self, sample: str) -> Optional[str]:
         """Fallback method to detect the delimiter if csv.Sniffer fails."""
@@ -123,7 +128,13 @@ class CSVEngine(EngineBase):
         total_chars = sum(len(ln) for ln in lines)
         token_ratio = token_count / total_chars if total_chars > 0 else 0
 
-        return dialect, csv.Sniffer().has_header(sample), rows, consistency_ratio, token_ratio
+        try:
+            has_header = csv.Sniffer().has_header(sample)
+        except Exception:
+            logger.debug("csv.Sniffer.has_header failed")
+            has_header = False
+
+        return dialect, has_header, rows, consistency_ratio, token_ratio
 
     def _make_result(
         self,
