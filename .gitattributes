@@ -1,0 +1,2 @@
+# Enforce Unix (LF) line endings for engine Python files
+probium/engines/*.py text eol=lf

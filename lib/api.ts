@@ -1,4 +1,5 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"
+// Default to same-origin when no API URL is provided.
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || ""
 
 export interface ScanResult {
   id: string
