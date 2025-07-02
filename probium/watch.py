@@ -3,12 +3,14 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Callable, Iterable, Any
 import logging
+import threading
+import time
 
 try:  # use real watchdog if available
     from watchdog.observers import Observer
     from watchdog.events import FileSystemEventHandler, FileSystemEvent
     USING_STUB = False
-except Exception:  # pragma: no cover - fallback when watchdog missing
+except ImportError:  # pragma: no cover - fallback when watchdog missing
     from watchdog_stub.observers import Observer  # type: ignore
     from watchdog_stub.events import FileSystemEventHandler, FileSystemEvent  # type: ignore
     USING_STUB = True
@@ -111,6 +113,59 @@ class WatchContainer:
         self.observer.join()
 
 
+class PollingWatchContainer:
+    """Portable polling-based directory watcher."""
+
+    def __init__(
+        self,
+        root: str | Path,
+        callback: Callable[[Path, Result], Any],
+        *,
+        recursive: bool = True,
+        only: Iterable[str] | None = None,
+        extensions: Iterable[str] | None = None,
+        interval: float = 1.0,
+    ) -> None:
+        self.root = Path(root)
+        self.callback = callback
+        self.recursive = recursive
+        self.interval = interval
+        self.handler = _FilterHandler(
+            callback,
+            recursive=recursive,
+            only=only,
+            extensions=extensions,
+        )
+        self._stop = threading.Event()
+        self._thread = threading.Thread(target=self._run, daemon=True)
+
+    def _scan(self) -> None:
+        paths = (
+            self.root.rglob("*") if self.recursive else self.root.iterdir()
+        )
+        for p in paths:
+            if p.is_file():
+                self.handler._handle_path(p)
+
+    def _run(self) -> None:
+        while not self._stop.is_set():
+            self._scan()
+            time.sleep(self.interval)
+
+    def start(self) -> None:
+        # seed seen set so existing files are ignored
+        for p in (
+            self.root.rglob("*") if self.recursive else self.root.iterdir()
+        ):
+            if p.is_file():
+                self.handler._seen.add(p)
+        self._thread.start()
+
+    def stop(self) -> None:
+        self._stop.set()
+        self._thread.join()
+
+
 def watch(
     root: str | Path,
     callback: Callable[[Path, Result], Any],
@@ -118,20 +173,26 @@ def watch(
     recursive: bool = True,
     only: Iterable[str] | None = None,
     extensions: Iterable[str] | None = None,
+    interval: float = 1.0,
 ) -> WatchContainer:
     """Start watching ``root`` and invoke ``callback`` for new files.
 
-    If :mod:`watchdog` is not installed, a :class:`RuntimeError` is raised
-    with instructions to install it. Without ``watchdog`` no file events can be
-    generated.
+    If the optional :mod:`watchdog` package is available, native file system
+    events are used. Otherwise a portable polling loop is started. The polling
+    interval can be customized with ``interval``.
     """
     if USING_STUB:
-        raise RuntimeError(
-            "watchdog package is required for directory monitoring. "
-            "Install it with 'pip install watchdog'."
+        container: WatchContainer | PollingWatchContainer = PollingWatchContainer(
+            root,
+            callback,
+            recursive=recursive,
+            only=only,
+            extensions=extensions,
+            interval=interval,
         )
-    container = WatchContainer(
-        root, callback, recursive=recursive, only=only, extensions=extensions
-    )
+    else:
+        container = WatchContainer(
+            root, callback, recursive=recursive, only=only, extensions=extensions
+        )
     container.start()
     return container
