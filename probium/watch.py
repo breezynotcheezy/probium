@@ -1,4 +1,5 @@
 """File system watchers that run detection on new files."""
+
 from __future__ import annotations
 from pathlib import Path
 from typing import Callable, Iterable, Any
@@ -9,10 +10,12 @@ import time
 try:  # use real watchdog if available
     from watchdog.observers import Observer
     from watchdog.events import FileSystemEventHandler, FileSystemEvent
+
     USING_STUB = False
 except ImportError:  # pragma: no cover - fallback when watchdog missing
     from watchdog_stub.observers import Observer  # type: ignore
     from watchdog_stub.events import FileSystemEventHandler, FileSystemEvent  # type: ignore
+
     USING_STUB = True
     logging.getLogger(__name__).warning(
         "watchdog package not installed; using stub implementation"
@@ -42,7 +45,6 @@ class _FilterHandler(FileSystemEventHandler):
         self._seen: set[Path] = set()
 
     def on_created(self, event: FileSystemEvent) -> None:
-
         """Handle created paths."""
         self._handle_path(event.src_path)
 
@@ -99,9 +101,7 @@ class WatchContainer:
         """Begin monitoring ``root`` for filesystem events."""
 
         if USING_STUB:
-            logger.warning(
-                "watchdog not available; file events will not be reported"
-            )
+            logger.warning("watchdog not available; file events will not be reported")
 
         self.observer.schedule(self.handler, str(self.root), recursive=self.recursive)
         self.observer.start()
@@ -140,9 +140,7 @@ class PollingWatchContainer:
         self._thread = threading.Thread(target=self._run, daemon=True)
 
     def _scan(self) -> None:
-        paths = (
-            self.root.rglob("*") if self.recursive else self.root.iterdir()
-        )
+        paths = self.root.rglob("*") if self.recursive else self.root.iterdir()
         for p in paths:
             if p.is_file():
                 self.handler._handle_path(p)
@@ -154,9 +152,7 @@ class PollingWatchContainer:
 
     def start(self) -> None:
         # seed seen set so existing files are ignored
-        for p in (
-            self.root.rglob("*") if self.recursive else self.root.iterdir()
-        ):
+        for p in self.root.rglob("*") if self.recursive else self.root.iterdir():
             if p.is_file():
                 self.handler._seen.add(p)
         self._scan()
@@ -182,6 +178,10 @@ def watch(
     events are used. Otherwise a portable polling loop is started. The polling
     interval can be customized with ``interval``.
     """
+    root = Path(root)
+    if not root.exists():
+        raise FileNotFoundError(f"watch root does not exist: {root}")
+
     if USING_STUB:
         container: WatchContainer | PollingWatchContainer = PollingWatchContainer(
             root,
