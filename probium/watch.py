@@ -159,6 +159,7 @@ class PollingWatchContainer:
         ):
             if p.is_file():
                 self.handler._seen.add(p)
+        self._scan()
         self._thread.start()
 
     def stop(self) -> None:
