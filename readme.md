@@ -21,10 +21,9 @@ pip install probium
 ```
 
 If you are working from a source checkout run ``pip install -e .`` instead.
-This includes the ``watchdog`` package so ``probium watch`` can report file
-system events.
-
-If the watch command warns that ``watchdog`` is missing, install it manually:
+The optional ``watchdog`` package enables native file system events for the
+``probium watch`` command. Without it, a portable polling loop is used which is
+slightly slower. To enable native events install ``watchdog`` manually:
 
 ```bash
 pip install watchdog
@@ -114,4 +113,17 @@ By default the UI expects the backend to be reachable at
 `http://localhost:8000`. You can override this by setting the environment
 variable `BACKEND_URL` (used by Next.js API routes) or
 `NEXT_PUBLIC_API_URL` when launching the UI.
+
+### Authentication
+
+Probium's UI includes a basic login page powered by `next-auth`. Users can
+authenticate with an email address, a phone number, or a Google account.
+Credentials are hashed using `bcryptjs`. To enable Google login, set the
+following environment variables (see `.env.example`):
+
+```
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
+NEXTAUTH_SECRET=your-random-secret
+```
 
