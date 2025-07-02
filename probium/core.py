@@ -110,6 +110,14 @@ def _detect_file(
     if engine != "auto":
         return get_instance(engine)(payload)
 
+    if only is not None:
+        only_list = list(only)
+        if len(only_list) == 1:
+            res = get_instance(only_list[0])(payload)
+            if cache and isinstance(source, (str, Path)):
+                cache_put(Path(source), res)
+            return res
+
     magic_best: Result | None = None
 
     if only is not None:

@@ -64,6 +64,7 @@ meta = detect(
     only=["hash", "pdf"],   # run just these engines
     cap_bytes=1_000_000     # read at most 1 MB
 )
+# Using a single engine short-circuits the search for near O(1) performance
 
 ### 4) Stream-scan an entire folder
 for path, m in scan_dir("docs", pattern="**/*.pdf", workers=4):
