@@ -1,6 +1,9 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import Link from "next/link"
+import { useSession, signOut } from "next-auth/react"
+import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { FileScanner } from "@/components/file-scanner"
@@ -60,6 +63,8 @@ export default function ProbiumComprehensiveDashboard() {
     enableMetadata: true,
     enableSignatureValidation: true,
   })
+
+  const { data: session } = useSession()
 
   // Fetch initial data
   useEffect(() => {
@@ -129,14 +134,28 @@ export default function ProbiumComprehensiveDashboard() {
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-4">
-              <div className="text-right">
+            <div className="flex items-center gap-6">
+              <div className="text-right mr-2">
                 <p className="text-sm text-gray-200">System Status</p>
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
                   <span className="text-green-400 font-medium">Online</span>
                 </div>
               </div>
+              {session ? (
+                <div className="flex items-center gap-2">
+                  <p className="text-sm text-gray-200 hidden sm:block">
+                    {session.user?.email ?? session.user?.phone}
+                  </p>
+                  <Button size="sm" variant="secondary" onClick={() => signOut()}>
+                    Sign Out
+                  </Button>
+                </div>
+              ) : (
+                <Link href="/login">
+                  <Button size="sm">Login</Button>
+                </Link>
+              )}
             </div>
           </div>
 
