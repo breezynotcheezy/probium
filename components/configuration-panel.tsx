@@ -39,13 +39,13 @@ export function ConfigurationPanel({ config, onConfigChange }: ConfigurationPane
 
   return (
     <div className="space-y-6">
-      <Card className="bg-purple-900/30 border-purple-700">
+      <Card className="bg-purple-50 border-purple-300">
         <CardHeader>
           <div className="flex items-center gap-3">
-            <Settings className="w-6 h-6 text-purple-400" />
+            <Settings className="w-6 h-6 text-purple-600" />
             <div>
-              <CardTitle className="text-white">Probium Configuration</CardTitle>
-              <CardDescription className="text-purple-300">
+              <CardTitle className="text-purple-900">Probium Configuration</CardTitle>
+              <CardDescription className="text-purple-700">
                 Configure detection engines, performance settings, and advanced options
               </CardDescription>
             </div>
@@ -53,7 +53,7 @@ export function ConfigurationPanel({ config, onConfigChange }: ConfigurationPane
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="engines" className="space-y-4">
-            <TabsList className="grid w-full grid-cols-4 bg-purple-800/50">
+            <TabsList className="grid w-full grid-cols-4 bg-purple-100">
               <TabsTrigger value="engines">Engines</TabsTrigger>
               <TabsTrigger value="performance">Performance</TabsTrigger>
               <TabsTrigger value="security">Security</TabsTrigger>
@@ -61,13 +61,13 @@ export function ConfigurationPanel({ config, onConfigChange }: ConfigurationPane
             </TabsList>
 
             <TabsContent value="engines" className="space-y-4">
-              <Card className="bg-purple-800/30 border-purple-600">
+              <Card className="bg-purple-50 border-purple-300">
                 <CardHeader>
-                  <CardTitle className="text-white text-lg flex items-center gap-2">
+                  <CardTitle className="text-purple-900 text-lg flex items-center gap-2">
                     <Shield className="w-5 h-5" />
                     Detection Engines
                   </CardTitle>
-                  <CardDescription className="text-purple-300">
+                  <CardDescription className="text-purple-700">
                     Select which file type detection engines to use during scanning
                   </CardDescription>
                 </CardHeader>
@@ -102,7 +102,7 @@ export function ConfigurationPanel({ config, onConfigChange }: ConfigurationPane
                         id: "binary",
                         name: "Binary Engine",
                         description: "Binary file analysis",
-                        color: "text-purple-400",
+                        color: "text-purple-600",
                       },
                       {
                         id: "text",
@@ -125,7 +125,7 @@ export function ConfigurationPanel({ config, onConfigChange }: ConfigurationPane
                     ].map((engine) => (
                       <div
                         key={engine.id}
-                        className="flex items-center space-x-3 p-3 border border-purple-600 rounded-lg bg-purple-900/20"
+                        className="flex items-center space-x-3 p-3 border border-purple-300 rounded-lg bg-purple-50"
                       >
                         <Switch
                           checked={config.engines.includes(engine.id)}
@@ -138,16 +138,16 @@ export function ConfigurationPanel({ config, onConfigChange }: ConfigurationPane
                         />
                         <div className="flex-1">
                           <Label className={`font-medium ${engine.color}`}>{engine.name}</Label>
-                          <p className="text-sm text-purple-400">{engine.description}</p>
+                          <p className="text-sm text-purple-600">{engine.description}</p>
                         </div>
                       </div>
                     ))}
                   </div>
 
                   <div className="flex items-center gap-2 pt-2">
-                    <span className="text-sm font-medium text-purple-300">Active engines:</span>
+                    <span className="text-sm font-medium text-purple-700">Active engines:</span>
                     {config.engines.map((engine: string) => (
-                      <Badge key={engine} variant="secondary" className="bg-purple-700 text-purple-100">
+                      <Badge key={engine} variant="secondary" className="bg-purple-500 text-purple-500">
                         {engine}
                       </Badge>
                     ))}
@@ -157,21 +157,21 @@ export function ConfigurationPanel({ config, onConfigChange }: ConfigurationPane
             </TabsContent>
 
             <TabsContent value="performance" className="space-y-4">
-              <Card className="bg-purple-800/30 border-purple-600">
+              <Card className="bg-purple-50 border-purple-300">
                 <CardHeader>
-                  <CardTitle className="text-white text-lg flex items-center gap-2">
+                  <CardTitle className="text-purple-900 text-lg flex items-center gap-2">
                     <Cpu className="w-5 h-5" />
                     Performance Settings
                   </CardTitle>
-                  <CardDescription className="text-purple-300">
+                  <CardDescription className="text-purple-700">
                     Configure parallel processing and performance parameters
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
-                      <Label className="text-white">Thread Pool Size</Label>
-                      <Badge variant="outline" className="border-purple-600 text-purple-300">
+                      <Label className="text-purple-900">Thread Pool Size</Label>
+                      <Badge variant="outline" className="border-purple-300 text-purple-700">
                         {config.threadPool} threads
                       </Badge>
                     </div>
@@ -183,7 +183,7 @@ export function ConfigurationPanel({ config, onConfigChange }: ConfigurationPane
                       step={1}
                       className="w-full"
                     />
-                    <p className="text-sm text-purple-400">
+                    <p className="text-sm text-purple-600">
                       Number of parallel threads for batch processing. Higher values may improve performance but use
                       more system resources.
                     </p>
@@ -191,8 +191,8 @@ export function ConfigurationPanel({ config, onConfigChange }: ConfigurationPane
 
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
-                      <Label className="text-white">Confidence Threshold</Label>
-                      <Badge variant="outline" className="border-purple-600 text-purple-300">
+                      <Label className="text-purple-900">Confidence Threshold</Label>
+                      <Badge variant="outline" className="border-purple-300 text-purple-700">
                         {(config.confidenceThreshold * 100).toFixed(0)}%
                       </Badge>
                     </div>
@@ -204,7 +204,7 @@ export function ConfigurationPanel({ config, onConfigChange }: ConfigurationPane
                       step={0.05}
                       className="w-full"
                     />
-                    <p className="text-sm text-purple-400">
+                    <p className="text-sm text-purple-600">
                       Minimum confidence level required for file type detection. Lower values may detect more files but
                       with less certainty.
                     </p>
@@ -212,8 +212,8 @@ export function ConfigurationPanel({ config, onConfigChange }: ConfigurationPane
 
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
-                      <Label className="text-white">Max File Size</Label>
-                      <Badge variant="outline" className="border-purple-600 text-purple-300">
+                      <Label className="text-purple-900">Max File Size</Label>
+                      <Badge variant="outline" className="border-purple-300 text-purple-700">
                         {(config.maxFileSize / 1024 / 1024).toFixed(0)} MB
                       </Badge>
                     </div>
@@ -225,15 +225,15 @@ export function ConfigurationPanel({ config, onConfigChange }: ConfigurationPane
                       step={10}
                       className="w-full"
                     />
-                    <p className="text-sm text-purple-400">
+                    <p className="text-sm text-purple-600">
                       Maximum file size that can be processed. Larger files may require more memory and processing time.
                     </p>
                   </div>
 
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
-                      <Label className="text-white">Timeout</Label>
-                      <Badge variant="outline" className="border-purple-600 text-purple-300">
+                      <Label className="text-purple-900">Timeout</Label>
+                      <Badge variant="outline" className="border-purple-300 text-purple-700">
                         {(config.timeout / 1000).toFixed(0)}s
                       </Badge>
                     </div>
@@ -245,7 +245,7 @@ export function ConfigurationPanel({ config, onConfigChange }: ConfigurationPane
                       step={5}
                       className="w-full"
                     />
-                    <p className="text-sm text-purple-400">
+                    <p className="text-sm text-purple-600">
                       Maximum time allowed for file processing before timeout. Increase for large or complex files.
                     </p>
                   </div>
@@ -254,9 +254,9 @@ export function ConfigurationPanel({ config, onConfigChange }: ConfigurationPane
             </TabsContent>
 
             <TabsContent value="security" className="space-y-4">
-              <Card className="bg-purple-800/30 border-purple-600">
+              <Card className="bg-purple-50 border-purple-300">
                 <CardHeader>
-                  <CardTitle className="text-white text-lg flex items-center gap-2">
+                  <CardTitle className="text-purple-900 text-lg flex items-center gap-2">
                     <Shield className="w-5 h-5" />
                     Security Options
                   </CardTitle>
@@ -264,8 +264,8 @@ export function ConfigurationPanel({ config, onConfigChange }: ConfigurationPane
                 <CardContent className="space-y-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <Label className="text-white">Enable Hashing</Label>
-                      <p className="text-sm text-purple-400">Generate MD5, SHA1, SHA256, and CRC32 hashes</p>
+                      <Label className="text-purple-900">Enable Hashing</Label>
+                      <p className="text-sm text-purple-600">Generate MD5, SHA1, SHA256, and CRC32 hashes</p>
                     </div>
                     <Switch
                       checked={config.enableHashing}
@@ -275,8 +275,8 @@ export function ConfigurationPanel({ config, onConfigChange }: ConfigurationPane
 
                   <div className="flex items-center justify-between">
                     <div>
-                      <Label className="text-white">Metadata Extraction</Label>
-                      <p className="text-sm text-purple-400">Extract file metadata and properties</p>
+                      <Label className="text-purple-900">Metadata Extraction</Label>
+                      <p className="text-sm text-purple-600">Extract file metadata and properties</p>
                     </div>
                     <Switch
                       checked={config.enableMetadata}
@@ -286,8 +286,8 @@ export function ConfigurationPanel({ config, onConfigChange }: ConfigurationPane
 
                   <div className="flex items-center justify-between">
                     <div>
-                      <Label className="text-white">Signature Validation</Label>
-                      <p className="text-sm text-purple-400">Validate digital signatures and certificates</p>
+                      <Label className="text-purple-900">Signature Validation</Label>
+                      <p className="text-sm text-purple-600">Validate digital signatures and certificates</p>
                     </div>
                     <Switch
                       checked={config.enableSignatureValidation}
@@ -297,8 +297,8 @@ export function ConfigurationPanel({ config, onConfigChange }: ConfigurationPane
 
                   <div className="flex items-center justify-between">
                     <div>
-                      <Label className="text-white">Deep Analysis</Label>
-                      <p className="text-sm text-purple-400">
+                      <Label className="text-purple-900">Deep Analysis</Label>
+                      <p className="text-sm text-purple-600">
                         Perform thorough content analysis and structure validation
                       </p>
                     </div>
@@ -312,9 +312,9 @@ export function ConfigurationPanel({ config, onConfigChange }: ConfigurationPane
             </TabsContent>
 
             <TabsContent value="advanced" className="space-y-4">
-              <Card className="bg-purple-800/30 border-purple-600">
+              <Card className="bg-purple-50 border-purple-300">
                 <CardHeader>
-                  <CardTitle className="text-white text-lg flex items-center gap-2">
+                  <CardTitle className="text-purple-900 text-lg flex items-center gap-2">
                     <Zap className="w-5 h-5" />
                     Advanced Options
                   </CardTitle>
@@ -322,8 +322,8 @@ export function ConfigurationPanel({ config, onConfigChange }: ConfigurationPane
                 <CardContent className="space-y-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <Label className="text-white">Cache Results</Label>
-                      <p className="text-sm text-purple-400">Cache scan results for faster re-scanning</p>
+                      <Label className="text-purple-900">Cache Results</Label>
+                      <p className="text-sm text-purple-600">Cache scan results for faster re-scanning</p>
                     </div>
                     <Switch
                       checked={config.cacheResults}
@@ -333,8 +333,8 @@ export function ConfigurationPanel({ config, onConfigChange }: ConfigurationPane
 
                   <div className="flex items-center justify-between">
                     <div>
-                      <Label className="text-white">Verbose Logging</Label>
-                      <p className="text-sm text-purple-400">Enable detailed logging output</p>
+                      <Label className="text-purple-900">Verbose Logging</Label>
+                      <p className="text-sm text-purple-600">Enable detailed logging output</p>
                     </div>
                     <Switch
                       checked={config.verboseLogging}
@@ -343,42 +343,42 @@ export function ConfigurationPanel({ config, onConfigChange }: ConfigurationPane
                   </div>
 
                   <div className="space-y-2">
-                    <Label className="text-white">Custom Engine Path</Label>
+                    <Label className="text-purple-900">Custom Engine Path</Label>
                     <Input
                       placeholder="/path/to/custom/engines"
-                      className="bg-purple-900/50 border-purple-600 text-white placeholder-purple-400"
+                      className="bg-purple-50 border-purple-300 text-purple-900 placeholder-purple-400"
                     />
-                    <p className="text-sm text-purple-400">Path to custom detection engines</p>
+                    <p className="text-sm text-purple-600">Path to custom detection engines</p>
                   </div>
 
                   <div className="space-y-2">
-                    <Label className="text-white">Configuration Notes</Label>
+                    <Label className="text-purple-900">Configuration Notes</Label>
                     <Textarea
                       placeholder="Add notes about this configuration..."
-                      className="bg-purple-900/50 border-purple-600 text-white placeholder-purple-400"
+                      className="bg-purple-50 border-purple-300 text-purple-900 placeholder-purple-400"
                       rows={3}
                     />
                   </div>
                 </CardContent>
               </Card>
 
-              <Card className="bg-purple-800/30 border-purple-600">
+              <Card className="bg-purple-50 border-purple-300">
                 <CardHeader>
-                  <CardTitle className="text-white text-lg flex items-center gap-2">
+                  <CardTitle className="text-purple-900 text-lg flex items-center gap-2">
                     <Database className="w-5 h-5" />
                     Configuration Management
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="flex gap-2">
-                    <Button className="flex-1 bg-purple-600 hover:bg-purple-700">Save Configuration</Button>
-                    <Button variant="outline" className="flex-1 border-purple-600 text-purple-300 bg-transparent">
+                    <Button className="flex-1 bg-purple-400 hover:bg-purple-500">Save Configuration</Button>
+                    <Button variant="outline" className="flex-1 border-purple-300 text-purple-700 bg-transparent">
                       Load Configuration
                     </Button>
                   </div>
 
                   <div className="flex gap-2">
-                    <Button variant="outline" className="flex-1 border-purple-600 text-purple-300 bg-transparent">
+                    <Button variant="outline" className="flex-1 border-purple-300 text-purple-700 bg-transparent">
                       Export Settings
                     </Button>
                     <Button

@@ -113,25 +113,27 @@ export default function ProbiumComprehensiveDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-950 via-purple-900 to-indigo-950">
+    <div className="min-h-screen bg-gradient-to-br from-white via-purple-50 to-white">
       <div className="container mx-auto p-6">
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-4">
-              <div className="w-16 h-16 bg-gradient-to-br from-purple-600 to-purple-800 rounded-xl flex items-center justify-center shadow-lg">
-                <Shield className="w-8 h-8 text-white" />
-              </div>
+              <img
+                src="/probity-logo.png"
+                alt="Probium logo"
+                className="w-16 h-16 object-contain rounded-xl shadow-lg"
+              />
               <div>
-                <h1 className="text-4xl font-bold text-white mb-2">Probium Advanced Scanner</h1>
-                <p className="text-purple-200">
+                <h1 className="text-4xl font-bold text-purple-900 mb-2">Probium</h1>
+                <p className="text-purple-600">
                   Comprehensive file analysis with {availableEngines.length} detection engines
                 </p>
               </div>
             </div>
             <div className="flex items-center gap-4">
               <div className="text-right">
-                <p className="text-sm text-purple-300">System Status</p>
+                <p className="text-sm text-purple-700">System Status</p>
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
                   <span className="text-green-400 font-medium">Online</span>
@@ -142,70 +144,70 @@ export default function ProbiumComprehensiveDashboard() {
 
           {/* Quick Stats */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 mb-6">
-            <Card className="bg-purple-900/50 border-purple-700">
+            <Card className="bg-purple-50 border-purple-300">
               <CardContent className="p-4">
                 <div className="flex items-center gap-3">
-                  <Database className="w-8 h-8 text-purple-400" />
+                  <Database className="w-8 h-8 text-purple-600" />
                   <div>
-                    <p className="text-sm text-purple-300">Total Scans</p>
-                    <p className="text-xl font-bold text-white">{systemStats.total_scans}</p>
+                    <p className="text-sm text-purple-700">Total Scans</p>
+                    <p className="text-xl font-bold text-purple-900">{systemStats.total_scans}</p>
                   </div>
                 </div>
               </CardContent>
             </Card>
-            <Card className="bg-purple-900/50 border-purple-700">
+            <Card className="bg-purple-50 border-purple-300">
               <CardContent className="p-4">
                 <div className="flex items-center gap-3">
                   <Cpu className="w-8 h-8 text-blue-400" />
                   <div>
-                    <p className="text-sm text-purple-300">Active Threads</p>
-                    <p className="text-xl font-bold text-white">{systemStats.active_threads}</p>
+                    <p className="text-sm text-purple-700">Active Threads</p>
+                    <p className="text-xl font-bold text-purple-900">{systemStats.active_threads}</p>
                   </div>
                 </div>
               </CardContent>
             </Card>
-            <Card className="bg-purple-900/50 border-purple-700">
+            <Card className="bg-purple-50 border-purple-300">
               <CardContent className="p-4">
                 <div className="flex items-center gap-3">
                   <Activity className="w-8 h-8 text-green-400" />
                   <div>
-                    <p className="text-sm text-purple-300">CPU Usage</p>
-                    <p className="text-xl font-bold text-white">{systemStats.cpu_usage.toFixed(1)}%</p>
+                    <p className="text-sm text-purple-700">CPU Usage</p>
+                    <p className="text-xl font-bold text-purple-900">{systemStats.cpu_usage.toFixed(1)}%</p>
                   </div>
                 </div>
               </CardContent>
             </Card>
-            <Card className="bg-purple-900/50 border-purple-700">
+            <Card className="bg-purple-50 border-purple-300">
               <CardContent className="p-4">
                 <div className="flex items-center gap-3">
                   <Gauge className="w-8 h-8 text-yellow-400" />
                   <div>
-                    <p className="text-sm text-purple-300">Memory</p>
-                    <p className="text-xl font-bold text-white">{systemStats.memory_usage.toFixed(1)}%</p>
+                    <p className="text-sm text-purple-700">Memory</p>
+                    <p className="text-xl font-bold text-purple-900">{systemStats.memory_usage.toFixed(1)}%</p>
                   </div>
                 </div>
               </CardContent>
             </Card>
-            <Card className="bg-purple-900/50 border-purple-700">
+            <Card className="bg-purple-50 border-purple-300">
               <CardContent className="p-4">
                 <div className="flex items-center gap-3">
                   <Shield className="w-8 h-8 text-red-400" />
                   <div>
-                    <p className="text-sm text-purple-300">Threats</p>
-                    <p className="text-xl font-bold text-white">
+                    <p className="text-sm text-purple-700">Threats</p>
+                    <p className="text-xl font-bold text-purple-900">
                       {scanResults.filter((r) => r.security?.threat_level !== "low").length}
                     </p>
                   </div>
                 </div>
               </CardContent>
             </Card>
-            <Card className="bg-purple-900/50 border-purple-700">
+            <Card className="bg-purple-50 border-purple-300">
               <CardContent className="p-4">
                 <div className="flex items-center gap-3">
-                  <FileType className="w-8 h-8 text-purple-400" />
+                  <FileType className="w-8 h-8 text-purple-600" />
                   <div>
-                    <p className="text-sm text-purple-300">Engines</p>
-                    <p className="text-xl font-bold text-white">{availableEngines.length}</p>
+                    <p className="text-sm text-purple-700">Engines</p>
+                    <p className="text-xl font-bold text-purple-900">{availableEngines.length}</p>
                   </div>
                 </div>
               </CardContent>
@@ -215,52 +217,52 @@ export default function ProbiumComprehensiveDashboard() {
 
         {/* Main Interface */}
         <Tabs defaultValue="scanner" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-6 lg:grid-cols-12 bg-purple-900/50 border-purple-700">
-            <TabsTrigger value="scanner" className="data-[state=active]:bg-purple-700">
+          <TabsList className="grid w-full grid-cols-6 lg:grid-cols-12 bg-purple-50 border-purple-300">
+            <TabsTrigger value="scanner" className="data-[state=active]:bg-purple-500">
               <Shield className="w-4 h-4 mr-2" />
               Scanner
             </TabsTrigger>
-            <TabsTrigger value="batch" className="data-[state=active]:bg-purple-700">
+            <TabsTrigger value="batch" className="data-[state=active]:bg-purple-500">
               <Database className="w-4 h-4 mr-2" />
               Batch
             </TabsTrigger>
-            <TabsTrigger value="engines" className="data-[state=active]:bg-purple-700">
+            <TabsTrigger value="engines" className="data-[state=active]:bg-purple-500">
               <Cpu className="w-4 h-4 mr-2" />
               Engines
             </TabsTrigger>
-            <TabsTrigger value="results" className="data-[state=active]:bg-purple-700">
+            <TabsTrigger value="results" className="data-[state=active]:bg-purple-500">
               <BarChart3 className="w-4 h-4 mr-2" />
               Results
             </TabsTrigger>
-            <TabsTrigger value="monitor" className="data-[state=active]:bg-purple-700">
+            <TabsTrigger value="monitor" className="data-[state=active]:bg-purple-500">
               <Activity className="w-4 h-4 mr-2" />
               Monitor
             </TabsTrigger>
-            <TabsTrigger value="analytics" className="data-[state=active]:bg-purple-700">
+            <TabsTrigger value="analytics" className="data-[state=active]:bg-purple-500">
               <BarChart3 className="w-4 h-4 mr-2" />
               Analytics
             </TabsTrigger>
-            <TabsTrigger value="threats" className="data-[state=active]:bg-purple-700">
+            <TabsTrigger value="threats" className="data-[state=active]:bg-purple-500">
               <AlertTriangle className="w-4 h-4 mr-2" />
               Threats
             </TabsTrigger>
-            <TabsTrigger value="registry" className="data-[state=active]:bg-purple-700">
+            <TabsTrigger value="registry" className="data-[state=active]:bg-purple-500">
               <FileType className="w-4 h-4 mr-2" />
               Registry
             </TabsTrigger>
-            <TabsTrigger value="profiler" className="data-[state=active]:bg-purple-700">
+            <TabsTrigger value="profiler" className="data-[state=active]:bg-purple-500">
               <Gauge className="w-4 h-4 mr-2" />
               Profiler
             </TabsTrigger>
-            <TabsTrigger value="api" className="data-[state=active]:bg-purple-700">
+            <TabsTrigger value="api" className="data-[state=active]:bg-purple-500">
               <Code className="w-4 h-4 mr-2" />
               API
             </TabsTrigger>
-            <TabsTrigger value="realtime" className="data-[state=active]:bg-purple-700">
+            <TabsTrigger value="realtime" className="data-[state=active]:bg-purple-500">
               <Eye className="w-4 h-4 mr-2" />
               Live
             </TabsTrigger>
-            <TabsTrigger value="config" className="data-[state=active]:bg-purple-700">
+            <TabsTrigger value="config" className="data-[state=active]:bg-purple-500">
               <Settings className="w-4 h-4 mr-2" />
               Config
             </TabsTrigger>

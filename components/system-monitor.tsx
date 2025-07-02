@@ -70,87 +70,87 @@ export function SystemMonitor({ systemStats, config }: SystemMonitorProps) {
     <div className="space-y-6">
       {/* System Overview */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="bg-purple-900/30 border-purple-700">
+        <Card className="bg-purple-50 border-purple-300">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
               <Cpu className={`w-8 h-8 ${getStatusColor(realTimeStats.cpu.usage, { warning: 70, critical: 90 })}`} />
               <div>
-                <p className="text-sm text-purple-300">CPU Usage</p>
-                <p className="text-2xl font-bold text-white">{realTimeStats.cpu.usage.toFixed(1)}%</p>
+                <p className="text-sm text-purple-700">CPU Usage</p>
+                <p className="text-2xl font-bold text-purple-900">{realTimeStats.cpu.usage.toFixed(1)}%</p>
               </div>
             </div>
-            <Progress value={realTimeStats.cpu.usage} className="mt-2 bg-purple-800" />
+            <Progress value={realTimeStats.cpu.usage} className="mt-2 bg-purple-200" />
           </CardContent>
         </Card>
 
-        <Card className="bg-purple-900/30 border-purple-700">
+        <Card className="bg-purple-50 border-purple-300">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
               <MemoryStick
                 className={`w-8 h-8 ${getStatusColor((realTimeStats.memory.used / realTimeStats.memory.total) * 100, { warning: 70, critical: 90 })}`}
               />
               <div>
-                <p className="text-sm text-purple-300">Memory</p>
-                <p className="text-2xl font-bold text-white">
+                <p className="text-sm text-purple-700">Memory</p>
+                <p className="text-2xl font-bold text-purple-900">
                   {((realTimeStats.memory.used / realTimeStats.memory.total) * 100).toFixed(1)}%
                 </p>
               </div>
             </div>
             <Progress
               value={(realTimeStats.memory.used / realTimeStats.memory.total) * 100}
-              className="mt-2 bg-purple-800"
+              className="mt-2 bg-purple-200"
             />
           </CardContent>
         </Card>
 
-        <Card className="bg-purple-900/30 border-purple-700">
+        <Card className="bg-purple-50 border-purple-300">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
               <HardDrive
                 className={`w-8 h-8 ${getStatusColor((realTimeStats.disk.used / realTimeStats.disk.total) * 100, { warning: 80, critical: 95 })}`}
               />
               <div>
-                <p className="text-sm text-purple-300">Disk Usage</p>
-                <p className="text-2xl font-bold text-white">
+                <p className="text-sm text-purple-700">Disk Usage</p>
+                <p className="text-2xl font-bold text-purple-900">
                   {((realTimeStats.disk.used / realTimeStats.disk.total) * 100).toFixed(1)}%
                 </p>
               </div>
             </div>
             <Progress
               value={(realTimeStats.disk.used / realTimeStats.disk.total) * 100}
-              className="mt-2 bg-purple-800"
+              className="mt-2 bg-purple-200"
             />
           </CardContent>
         </Card>
 
-        <Card className="bg-purple-900/30 border-purple-700">
+        <Card className="bg-purple-50 border-purple-300">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
               <Activity className="w-8 h-8 text-blue-400" />
               <div>
-                <p className="text-sm text-purple-300">Active Threads</p>
-                <p className="text-2xl font-bold text-white">{realTimeStats.processes.threads}</p>
+                <p className="text-sm text-purple-700">Active Threads</p>
+                <p className="text-2xl font-bold text-purple-900">{realTimeStats.processes.threads}</p>
               </div>
             </div>
-            <div className="mt-2 text-xs text-purple-400">Max: {config.threadPool}</div>
+            <div className="mt-2 text-xs text-purple-600">Max: {config.threadPool}</div>
           </CardContent>
         </Card>
       </div>
 
       {/* Detailed Monitoring */}
-      <Card className="bg-purple-900/30 border-purple-700">
+      <Card className="bg-purple-50 border-purple-300">
         <CardHeader>
-          <CardTitle className="text-white flex items-center gap-2">
+          <CardTitle className="text-purple-900 flex items-center gap-2">
             <Server className="w-5 h-5" />
             System Monitoring
           </CardTitle>
-          <CardDescription className="text-purple-300">
+          <CardDescription className="text-purple-700">
             Real-time system performance and resource utilization
           </CardDescription>
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="performance" className="space-y-4">
-            <TabsList className="grid w-full grid-cols-4 bg-purple-800/50">
+            <TabsList className="grid w-full grid-cols-4 bg-purple-100">
               <TabsTrigger value="performance">Performance</TabsTrigger>
               <TabsTrigger value="processes">Processes</TabsTrigger>
               <TabsTrigger value="network">Network</TabsTrigger>
@@ -159,9 +159,9 @@ export function SystemMonitor({ systemStats, config }: SystemMonitorProps) {
 
             <TabsContent value="performance" className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <Card className="bg-purple-800/30 border-purple-600">
+                <Card className="bg-purple-50 border-purple-300">
                   <CardHeader>
-                    <CardTitle className="text-white text-lg flex items-center gap-2">
+                    <CardTitle className="text-purple-900 text-lg flex items-center gap-2">
                       <Cpu className="w-5 h-5" />
                       CPU Metrics
                     </CardTitle>
@@ -169,28 +169,28 @@ export function SystemMonitor({ systemStats, config }: SystemMonitorProps) {
                   <CardContent className="space-y-4">
                     <div className="space-y-3">
                       <div className="flex justify-between">
-                        <span className="text-purple-300">Usage</span>
-                        <span className="text-white">{realTimeStats.cpu.usage.toFixed(1)}%</span>
+                        <span className="text-purple-700">Usage</span>
+                        <span className="text-purple-900">{realTimeStats.cpu.usage.toFixed(1)}%</span>
                       </div>
-                      <Progress value={realTimeStats.cpu.usage} className="bg-purple-900" />
+                      <Progress value={realTimeStats.cpu.usage} className="bg-purple-200" />
                     </div>
 
                     <div className="grid grid-cols-2 gap-4 pt-2">
-                      <div className="text-center p-2 bg-purple-900/50 rounded">
-                        <p className="text-xs text-purple-400">Cores</p>
-                        <p className="text-lg font-bold text-white">{realTimeStats.cpu.cores}</p>
+                      <div className="text-center p-2 bg-purple-50 rounded">
+                        <p className="text-xs text-purple-600">Cores</p>
+                        <p className="text-lg font-bold text-purple-900">{realTimeStats.cpu.cores}</p>
                       </div>
-                      <div className="text-center p-2 bg-purple-900/50 rounded">
-                        <p className="text-xs text-purple-400">Temperature</p>
-                        <p className="text-lg font-bold text-white">{realTimeStats.cpu.temperature.toFixed(0)}°C</p>
+                      <div className="text-center p-2 bg-purple-50 rounded">
+                        <p className="text-xs text-purple-600">Temperature</p>
+                        <p className="text-lg font-bold text-purple-900">{realTimeStats.cpu.temperature.toFixed(0)}°C</p>
                       </div>
                     </div>
                   </CardContent>
                 </Card>
 
-                <Card className="bg-purple-800/30 border-purple-600">
+                <Card className="bg-purple-50 border-purple-300">
                   <CardHeader>
-                    <CardTitle className="text-white text-lg flex items-center gap-2">
+                    <CardTitle className="text-purple-900 text-lg flex items-center gap-2">
                       <MemoryStick className="w-5 h-5" />
                       Memory Usage
                     </CardTitle>
@@ -198,28 +198,28 @@ export function SystemMonitor({ systemStats, config }: SystemMonitorProps) {
                   <CardContent className="space-y-4">
                     <div className="space-y-3">
                       <div className="flex justify-between">
-                        <span className="text-purple-300">Used</span>
-                        <span className="text-white">
+                        <span className="text-purple-700">Used</span>
+                        <span className="text-purple-900">
                           {(realTimeStats.memory.used / 1024).toFixed(1)} /{" "}
                           {(realTimeStats.memory.total / 1024).toFixed(1)} GB
                         </span>
                       </div>
                       <Progress
                         value={(realTimeStats.memory.used / realTimeStats.memory.total) * 100}
-                        className="bg-purple-900"
+                        className="bg-purple-200"
                       />
                     </div>
 
                     <div className="grid grid-cols-2 gap-4 pt-2">
-                      <div className="text-center p-2 bg-purple-900/50 rounded">
-                        <p className="text-xs text-purple-400">Available</p>
-                        <p className="text-lg font-bold text-white">
+                      <div className="text-center p-2 bg-purple-50 rounded">
+                        <p className="text-xs text-purple-600">Available</p>
+                        <p className="text-lg font-bold text-purple-900">
                           {(realTimeStats.memory.available / 1024).toFixed(1)} GB
                         </p>
                       </div>
-                      <div className="text-center p-2 bg-purple-900/50 rounded">
-                        <p className="text-xs text-purple-400">Usage %</p>
-                        <p className="text-lg font-bold text-white">
+                      <div className="text-center p-2 bg-purple-50 rounded">
+                        <p className="text-xs text-purple-600">Usage %</p>
+                        <p className="text-lg font-bold text-purple-900">
                           {((realTimeStats.memory.used / realTimeStats.memory.total) * 100).toFixed(1)}%
                         </p>
                       </div>
@@ -228,34 +228,34 @@ export function SystemMonitor({ systemStats, config }: SystemMonitorProps) {
                 </Card>
               </div>
 
-              <Card className="bg-purple-800/30 border-purple-600">
+              <Card className="bg-purple-50 border-purple-300">
                 <CardHeader>
-                  <CardTitle className="text-white text-lg flex items-center gap-2">
+                  <CardTitle className="text-purple-900 text-lg flex items-center gap-2">
                     <HardDrive className="w-5 h-5" />
                     Disk I/O
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                    <div className="text-center p-3 bg-purple-900/50 rounded">
-                      <p className="text-xs text-purple-400">Disk Usage</p>
-                      <p className="text-xl font-bold text-white">
+                    <div className="text-center p-3 bg-purple-50 rounded">
+                      <p className="text-xs text-purple-600">Disk Usage</p>
+                      <p className="text-xl font-bold text-purple-900">
                         {((realTimeStats.disk.used / realTimeStats.disk.total) * 100).toFixed(1)}%
                       </p>
                     </div>
-                    <div className="text-center p-3 bg-purple-900/50 rounded">
-                      <p className="text-xs text-purple-400">Free Space</p>
-                      <p className="text-xl font-bold text-white">
+                    <div className="text-center p-3 bg-purple-50 rounded">
+                      <p className="text-xs text-purple-600">Free Space</p>
+                      <p className="text-xl font-bold text-purple-900">
                         {(realTimeStats.disk.total - realTimeStats.disk.used).toFixed(0)} GB
                       </p>
                     </div>
-                    <div className="text-center p-3 bg-purple-900/50 rounded">
-                      <p className="text-xs text-purple-400">Read Speed</p>
-                      <p className="text-xl font-bold text-white">{realTimeStats.disk.read.toFixed(1)} MB/s</p>
+                    <div className="text-center p-3 bg-purple-50 rounded">
+                      <p className="text-xs text-purple-600">Read Speed</p>
+                      <p className="text-xl font-bold text-purple-900">{realTimeStats.disk.read.toFixed(1)} MB/s</p>
                     </div>
-                    <div className="text-center p-3 bg-purple-900/50 rounded">
-                      <p className="text-xs text-purple-400">Write Speed</p>
-                      <p className="text-xl font-bold text-white">{realTimeStats.disk.write.toFixed(1)} MB/s</p>
+                    <div className="text-center p-3 bg-purple-50 rounded">
+                      <p className="text-xs text-purple-600">Write Speed</p>
+                      <p className="text-xl font-bold text-purple-900">{realTimeStats.disk.write.toFixed(1)} MB/s</p>
                     </div>
                   </div>
                 </CardContent>
@@ -264,42 +264,42 @@ export function SystemMonitor({ systemStats, config }: SystemMonitorProps) {
 
             <TabsContent value="processes" className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <Card className="bg-purple-800/30 border-purple-600">
+                <Card className="bg-purple-50 border-purple-300">
                   <CardHeader>
-                    <CardTitle className="text-white text-lg">Probium Processes</CardTitle>
+                    <CardTitle className="text-purple-900 text-lg">Probium Processes</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-3">
-                    <div className="flex justify-between items-center p-2 bg-purple-900/50 rounded">
-                      <span className="text-purple-300">Main Process</span>
+                    <div className="flex justify-between items-center p-2 bg-purple-50 rounded">
+                      <span className="text-purple-700">Main Process</span>
                       <Badge className="bg-green-700">Running</Badge>
                     </div>
-                    <div className="flex justify-between items-center p-2 bg-purple-900/50 rounded">
-                      <span className="text-purple-300">Worker Threads</span>
+                    <div className="flex justify-between items-center p-2 bg-purple-50 rounded">
+                      <span className="text-purple-700">Worker Threads</span>
                       <Badge className="bg-blue-700">{realTimeStats.processes.threads}</Badge>
                     </div>
-                    <div className="flex justify-between items-center p-2 bg-purple-900/50 rounded">
-                      <span className="text-purple-300">Engine Processes</span>
-                      <Badge className="bg-purple-700">{config.engines.length}</Badge>
+                    <div className="flex justify-between items-center p-2 bg-purple-50 rounded">
+                      <span className="text-purple-700">Engine Processes</span>
+                      <Badge className="bg-purple-500">{config.engines.length}</Badge>
                     </div>
                   </CardContent>
                 </Card>
 
-                <Card className="bg-purple-800/30 border-purple-600">
+                <Card className="bg-purple-50 border-purple-300">
                   <CardHeader>
-                    <CardTitle className="text-white text-lg">System Processes</CardTitle>
+                    <CardTitle className="text-purple-900 text-lg">System Processes</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-3">
                     <div className="flex justify-between items-center">
-                      <span className="text-purple-300">Total Processes</span>
-                      <span className="text-white font-bold">{realTimeStats.processes.total}</span>
+                      <span className="text-purple-700">Total Processes</span>
+                      <span className="text-purple-900 font-bold">{realTimeStats.processes.total}</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-purple-300">Probium Processes</span>
-                      <span className="text-white font-bold">{realTimeStats.processes.probium}</span>
+                      <span className="text-purple-700">Probium Processes</span>
+                      <span className="text-purple-900 font-bold">{realTimeStats.processes.probium}</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-purple-300">Thread Pool Size</span>
-                      <span className="text-white font-bold">{config.threadPool}</span>
+                      <span className="text-purple-700">Thread Pool Size</span>
+                      <span className="text-purple-900 font-bold">{config.threadPool}</span>
                     </div>
                   </CardContent>
                 </Card>
@@ -307,26 +307,26 @@ export function SystemMonitor({ systemStats, config }: SystemMonitorProps) {
             </TabsContent>
 
             <TabsContent value="network" className="space-y-4">
-              <Card className="bg-purple-800/30 border-purple-600">
+              <Card className="bg-purple-50 border-purple-300">
                 <CardHeader>
-                  <CardTitle className="text-white text-lg flex items-center gap-2">
+                  <CardTitle className="text-purple-900 text-lg flex items-center gap-2">
                     <Network className="w-5 h-5" />
                     Network Activity
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="text-center p-4 bg-purple-900/50 rounded">
-                      <p className="text-sm text-purple-400">Incoming</p>
-                      <p className="text-2xl font-bold text-white">{realTimeStats.network.in.toFixed(1)} KB/s</p>
+                    <div className="text-center p-4 bg-purple-50 rounded">
+                      <p className="text-sm text-purple-600">Incoming</p>
+                      <p className="text-2xl font-bold text-purple-900">{realTimeStats.network.in.toFixed(1)} KB/s</p>
                     </div>
-                    <div className="text-center p-4 bg-purple-900/50 rounded">
-                      <p className="text-sm text-purple-400">Outgoing</p>
-                      <p className="text-2xl font-bold text-white">{realTimeStats.network.out.toFixed(1)} KB/s</p>
+                    <div className="text-center p-4 bg-purple-50 rounded">
+                      <p className="text-sm text-purple-600">Outgoing</p>
+                      <p className="text-2xl font-bold text-purple-900">{realTimeStats.network.out.toFixed(1)} KB/s</p>
                     </div>
-                    <div className="text-center p-4 bg-purple-900/50 rounded">
-                      <p className="text-sm text-purple-400">Connections</p>
-                      <p className="text-2xl font-bold text-white">{realTimeStats.network.connections}</p>
+                    <div className="text-center p-4 bg-purple-50 rounded">
+                      <p className="text-sm text-purple-600">Connections</p>
+                      <p className="text-2xl font-bold text-purple-900">{realTimeStats.network.connections}</p>
                     </div>
                   </div>
                 </CardContent>

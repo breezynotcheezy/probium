@@ -95,7 +95,7 @@ export function FileTypeRegistry({ config, onConfigChange }: FileTypeRegistryPro
       image: "bg-green-700",
       archive: "bg-yellow-700",
       executable: "bg-red-700",
-      text: "bg-purple-700",
+      text: "bg-purple-500",
       video: "bg-pink-700",
       audio: "bg-cyan-700",
     }
@@ -104,19 +104,19 @@ export function FileTypeRegistry({ config, onConfigChange }: FileTypeRegistryPro
 
   return (
     <div className="space-y-6">
-      <Card className="bg-purple-900/30 border-purple-700">
+      <Card className="bg-purple-50 border-purple-300">
         <CardHeader>
-          <CardTitle className="text-white flex items-center gap-2">
+          <CardTitle className="text-purple-900 flex items-center gap-2">
             <FileType className="w-5 h-5" />
             File Type Registry
           </CardTitle>
-          <CardDescription className="text-purple-300">
+          <CardDescription className="text-purple-700">
             Manage file type definitions, signatures, and detection rules
           </CardDescription>
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="registry" className="space-y-4">
-            <TabsList className="grid w-full grid-cols-3 bg-purple-800/50">
+            <TabsList className="grid w-full grid-cols-3 bg-purple-100">
               <TabsTrigger value="registry">Registry</TabsTrigger>
               <TabsTrigger value="signatures">Signatures</TabsTrigger>
               <TabsTrigger value="custom">Custom Types</TabsTrigger>
@@ -126,12 +126,12 @@ export function FileTypeRegistry({ config, onConfigChange }: FileTypeRegistryPro
               {/* Search and Filter Controls */}
               <div className="flex flex-col md:flex-row gap-4">
                 <div className="relative flex-1">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-purple-400 w-4 h-4" />
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-purple-600 w-4 h-4" />
                   <Input
                     placeholder="Search file types..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-10 bg-purple-800/50 border-purple-600 text-white placeholder-purple-400"
+                    className="pl-10 bg-purple-100 border-purple-300 text-purple-900 placeholder-purple-400"
                   />
                 </div>
 
@@ -144,8 +144,8 @@ export function FileTypeRegistry({ config, onConfigChange }: FileTypeRegistryPro
                       onClick={() => setSelectedCategory(category)}
                       className={
                         selectedCategory === category
-                          ? "bg-purple-600 hover:bg-purple-700"
-                          : "border-purple-600 text-purple-300 bg-transparent hover:bg-purple-800/30"
+                          ? "bg-purple-400 hover:bg-purple-500"
+                          : "border-purple-300 text-purple-700 bg-transparent hover:bg-purple-50"
                       }
                     >
                       {category.charAt(0).toUpperCase() + category.slice(1)}
@@ -155,37 +155,37 @@ export function FileTypeRegistry({ config, onConfigChange }: FileTypeRegistryPro
               </div>
 
               {/* File Types Table */}
-              <Card className="bg-purple-800/30 border-purple-600">
+              <Card className="bg-purple-50 border-purple-300">
                 <CardContent className="p-0">
                   <Table>
                     <TableHeader>
-                      <TableRow className="border-purple-700">
-                        <TableHead className="text-purple-300">Type</TableHead>
-                        <TableHead className="text-purple-300">MIME Type</TableHead>
-                        <TableHead className="text-purple-300">Extensions</TableHead>
-                        <TableHead className="text-purple-300">Category</TableHead>
-                        <TableHead className="text-purple-300">Engines</TableHead>
-                        <TableHead className="text-purple-300">Actions</TableHead>
+                      <TableRow className="border-purple-300">
+                        <TableHead className="text-purple-700">Type</TableHead>
+                        <TableHead className="text-purple-700">MIME Type</TableHead>
+                        <TableHead className="text-purple-700">Extensions</TableHead>
+                        <TableHead className="text-purple-700">Category</TableHead>
+                        <TableHead className="text-purple-700">Engines</TableHead>
+                        <TableHead className="text-purple-700">Actions</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {filteredFileTypes.map((fileType) => (
-                        <TableRow key={fileType.id} className="border-purple-700 hover:bg-purple-800/30">
+                        <TableRow key={fileType.id} className="border-purple-300 hover:bg-purple-50">
                           <TableCell>
                             <div>
-                              <p className="font-medium text-white">{fileType.name}</p>
-                              <p className="text-sm text-purple-400">{fileType.description}</p>
+                              <p className="font-medium text-purple-900">{fileType.name}</p>
+                              <p className="text-sm text-purple-600">{fileType.description}</p>
                             </div>
                           </TableCell>
                           <TableCell>
-                            <code className="text-purple-300 bg-purple-900/50 px-2 py-1 rounded text-xs">
+                            <code className="text-purple-700 bg-purple-50 px-2 py-1 rounded text-xs">
                               {fileType.mime_type}
                             </code>
                           </TableCell>
                           <TableCell>
                             <div className="flex flex-wrap gap-1">
                               {fileType.extensions.map((ext) => (
-                                <Badge key={ext} variant="outline" className="border-purple-600 text-purple-300">
+                                <Badge key={ext} variant="outline" className="border-purple-300 text-purple-700">
                                   .{ext}
                                 </Badge>
                               ))}
@@ -197,7 +197,7 @@ export function FileTypeRegistry({ config, onConfigChange }: FileTypeRegistryPro
                           <TableCell>
                             <div className="flex flex-wrap gap-1">
                               {fileType.engines.map((engine) => (
-                                <Badge key={engine} variant="secondary" className="bg-purple-700 text-purple-100">
+                                <Badge key={engine} variant="secondary" className="bg-purple-500 text-purple-500">
                                   {engine}
                                 </Badge>
                               ))}
@@ -205,7 +205,7 @@ export function FileTypeRegistry({ config, onConfigChange }: FileTypeRegistryPro
                           </TableCell>
                           <TableCell>
                             <div className="flex gap-1">
-                              <Button variant="ghost" size="sm" className="text-purple-300 hover:text-white">
+                              <Button variant="ghost" size="sm" className="text-purple-700 hover:text-purple-900">
                                 <Edit className="w-4 h-4" />
                               </Button>
                               <Button variant="ghost" size="sm" className="text-red-400 hover:text-red-300">
@@ -222,35 +222,35 @@ export function FileTypeRegistry({ config, onConfigChange }: FileTypeRegistryPro
             </TabsContent>
 
             <TabsContent value="signatures" className="space-y-4">
-              <Card className="bg-purple-800/30 border-purple-600">
+              <Card className="bg-purple-50 border-purple-300">
                 <CardHeader>
-                  <CardTitle className="text-white text-lg">Magic Byte Signatures</CardTitle>
-                  <CardDescription className="text-purple-300">
+                  <CardTitle className="text-purple-900 text-lg">Magic Byte Signatures</CardTitle>
+                  <CardDescription className="text-purple-700">
                     Binary signatures used for file type detection
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {filteredFileTypes.map((fileType) => (
-                    <div key={fileType.id} className="p-4 bg-purple-900/30 rounded border border-purple-700">
+                    <div key={fileType.id} className="p-4 bg-purple-50 rounded border border-purple-300">
                       <div className="flex items-center justify-between mb-2">
-                        <h3 className="text-white font-medium">{fileType.name}</h3>
+                        <h3 className="text-purple-900 font-medium">{fileType.name}</h3>
                         <Badge className={getCategoryColor(fileType.category)}>{fileType.category}</Badge>
                       </div>
                       <div className="space-y-2">
                         <div>
-                          <Label className="text-purple-300 text-sm">Magic Bytes</Label>
-                          <code className="block text-purple-200 bg-purple-900/50 p-2 rounded font-mono text-sm">
+                          <Label className="text-purple-700 text-sm">Magic Bytes</Label>
+                          <code className="block text-purple-600 bg-purple-50 p-2 rounded font-mono text-sm">
                             {fileType.magic_bytes}
                           </code>
                         </div>
                         <div className="flex items-center gap-4">
                           <div>
-                            <Label className="text-purple-300 text-sm">Confidence Threshold</Label>
-                            <p className="text-white">{(fileType.confidence_threshold * 100).toFixed(0)}%</p>
+                            <Label className="text-purple-700 text-sm">Confidence Threshold</Label>
+                            <p className="text-purple-900">{(fileType.confidence_threshold * 100).toFixed(0)}%</p>
                           </div>
                           <div>
-                            <Label className="text-purple-300 text-sm">Detection Engines</Label>
-                            <p className="text-white">{fileType.engines.join(", ")}</p>
+                            <Label className="text-purple-700 text-sm">Detection Engines</Label>
+                            <p className="text-purple-900">{fileType.engines.join(", ")}</p>
                           </div>
                         </div>
                       </div>
@@ -261,53 +261,53 @@ export function FileTypeRegistry({ config, onConfigChange }: FileTypeRegistryPro
             </TabsContent>
 
             <TabsContent value="custom" className="space-y-4">
-              <Card className="bg-purple-800/30 border-purple-600">
+              <Card className="bg-purple-50 border-purple-300">
                 <CardHeader>
-                  <CardTitle className="text-white text-lg">Custom File Types</CardTitle>
-                  <CardDescription className="text-purple-300">Define custom file type detection rules</CardDescription>
+                  <CardTitle className="text-purple-900 text-lg">Custom File Types</CardTitle>
+                  <CardDescription className="text-purple-700">Define custom file type detection rules</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label className="text-purple-300">Type Name</Label>
+                      <Label className="text-purple-700">Type Name</Label>
                       <Input
                         placeholder="Custom Document"
-                        className="bg-purple-900/50 border-purple-600 text-white placeholder-purple-400"
+                        className="bg-purple-50 border-purple-300 text-purple-900 placeholder-purple-400"
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label className="text-purple-300">MIME Type</Label>
+                      <Label className="text-purple-700">MIME Type</Label>
                       <Input
                         placeholder="application/x-custom"
-                        className="bg-purple-900/50 border-purple-600 text-white placeholder-purple-400"
+                        className="bg-purple-50 border-purple-300 text-purple-900 placeholder-purple-400"
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label className="text-purple-300">File Extensions</Label>
+                      <Label className="text-purple-700">File Extensions</Label>
                       <Input
                         placeholder="cust,custom"
-                        className="bg-purple-900/50 border-purple-600 text-white placeholder-purple-400"
+                        className="bg-purple-50 border-purple-300 text-purple-900 placeholder-purple-400"
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label className="text-purple-300">Magic Bytes (Hex)</Label>
+                      <Label className="text-purple-700">Magic Bytes (Hex)</Label>
                       <Input
                         placeholder="\\x43\\x55\\x53\\x54"
-                        className="bg-purple-900/50 border-purple-600 text-white placeholder-purple-400"
+                        className="bg-purple-50 border-purple-300 text-purple-900 placeholder-purple-400"
                       />
                     </div>
                   </div>
 
                   <div className="flex gap-2">
-                    <Button className="bg-purple-600 hover:bg-purple-700">
+                    <Button className="bg-purple-400 hover:bg-purple-500">
                       <Plus className="w-4 h-4 mr-2" />
                       Add Custom Type
                     </Button>
-                    <Button variant="outline" className="border-purple-600 text-purple-300 bg-transparent">
+                    <Button variant="outline" className="border-purple-300 text-purple-700 bg-transparent">
                       <Upload className="w-4 h-4 mr-2" />
                       Import Definitions
                     </Button>
-                    <Button variant="outline" className="border-purple-600 text-purple-300 bg-transparent">
+                    <Button variant="outline" className="border-purple-300 text-purple-700 bg-transparent">
                       <Download className="w-4 h-4 mr-2" />
                       Export Registry
                     </Button>
