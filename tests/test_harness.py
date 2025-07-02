@@ -118,10 +118,21 @@ def test_detect_async(file_name: str, expect: dict, results_log: list):
     assert cand.extension == expect["extension"]
 
 
-def test_watch_requires_watchdog(monkeypatch, tmp_path):
-    """watch() should fail when watchdog is unavailable."""
+def test_watch_polling(monkeypatch, tmp_path):
+    """watch() should fall back to polling when watchdog is unavailable."""
     import probium.watch as w
 
     monkeypatch.setattr(w, "USING_STUB", True)
-    with pytest.raises(RuntimeError):
-        w.watch(tmp_path, lambda p, r: None)
+
+    paths: list[Path] = []
+    wc = w.watch(tmp_path, lambda p, r: paths.append(p), interval=0.1)
+    try:
+        f = tmp_path / "foo.txt"
+        f.write_text("hi")
+        deadline = time.time() + 2
+        while not paths and time.time() < deadline:
+            time.sleep(0.05)
+    finally:
+        wc.stop()
+
+    assert paths and paths[0] == f

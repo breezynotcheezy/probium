@@ -21,10 +21,9 @@ pip install probium
 ```
 
 If you are working from a source checkout run ``pip install -e .`` instead.
-This includes the ``watchdog`` package so ``probium watch`` can report file
-system events.
-
-If the watch command warns that ``watchdog`` is missing, install it manually:
+The optional ``watchdog`` package enables native file system events for the
+``probium watch`` command. Without it, a portable polling loop is used which is
+slightly slower. To enable native events install ``watchdog`` manually:
 
 ```bash
 pip install watchdog
