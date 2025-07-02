@@ -126,16 +126,16 @@ export function RealTimeMonitor({ systemStats, isScanning }: RealTimeMonitorProp
     <div className="space-y-6">
       {/* Real-time Status Overview */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card className="bg-purple-900/30 border-purple-700">
+        <Card className="bg-purple-50 border-purple-300">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
               <Cpu className="w-8 h-8 text-blue-400" />
               <div>
-                <p className="text-sm text-purple-300">CPU Usage</p>
+                <p className="text-sm text-purple-700">CPU Usage</p>
                 <p className="text-2xl font-bold text-white">{systemStats.cpu_usage.toFixed(1)}%</p>
               </div>
             </div>
-            <div className="mt-2 w-full bg-purple-800/50 rounded-full h-2">
+            <div className="mt-2 w-full bg-purple-100 rounded-full h-2">
               <div
                 className="bg-blue-500 h-2 rounded-full transition-all duration-500"
                 style={{ width: `${systemStats.cpu_usage}%` }}
@@ -144,16 +144,16 @@ export function RealTimeMonitor({ systemStats, isScanning }: RealTimeMonitorProp
           </CardContent>
         </Card>
 
-        <Card className="bg-purple-900/30 border-purple-700">
+        <Card className="bg-purple-50 border-purple-300">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
               <MemoryStick className="w-8 h-8 text-green-400" />
               <div>
-                <p className="text-sm text-purple-300">Memory</p>
+                <p className="text-sm text-purple-700">Memory</p>
                 <p className="text-2xl font-bold text-white">{systemStats.memory_usage.toFixed(1)}%</p>
               </div>
             </div>
-            <div className="mt-2 w-full bg-purple-800/50 rounded-full h-2">
+            <div className="mt-2 w-full bg-purple-100 rounded-full h-2">
               <div
                 className="bg-green-500 h-2 rounded-full transition-all duration-500"
                 style={{ width: `${systemStats.memory_usage}%` }}
@@ -162,57 +162,57 @@ export function RealTimeMonitor({ systemStats, isScanning }: RealTimeMonitorProp
           </CardContent>
         </Card>
 
-        <Card className="bg-purple-900/30 border-purple-700">
+        <Card className="bg-purple-50 border-purple-300">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <Activity className="w-8 h-8 text-purple-400" />
+              <Activity className="w-8 h-8 text-purple-600" />
               <div>
-                <p className="text-sm text-purple-300">Active Threads</p>
+                <p className="text-sm text-purple-700">Active Threads</p>
                 <p className="text-2xl font-bold text-white">{systemStats.active_threads}</p>
               </div>
             </div>
             <div className="mt-2 flex items-center gap-1">
               <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse" />
-              <span className="text-xs text-purple-400">{isScanning ? "Scanning" : "Idle"}</span>
+              <span className="text-xs text-purple-600">{isScanning ? "Scanning" : "Idle"}</span>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-purple-900/30 border-purple-700">
+        <Card className="bg-purple-50 border-purple-300">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
               <Network className="w-8 h-8 text-yellow-400" />
               <div>
-                <p className="text-sm text-purple-300">Connections</p>
+                <p className="text-sm text-purple-700">Connections</p>
                 <p className="text-2xl font-bold text-white">{Math.round(activeConnections)}</p>
               </div>
             </div>
-            <div className="mt-2 text-xs text-purple-400">API endpoints active</div>
+            <div className="mt-2 text-xs text-purple-600">API endpoints active</div>
           </CardContent>
         </Card>
       </div>
 
       {/* Real-time Monitoring Dashboard */}
-      <Card className="bg-purple-900/30 border-purple-700">
+      <Card className="bg-purple-50 border-purple-300">
         <CardHeader>
           <CardTitle className="text-white flex items-center gap-2">
             <Eye className="w-5 h-5" />
             Live System Monitor
           </CardTitle>
-          <CardDescription className="text-purple-300">
+          <CardDescription className="text-purple-700">
             Real-time system activity and performance monitoring
           </CardDescription>
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="logs" className="space-y-4">
-            <TabsList className="grid w-full grid-cols-3 bg-purple-800/50">
+            <TabsList className="grid w-full grid-cols-3 bg-purple-100">
               <TabsTrigger value="logs">Activity Logs</TabsTrigger>
               <TabsTrigger value="performance">Performance</TabsTrigger>
               <TabsTrigger value="engines">Engine Status</TabsTrigger>
             </TabsList>
 
             <TabsContent value="logs" className="space-y-4">
-              <Card className="bg-purple-800/30 border-purple-600">
+              <Card className="bg-purple-50 border-purple-300">
                 <CardHeader>
                   <CardTitle className="text-white text-lg">Live Activity Feed</CardTitle>
                   <div className="flex items-center gap-2">
@@ -228,15 +228,15 @@ export function RealTimeMonitor({ systemStats, isScanning }: RealTimeMonitorProp
                         return (
                           <div
                             key={log.id}
-                            className="flex items-start gap-3 p-3 bg-purple-900/30 rounded border border-purple-700 hover:bg-purple-900/50 transition-colors"
+                            className="flex items-start gap-3 p-3 bg-purple-50 rounded border border-purple-300 hover:bg-purple-50 transition-colors"
                           >
                             <IconComponent className={`w-4 h-4 mt-0.5 ${getLevelColor(log.level)}`} />
                             <div className="flex-1 min-w-0">
                               <div className="flex items-center gap-2 mb-1">
-                                <Badge variant="outline" className="border-purple-600 text-purple-300 text-xs">
+                                <Badge variant="outline" className="border-purple-300 text-purple-700 text-xs">
                                   {log.component}
                                 </Badge>
-                                <span className="text-xs text-purple-400">
+                                <span className="text-xs text-purple-600">
                                   {new Date(log.timestamp).toLocaleTimeString()}
                                 </span>
                               </div>
@@ -253,17 +253,17 @@ export function RealTimeMonitor({ systemStats, isScanning }: RealTimeMonitorProp
 
             <TabsContent value="performance" className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Card className="bg-purple-800/30 border-purple-600">
+                <Card className="bg-purple-50 border-purple-300">
                   <CardHeader>
                     <CardTitle className="text-white text-lg">Resource Usage</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="space-y-2">
                       <div className="flex justify-between">
-                        <span className="text-purple-300">CPU</span>
+                        <span className="text-purple-700">CPU</span>
                         <span className="text-white">{systemStats.cpu_usage.toFixed(1)}%</span>
                       </div>
-                      <div className="w-full bg-purple-900/50 rounded-full h-2">
+                      <div className="w-full bg-purple-50 rounded-full h-2">
                         <div
                           className="bg-blue-500 h-2 rounded-full transition-all duration-500"
                           style={{ width: `${systemStats.cpu_usage}%` }}
@@ -273,10 +273,10 @@ export function RealTimeMonitor({ systemStats, isScanning }: RealTimeMonitorProp
 
                     <div className="space-y-2">
                       <div className="flex justify-between">
-                        <span className="text-purple-300">Memory</span>
+                        <span className="text-purple-700">Memory</span>
                         <span className="text-white">{systemStats.memory_usage.toFixed(1)}%</span>
                       </div>
-                      <div className="w-full bg-purple-900/50 rounded-full h-2">
+                      <div className="w-full bg-purple-50 rounded-full h-2">
                         <div
                           className="bg-green-500 h-2 rounded-full transition-all duration-500"
                           style={{ width: `${systemStats.memory_usage}%` }}
@@ -286,10 +286,10 @@ export function RealTimeMonitor({ systemStats, isScanning }: RealTimeMonitorProp
 
                     <div className="space-y-2">
                       <div className="flex justify-between">
-                        <span className="text-purple-300">Disk</span>
+                        <span className="text-purple-700">Disk</span>
                         <span className="text-white">{systemStats.disk_usage.toFixed(1)}%</span>
                       </div>
-                      <div className="w-full bg-purple-900/50 rounded-full h-2">
+                      <div className="w-full bg-purple-50 rounded-full h-2">
                         <div
                           className="bg-yellow-500 h-2 rounded-full transition-all duration-500"
                           style={{ width: `${systemStats.disk_usage}%` }}
@@ -299,25 +299,25 @@ export function RealTimeMonitor({ systemStats, isScanning }: RealTimeMonitorProp
                   </CardContent>
                 </Card>
 
-                <Card className="bg-purple-800/30 border-purple-600">
+                <Card className="bg-purple-50 border-purple-300">
                   <CardHeader>
                     <CardTitle className="text-white text-lg">System Health</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="text-purple-300">Overall Status</span>
+                      <span className="text-purple-700">Overall Status</span>
                       <Badge className="bg-green-700">Healthy</Badge>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-purple-300">Uptime</span>
+                      <span className="text-purple-700">Uptime</span>
                       <span className="text-white">24h 15m</span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-purple-300">Total Scans</span>
+                      <span className="text-purple-700">Total Scans</span>
                       <span className="text-white">{systemStats.total_scans}</span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-purple-300">Active Engines</span>
+                      <span className="text-purple-700">Active Engines</span>
                       <span className="text-white">{Object.keys(systemStats.engine_stats).length}</span>
                     </div>
                   </CardContent>
@@ -326,7 +326,7 @@ export function RealTimeMonitor({ systemStats, isScanning }: RealTimeMonitorProp
             </TabsContent>
 
             <TabsContent value="engines" className="space-y-4">
-              <Card className="bg-purple-800/30 border-purple-600">
+              <Card className="bg-purple-50 border-purple-300">
                 <CardHeader>
                   <CardTitle className="text-white text-lg">Engine Status</CardTitle>
                 </CardHeader>
@@ -335,16 +335,16 @@ export function RealTimeMonitor({ systemStats, isScanning }: RealTimeMonitorProp
                     {Object.entries(systemStats.engine_stats).map(([engineName, stats]) => (
                       <div
                         key={engineName}
-                        className="flex items-center justify-between p-3 bg-purple-900/30 rounded border border-purple-700"
+                        className="flex items-center justify-between p-3 bg-purple-50 rounded border border-purple-300"
                       >
                         <div className="flex items-center gap-3">
                           <div className="w-2 h-2 bg-green-400 rounded-full" />
-                          <span className="text-purple-300 capitalize">{engineName}</span>
+                          <span className="text-purple-700 capitalize">{engineName}</span>
                         </div>
                         <div className="flex items-center gap-4">
                           <div className="text-right">
                             <p className="text-white text-sm">{stats.scans_completed} scans</p>
-                            <p className="text-purple-400 text-xs">
+                            <p className="text-purple-600 text-xs">
                               {stats.last_used ? new Date(stats.last_used).toLocaleTimeString() : "Never"}
                             </p>
                           </div>

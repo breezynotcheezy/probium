@@ -125,48 +125,48 @@ export function PerformanceProfiler({ results, systemStats }: PerformanceProfile
     <div className="space-y-6">
       {/* Performance Overview */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card className="bg-purple-900/30 border-purple-700">
+        <Card className="bg-purple-50 border-purple-300">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
               <Clock className="w-8 h-8 text-blue-400" />
               <div>
-                <p className="text-sm text-purple-300">Avg Scan Time</p>
+                <p className="text-sm text-purple-700">Avg Scan Time</p>
                 <p className="text-2xl font-bold text-white">{performanceMetrics.avgScanTime.toFixed(2)}s</p>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-purple-900/30 border-purple-700">
+        <Card className="bg-purple-50 border-purple-300">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
               <TrendingUp className="w-8 h-8 text-green-400" />
               <div>
-                <p className="text-sm text-purple-300">Throughput</p>
+                <p className="text-sm text-purple-700">Throughput</p>
                 <p className="text-2xl font-bold text-white">{performanceMetrics.throughput.toFixed(1)} f/s</p>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-purple-900/30 border-purple-700">
+        <Card className="bg-purple-50 border-purple-300">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <Gauge className="w-8 h-8 text-purple-400" />
+              <Gauge className="w-8 h-8 text-purple-600" />
               <div>
-                <p className="text-sm text-purple-300">Efficiency Score</p>
+                <p className="text-sm text-purple-700">Efficiency Score</p>
                 <p className="text-2xl font-bold text-white">{getEfficiencyScore()}%</p>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-purple-900/30 border-purple-700">
+        <Card className="bg-purple-50 border-purple-300">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
               <AlertTriangle className="w-8 h-8 text-yellow-400" />
               <div>
-                <p className="text-sm text-purple-300">Bottlenecks</p>
+                <p className="text-sm text-purple-700">Bottlenecks</p>
                 <p className="text-2xl font-bold text-white">{performanceMetrics.bottlenecks.length}</p>
               </div>
             </div>
@@ -175,19 +175,19 @@ export function PerformanceProfiler({ results, systemStats }: PerformanceProfile
       </div>
 
       {/* Performance Analysis */}
-      <Card className="bg-purple-900/30 border-purple-700">
+      <Card className="bg-purple-50 border-purple-300">
         <CardHeader>
           <CardTitle className="text-white flex items-center gap-2">
             <Gauge className="w-5 h-5" />
             Performance Profiler
           </CardTitle>
-          <CardDescription className="text-purple-300">
+          <CardDescription className="text-purple-700">
             Detailed performance analysis and optimization recommendations
           </CardDescription>
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="overview" className="space-y-4">
-            <TabsList className="grid w-full grid-cols-4 bg-purple-800/50">
+            <TabsList className="grid w-full grid-cols-4 bg-purple-100">
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="engines">Engine Performance</TabsTrigger>
               <TabsTrigger value="bottlenecks">Bottlenecks</TabsTrigger>
@@ -196,14 +196,14 @@ export function PerformanceProfiler({ results, systemStats }: PerformanceProfile
 
             <TabsContent value="overview" className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <Card className="bg-purple-800/30 border-purple-600">
+                <Card className="bg-purple-50 border-purple-300">
                   <CardHeader>
                     <CardTitle className="text-white text-lg">Scan Performance</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="space-y-3">
                       <div className="flex justify-between">
-                        <span className="text-purple-300">Average Time</span>
+                        <span className="text-purple-700">Average Time</span>
                         <span
                           className={`font-medium ${getPerformanceColor(performanceMetrics.avgScanTime, { good: 0.5, warning: 1.0 })}`}
                         >
@@ -211,22 +211,22 @@ export function PerformanceProfiler({ results, systemStats }: PerformanceProfile
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-purple-300">Fastest Scan</span>
+                        <span className="text-purple-700">Fastest Scan</span>
                         <span className="text-green-400 font-medium">{performanceMetrics.fastestScan.toFixed(2)}s</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-purple-300">Slowest Scan</span>
+                        <span className="text-purple-700">Slowest Scan</span>
                         <span className="text-red-400 font-medium">{performanceMetrics.slowestScan.toFixed(2)}s</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-purple-300">Total Time</span>
+                        <span className="text-purple-700">Total Time</span>
                         <span className="text-white font-medium">{performanceMetrics.totalScanTime.toFixed(2)}s</span>
                       </div>
                     </div>
                   </CardContent>
                 </Card>
 
-                <Card className="bg-purple-800/30 border-purple-600">
+                <Card className="bg-purple-50 border-purple-300">
                   <CardHeader>
                     <CardTitle className="text-white text-lg">System Resources</CardTitle>
                   </CardHeader>
@@ -234,36 +234,36 @@ export function PerformanceProfiler({ results, systemStats }: PerformanceProfile
                     <div className="space-y-3">
                       <div>
                         <div className="flex justify-between mb-1">
-                          <span className="text-purple-300">CPU Usage</span>
+                          <span className="text-purple-700">CPU Usage</span>
                           <span
                             className={`font-medium ${getPerformanceColor(systemStats.cpu_usage, { good: 50, warning: 80 })}`}
                           >
                             {systemStats.cpu_usage.toFixed(1)}%
                           </span>
                         </div>
-                        <Progress value={systemStats.cpu_usage} className="bg-purple-900" />
+                        <Progress value={systemStats.cpu_usage} className="bg-purple-200" />
                       </div>
                       <div>
                         <div className="flex justify-between mb-1">
-                          <span className="text-purple-300">Memory Usage</span>
+                          <span className="text-purple-700">Memory Usage</span>
                           <span
                             className={`font-medium ${getPerformanceColor(systemStats.memory_usage, { good: 60, warning: 85 })}`}
                           >
                             {systemStats.memory_usage.toFixed(1)}%
                           </span>
                         </div>
-                        <Progress value={systemStats.memory_usage} className="bg-purple-900" />
+                        <Progress value={systemStats.memory_usage} className="bg-purple-200" />
                       </div>
                       <div>
                         <div className="flex justify-between mb-1">
-                          <span className="text-purple-300">Disk Usage</span>
+                          <span className="text-purple-700">Disk Usage</span>
                           <span
                             className={`font-medium ${getPerformanceColor(systemStats.disk_usage, { good: 70, warning: 90 })}`}
                           >
                             {systemStats.disk_usage.toFixed(1)}%
                           </span>
                         </div>
-                        <Progress value={systemStats.disk_usage} className="bg-purple-900" />
+                        <Progress value={systemStats.disk_usage} className="bg-purple-200" />
                       </div>
                     </div>
                   </CardContent>
@@ -272,7 +272,7 @@ export function PerformanceProfiler({ results, systemStats }: PerformanceProfile
             </TabsContent>
 
             <TabsContent value="engines" className="space-y-4">
-              <Card className="bg-purple-800/30 border-purple-600">
+              <Card className="bg-purple-50 border-purple-300">
                 <CardHeader>
                   <CardTitle className="text-white text-lg">Engine Performance Analysis</CardTitle>
                 </CardHeader>
@@ -281,19 +281,19 @@ export function PerformanceProfiler({ results, systemStats }: PerformanceProfile
                     {Object.entries(performanceMetrics.enginePerformance).map(([engine, perf]) => (
                       <div
                         key={engine}
-                        className="flex items-center justify-between p-3 bg-purple-900/30 rounded border border-purple-700"
+                        className="flex items-center justify-between p-3 bg-purple-50 rounded border border-purple-300"
                       >
                         <div className="flex items-center gap-3">
-                          <Cpu className="w-5 h-5 text-purple-400" />
+                          <Cpu className="w-5 h-5 text-purple-600" />
                           <div>
                             <p className="text-white font-medium capitalize">{engine}</p>
-                            <p className="text-purple-400 text-sm">{perf.count} scans</p>
+                            <p className="text-purple-600 text-sm">{perf.count} scans</p>
                           </div>
                         </div>
                         <div className="flex items-center gap-4">
                           <div className="text-right">
                             <p className="text-white text-sm">{perf.avgTime.toFixed(3)}s avg</p>
-                            <p className="text-purple-400 text-xs">{perf.efficiency.toFixed(1)} f/s</p>
+                            <p className="text-purple-600 text-xs">{perf.efficiency.toFixed(1)} f/s</p>
                           </div>
                           <Badge
                             className={
@@ -311,7 +311,7 @@ export function PerformanceProfiler({ results, systemStats }: PerformanceProfile
             </TabsContent>
 
             <TabsContent value="bottlenecks" className="space-y-4">
-              <Card className="bg-purple-800/30 border-purple-600">
+              <Card className="bg-purple-50 border-purple-300">
                 <CardHeader>
                   <CardTitle className="text-white text-lg">Performance Bottlenecks</CardTitle>
                 </CardHeader>
@@ -331,7 +331,7 @@ export function PerformanceProfiler({ results, systemStats }: PerformanceProfile
                       <div className="text-center py-8">
                         <CheckCircle className="w-12 h-12 text-green-400 mx-auto mb-4" />
                         <h3 className="text-lg font-semibold text-white mb-2">No Bottlenecks Detected</h3>
-                        <p className="text-purple-300">System is performing optimally</p>
+                        <p className="text-purple-700">System is performing optimally</p>
                       </div>
                     )}
                   </div>
@@ -340,7 +340,7 @@ export function PerformanceProfiler({ results, systemStats }: PerformanceProfile
             </TabsContent>
 
             <TabsContent value="optimization" className="space-y-4">
-              <Card className="bg-purple-800/30 border-purple-600">
+              <Card className="bg-purple-50 border-purple-300">
                 <CardHeader>
                   <CardTitle className="text-white text-lg">Optimization Recommendations</CardTitle>
                 </CardHeader>
@@ -360,24 +360,24 @@ export function PerformanceProfiler({ results, systemStats }: PerformanceProfile
                       <div className="text-center py-8">
                         <CheckCircle className="w-12 h-12 text-green-400 mx-auto mb-4" />
                         <h3 className="text-lg font-semibold text-white mb-2">System Optimized</h3>
-                        <p className="text-purple-300">No optimization recommendations at this time</p>
+                        <p className="text-purple-700">No optimization recommendations at this time</p>
                       </div>
                     )}
                   </div>
 
-                  <div className="mt-6 p-4 bg-purple-900/30 border border-purple-600 rounded">
+                  <div className="mt-6 p-4 bg-purple-50 border border-purple-300 rounded">
                     <h4 className="text-white font-medium mb-3">Quick Optimization Actions</h4>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                      <button className="p-2 bg-purple-700 hover:bg-purple-600 rounded text-white text-sm transition-colors">
+                      <button className="p-2 bg-purple-500 hover:bg-purple-400 rounded text-white text-sm transition-colors">
                         Optimize Thread Pool
                       </button>
-                      <button className="p-2 bg-purple-700 hover:bg-purple-600 rounded text-white text-sm transition-colors">
+                      <button className="p-2 bg-purple-500 hover:bg-purple-400 rounded text-white text-sm transition-colors">
                         Clear Cache
                       </button>
-                      <button className="p-2 bg-purple-700 hover:bg-purple-600 rounded text-white text-sm transition-colors">
+                      <button className="p-2 bg-purple-500 hover:bg-purple-400 rounded text-white text-sm transition-colors">
                         Disable Slow Engines
                       </button>
-                      <button className="p-2 bg-purple-700 hover:bg-purple-600 rounded text-white text-sm transition-colors">
+                      <button className="p-2 bg-purple-500 hover:bg-purple-400 rounded text-white text-sm transition-colors">
                         Generate Report
                       </button>
                     </div>

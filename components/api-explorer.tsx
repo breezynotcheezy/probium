@@ -139,19 +139,19 @@ export function APIExplorer({ config }: APIExplorerProps) {
 
   return (
     <div className="space-y-6">
-      <Card className="bg-purple-900/30 border-purple-700">
+      <Card className="bg-purple-50 border-purple-300">
         <CardHeader>
           <CardTitle className="text-white flex items-center gap-2">
             <Code className="w-5 h-5" />
             Probium API Explorer
           </CardTitle>
-          <CardDescription className="text-purple-300">
+          <CardDescription className="text-purple-700">
             Interactive API documentation and testing interface
           </CardDescription>
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="endpoints" className="space-y-4">
-            <TabsList className="grid w-full grid-cols-4 bg-purple-800/50">
+            <TabsList className="grid w-full grid-cols-4 bg-purple-100">
               <TabsTrigger value="endpoints">Endpoints</TabsTrigger>
               <TabsTrigger value="examples">Examples</TabsTrigger>
               <TabsTrigger value="sdk">SDK</TabsTrigger>
@@ -160,18 +160,18 @@ export function APIExplorer({ config }: APIExplorerProps) {
 
             <TabsContent value="endpoints" className="space-y-4">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <Card className="bg-purple-800/30 border-purple-600">
+                <Card className="bg-purple-50 border-purple-300">
                   <CardHeader>
                     <CardTitle className="text-white text-lg">API Request</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="space-y-2">
-                      <label className="text-purple-300 text-sm">Endpoint</label>
+                      <label className="text-purple-700 text-sm">Endpoint</label>
                       <Select value={selectedEndpoint} onValueChange={setSelectedEndpoint}>
-                        <SelectTrigger className="bg-purple-900/50 border-purple-600 text-white">
+                        <SelectTrigger className="bg-purple-50 border-purple-300 text-white">
                           <SelectValue />
                         </SelectTrigger>
-                        <SelectContent className="bg-purple-800 border-purple-600">
+                        <SelectContent className="bg-purple-200 border-purple-300">
                           {Object.entries(apiEndpoints).map(([key, endpoint]) => (
                             <SelectItem key={key} value={key} className="text-white">
                               <div className="flex items-center gap-2">
@@ -189,26 +189,26 @@ export function APIExplorer({ config }: APIExplorerProps) {
                     </div>
 
                     <div className="space-y-2">
-                      <label className="text-purple-300 text-sm">Request Body</label>
+                      <label className="text-purple-700 text-sm">Request Body</label>
                       <Textarea
                         value={
                           requestBody ||
                           JSON.stringify(apiEndpoints[selectedEndpoint as keyof typeof apiEndpoints].example, null, 2)
                         }
                         onChange={(e) => setRequestBody(e.target.value)}
-                        className="bg-purple-900/50 border-purple-600 text-white font-mono text-sm"
+                        className="bg-purple-50 border-purple-300 text-white font-mono text-sm"
                         rows={10}
                       />
                     </div>
 
-                    <Button onClick={executeRequest} className="w-full bg-purple-600 hover:bg-purple-700">
+                    <Button onClick={executeRequest} className="w-full bg-purple-400 hover:bg-purple-500">
                       <Play className="w-4 h-4 mr-2" />
                       Execute Request
                     </Button>
                   </CardContent>
                 </Card>
 
-                <Card className="bg-purple-800/30 border-purple-600">
+                <Card className="bg-purple-50 border-purple-300">
                   <CardHeader>
                     <CardTitle className="text-white text-lg flex items-center justify-between">
                       API Response
@@ -216,7 +216,7 @@ export function APIExplorer({ config }: APIExplorerProps) {
                         variant="ghost"
                         size="sm"
                         onClick={() => copyToClipboard(response)}
-                        className="text-purple-300"
+                        className="text-purple-700"
                       >
                         <Copy className="w-4 h-4" />
                       </Button>
@@ -226,12 +226,12 @@ export function APIExplorer({ config }: APIExplorerProps) {
                     <div className="space-y-2">
                       <div className="flex items-center gap-2">
                         <Badge className="bg-green-700">200 OK</Badge>
-                        <span className="text-purple-300 text-sm">application/json</span>
+                        <span className="text-purple-700 text-sm">application/json</span>
                       </div>
                       <Textarea
                         value={response}
                         readOnly
-                        className="bg-purple-900/50 border-purple-600 text-white font-mono text-sm"
+                        className="bg-purple-50 border-purple-300 text-white font-mono text-sm"
                         rows={15}
                       />
                     </div>
@@ -239,7 +239,7 @@ export function APIExplorer({ config }: APIExplorerProps) {
                 </Card>
               </div>
 
-              <Card className="bg-purple-800/30 border-purple-600">
+              <Card className="bg-purple-50 border-purple-300">
                 <CardHeader>
                   <CardTitle className="text-white text-lg">Endpoint Details</CardTitle>
                 </CardHeader>
@@ -251,11 +251,11 @@ export function APIExplorer({ config }: APIExplorerProps) {
                       >
                         {apiEndpoints[selectedEndpoint as keyof typeof apiEndpoints].method}
                       </Badge>
-                      <code className="text-purple-300 bg-purple-900/50 px-2 py-1 rounded">
+                      <code className="text-purple-700 bg-purple-50 px-2 py-1 rounded">
                         {apiEndpoints[selectedEndpoint as keyof typeof apiEndpoints].path}
                       </code>
                     </div>
-                    <p className="text-purple-200">
+                    <p className="text-purple-600">
                       {apiEndpoints[selectedEndpoint as keyof typeof apiEndpoints].description}
                     </p>
                   </div>
@@ -265,12 +265,12 @@ export function APIExplorer({ config }: APIExplorerProps) {
 
             <TabsContent value="examples" className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Card className="bg-purple-800/30 border-purple-600">
+                <Card className="bg-purple-50 border-purple-300">
                   <CardHeader>
                     <CardTitle className="text-white text-lg">Python Example</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <pre className="text-sm text-purple-200 bg-purple-900/50 p-4 rounded overflow-x-auto">
+                    <pre className="text-sm text-purple-600 bg-purple-50 p-4 rounded overflow-x-auto">
                       {`import requests
 import json
 
@@ -299,12 +299,12 @@ print(f"Confidence: {result['result']['confidence']}")
                   </CardContent>
                 </Card>
 
-                <Card className="bg-purple-800/30 border-purple-600">
+                <Card className="bg-purple-50 border-purple-300">
                   <CardHeader>
                     <CardTitle className="text-white text-lg">cURL Example</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <pre className="text-sm text-purple-200 bg-purple-900/50 p-4 rounded overflow-x-auto">
+                    <pre className="text-sm text-purple-600 bg-purple-50 p-4 rounded overflow-x-auto">
                       {`curl -X POST \\
   http://localhost:8000/api/v1/scan/file \\
   -H "Content-Type: multipart/form-data" \\
@@ -319,12 +319,12 @@ print(f"Confidence: {result['result']['confidence']}")
                   </CardContent>
                 </Card>
 
-                <Card className="bg-purple-800/30 border-purple-600">
+                <Card className="bg-purple-50 border-purple-300">
                   <CardHeader>
                     <CardTitle className="text-white text-lg">JavaScript Example</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <pre className="text-sm text-purple-200 bg-purple-900/50 p-4 rounded overflow-x-auto">
+                    <pre className="text-sm text-purple-600 bg-purple-50 p-4 rounded overflow-x-auto">
                       {`const formData = new FormData();
 formData.append('file', fileInput.files[0]);
 formData.append('engines', 'pdf,binary');
@@ -347,12 +347,12 @@ fetch('/api/v1/scan/file', {
                   </CardContent>
                 </Card>
 
-                <Card className="bg-purple-800/30 border-purple-600">
+                <Card className="bg-purple-50 border-purple-300">
                   <CardHeader>
                     <CardTitle className="text-white text-lg">Go Example</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <pre className="text-sm text-purple-200 bg-purple-900/50 p-4 rounded overflow-x-auto">
+                    <pre className="text-sm text-purple-600 bg-purple-50 p-4 rounded overflow-x-auto">
                       {`package main
 
 import (
@@ -393,7 +393,7 @@ func main() {
             </TabsContent>
 
             <TabsContent value="sdk" className="space-y-4">
-              <Card className="bg-purple-800/30 border-purple-600">
+              <Card className="bg-purple-50 border-purple-300">
                 <CardHeader>
                   <CardTitle className="text-white text-lg flex items-center gap-2">
                     <Download className="w-5 h-5" />
@@ -402,35 +402,35 @@ func main() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="p-4 bg-purple-900/30 rounded border border-purple-600">
+                    <div className="p-4 bg-purple-50 rounded border border-purple-300">
                       <h3 className="text-white font-medium mb-2">Python SDK</h3>
-                      <p className="text-purple-300 text-sm mb-3">Official Python client library</p>
-                      <code className="text-xs text-purple-200 bg-purple-900/50 px-2 py-1 rounded block mb-2">
+                      <p className="text-purple-700 text-sm mb-3">Official Python client library</p>
+                      <code className="text-xs text-purple-600 bg-purple-50 px-2 py-1 rounded block mb-2">
                         pip install probium-client
                       </code>
-                      <Button size="sm" className="w-full bg-purple-600 hover:bg-purple-700">
+                      <Button size="sm" className="w-full bg-purple-400 hover:bg-purple-500">
                         Download
                       </Button>
                     </div>
 
-                    <div className="p-4 bg-purple-900/30 rounded border border-purple-600">
+                    <div className="p-4 bg-purple-50 rounded border border-purple-300">
                       <h3 className="text-white font-medium mb-2">Node.js SDK</h3>
-                      <p className="text-purple-300 text-sm mb-3">JavaScript/TypeScript client</p>
-                      <code className="text-xs text-purple-200 bg-purple-900/50 px-2 py-1 rounded block mb-2">
+                      <p className="text-purple-700 text-sm mb-3">JavaScript/TypeScript client</p>
+                      <code className="text-xs text-purple-600 bg-purple-50 px-2 py-1 rounded block mb-2">
                         npm install @probium/client
                       </code>
-                      <Button size="sm" className="w-full bg-purple-600 hover:bg-purple-700">
+                      <Button size="sm" className="w-full bg-purple-400 hover:bg-purple-500">
                         Download
                       </Button>
                     </div>
 
-                    <div className="p-4 bg-purple-900/30 rounded border border-purple-600">
+                    <div className="p-4 bg-purple-50 rounded border border-purple-300">
                       <h3 className="text-white font-medium mb-2">Go SDK</h3>
-                      <p className="text-purple-300 text-sm mb-3">Go client library</p>
-                      <code className="text-xs text-purple-200 bg-purple-900/50 px-2 py-1 rounded block mb-2">
+                      <p className="text-purple-700 text-sm mb-3">Go client library</p>
+                      <code className="text-xs text-purple-600 bg-purple-50 px-2 py-1 rounded block mb-2">
                         go get github.com/probium/go-client
                       </code>
-                      <Button size="sm" className="w-full bg-purple-600 hover:bg-purple-700">
+                      <Button size="sm" className="w-full bg-purple-400 hover:bg-purple-500">
                         Download
                       </Button>
                     </div>
@@ -440,7 +440,7 @@ func main() {
             </TabsContent>
 
             <TabsContent value="docs" className="space-y-4">
-              <Card className="bg-purple-800/30 border-purple-600">
+              <Card className="bg-purple-50 border-purple-300">
                 <CardHeader>
                   <CardTitle className="text-white text-lg flex items-center gap-2">
                     <FileText className="w-5 h-5" />
@@ -449,30 +449,30 @@ func main() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-3">
-                    <div className="p-3 bg-purple-900/30 rounded border border-purple-600">
+                    <div className="p-3 bg-purple-50 rounded border border-purple-300">
                       <h3 className="text-white font-medium">Authentication</h3>
-                      <p className="text-purple-300 text-sm">
+                      <p className="text-purple-700 text-sm">
                         API uses Bearer token authentication. Include your API key in the Authorization header.
                       </p>
                     </div>
 
-                    <div className="p-3 bg-purple-900/30 rounded border border-purple-600">
+                    <div className="p-3 bg-purple-50 rounded border border-purple-300">
                       <h3 className="text-white font-medium">Rate Limiting</h3>
-                      <p className="text-purple-300 text-sm">
+                      <p className="text-purple-700 text-sm">
                         API requests are limited to 1000 requests per hour per API key.
                       </p>
                     </div>
 
-                    <div className="p-3 bg-purple-900/30 rounded border border-purple-600">
+                    <div className="p-3 bg-purple-50 rounded border border-purple-300">
                       <h3 className="text-white font-medium">Error Handling</h3>
-                      <p className="text-purple-300 text-sm">
+                      <p className="text-purple-700 text-sm">
                         API returns standard HTTP status codes. Error details are included in the response body.
                       </p>
                     </div>
 
-                    <div className="p-3 bg-purple-900/30 rounded border border-purple-600">
+                    <div className="p-3 bg-purple-50 rounded border border-purple-300">
                       <h3 className="text-white font-medium">Webhooks</h3>
-                      <p className="text-purple-300 text-sm">
+                      <p className="text-purple-700 text-sm">
                         Configure webhooks to receive real-time notifications about scan results.
                       </p>
                     </div>

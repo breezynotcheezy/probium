@@ -161,48 +161,48 @@ export function ScanResults({ results, onClear }: ScanResultsProps) {
     <div className="space-y-6">
       {/* Results Statistics */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="bg-purple-900/30 border-purple-700">
+        <Card className="bg-purple-50 border-purple-300">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <Database className="w-8 h-8 text-purple-400" />
+              <Database className="w-8 h-8 text-purple-600" />
               <div>
-                <p className="text-sm text-purple-300">Total Scans</p>
+                <p className="text-sm text-purple-700">Total Scans</p>
                 <p className="text-2xl font-bold text-white">{stats.total}</p>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-purple-900/30 border-purple-700">
+        <Card className="bg-purple-50 border-purple-300">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
               <CheckCircle className="w-8 h-8 text-green-400" />
               <div>
-                <p className="text-sm text-purple-300">Avg Confidence</p>
+                <p className="text-sm text-purple-700">Avg Confidence</p>
                 <p className="text-2xl font-bold text-white">{(stats.avgConfidence * 100).toFixed(1)}%</p>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-purple-900/30 border-purple-700">
+        <Card className="bg-purple-50 border-purple-300">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
               <Clock className="w-8 h-8 text-blue-400" />
               <div>
-                <p className="text-sm text-purple-300">Avg Scan Time</p>
+                <p className="text-sm text-purple-700">Avg Scan Time</p>
                 <p className="text-2xl font-bold text-white">{stats.avgScanTime.toFixed(2)}s</p>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-purple-900/30 border-purple-700">
+        <Card className="bg-purple-50 border-purple-300">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
               <AlertTriangle className="w-8 h-8 text-red-400" />
               <div>
-                <p className="text-sm text-purple-300">Threats</p>
+                <p className="text-sm text-purple-700">Threats</p>
                 <p className="text-2xl font-bold text-white">{stats.threats}</p>
               </div>
             </div>
@@ -211,7 +211,7 @@ export function ScanResults({ results, onClear }: ScanResultsProps) {
       </div>
 
       {/* Results Management */}
-      <Card className="bg-purple-900/30 border-purple-700">
+      <Card className="bg-purple-50 border-purple-300">
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
@@ -219,17 +219,17 @@ export function ScanResults({ results, onClear }: ScanResultsProps) {
                 <BarChart3 className="w-5 h-5" />
                 Scan Results
               </CardTitle>
-              <CardDescription className="text-purple-300">
+              <CardDescription className="text-purple-700">
                 {filteredAndSortedResults.length} of {results.length} results
               </CardDescription>
             </div>
             <div className="flex gap-2">
               <Select onValueChange={(value) => exportResults(value)}>
-                <SelectTrigger className="w-32 bg-purple-800/50 border-purple-600 text-white">
+                <SelectTrigger className="w-32 bg-purple-100 border-purple-300 text-white">
                   <Download className="w-4 h-4 mr-2" />
                   <SelectValue placeholder="Export" />
                 </SelectTrigger>
-                <SelectContent className="bg-purple-800 border-purple-600">
+                <SelectContent className="bg-purple-200 border-purple-300">
                   <SelectItem value="json" className="text-white">
                     JSON
                   </SelectItem>
@@ -242,7 +242,7 @@ export function ScanResults({ results, onClear }: ScanResultsProps) {
                 onClick={onClear}
                 variant="outline"
                 size="sm"
-                className="border-purple-600 text-purple-300 bg-transparent"
+                className="border-purple-300 text-purple-700 bg-transparent"
               >
                 <Trash2 className="w-4 h-4 mr-2" />
                 Clear All
@@ -255,21 +255,21 @@ export function ScanResults({ results, onClear }: ScanResultsProps) {
             {/* Search and Filter Controls */}
             <div className="flex flex-col md:flex-row gap-4">
               <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-purple-400 w-4 h-4" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-purple-600 w-4 h-4" />
                 <Input
                   placeholder="Search by filename or file type..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 bg-purple-800/50 border-purple-600 text-white placeholder-purple-400"
+                  className="pl-10 bg-purple-100 border-purple-300 text-white placeholder-purple-400"
                 />
               </div>
 
               <Select value={filterType} onValueChange={setFilterType}>
-                <SelectTrigger className="w-48 bg-purple-800/50 border-purple-600 text-white">
+                <SelectTrigger className="w-48 bg-purple-100 border-purple-300 text-white">
                   <Filter className="w-4 h-4 mr-2" />
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="bg-purple-800 border-purple-600">
+                <SelectContent className="bg-purple-200 border-purple-300">
                   <SelectItem value="all" className="text-white">
                     All Results
                   </SelectItem>
@@ -286,10 +286,10 @@ export function ScanResults({ results, onClear }: ScanResultsProps) {
               </Select>
 
               <Select value={sortBy} onValueChange={setSortBy}>
-                <SelectTrigger className="w-40 bg-purple-800/50 border-purple-600 text-white">
+                <SelectTrigger className="w-40 bg-purple-100 border-purple-300 text-white">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="bg-purple-800 border-purple-600">
+                <SelectContent className="bg-purple-200 border-purple-300">
                   <SelectItem value="timestamp" className="text-white">
                     Date
                   </SelectItem>
@@ -309,7 +309,7 @@ export function ScanResults({ results, onClear }: ScanResultsProps) {
                 variant="outline"
                 size="sm"
                 onClick={() => setSortOrder(sortOrder === "asc" ? "desc" : "asc")}
-                className="border-purple-600 text-purple-300"
+                className="border-purple-300 text-purple-700"
               >
                 {sortOrder === "asc" ? "↑" : "↓"}
               </Button>
@@ -317,33 +317,33 @@ export function ScanResults({ results, onClear }: ScanResultsProps) {
 
             {/* Results Table */}
             {filteredAndSortedResults.length > 0 ? (
-              <div className="rounded-lg border border-purple-700 overflow-hidden">
+              <div className="rounded-lg border border-purple-300 overflow-hidden">
                 <Table>
-                  <TableHeader className="bg-purple-800/50">
-                    <TableRow className="border-purple-700">
-                      <TableHead className="text-purple-300">File</TableHead>
-                      <TableHead className="text-purple-300">Type</TableHead>
-                      <TableHead className="text-purple-300">Confidence</TableHead>
-                      <TableHead className="text-purple-300">Size</TableHead>
-                      <TableHead className="text-purple-300">Threat Level</TableHead>
-                      <TableHead className="text-purple-300">Scan Time</TableHead>
-                      <TableHead className="text-purple-300">Actions</TableHead>
+                  <TableHeader className="bg-purple-100">
+                    <TableRow className="border-purple-300">
+                      <TableHead className="text-purple-700">File</TableHead>
+                      <TableHead className="text-purple-700">Type</TableHead>
+                      <TableHead className="text-purple-700">Confidence</TableHead>
+                      <TableHead className="text-purple-700">Size</TableHead>
+                      <TableHead className="text-purple-700">Threat Level</TableHead>
+                      <TableHead className="text-purple-700">Scan Time</TableHead>
+                      <TableHead className="text-purple-700">Actions</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {filteredAndSortedResults.map((result) => (
-                      <TableRow key={result.id} className="border-purple-700 hover:bg-purple-800/30">
+                      <TableRow key={result.id} className="border-purple-300 hover:bg-purple-50">
                         <TableCell>
                           <div className="flex items-center gap-2">
-                            <FileText className="w-4 h-4 text-purple-400" />
+                            <FileText className="w-4 h-4 text-purple-600" />
                             <div>
                               <span className="font-medium text-white">{result.filename}</span>
-                              <p className="text-xs text-purple-400">{(result.size / 1024 / 1024).toFixed(2)} MB</p>
+                              <p className="text-xs text-purple-600">{(result.size / 1024 / 1024).toFixed(2)} MB</p>
                             </div>
                           </div>
                         </TableCell>
                         <TableCell>
-                          <Badge variant="outline" className="border-purple-600 text-purple-300">
+                          <Badge variant="outline" className="border-purple-300 text-purple-700">
                             {result.detectedType}
                           </Badge>
                         </TableCell>
@@ -352,13 +352,13 @@ export function ScanResults({ results, onClear }: ScanResultsProps) {
                             {(result.confidence * 100).toFixed(1)}%
                           </Badge>
                         </TableCell>
-                        <TableCell className="text-purple-300">{(result.size / 1024 / 1024).toFixed(2)} MB</TableCell>
+                        <TableCell className="text-purple-700">{(result.size / 1024 / 1024).toFixed(2)} MB</TableCell>
                         <TableCell>
                           <Badge className={getThreatColor(result.security?.threatLevel || "low")}>
                             {result.security?.threatLevel || "low"}
                           </Badge>
                         </TableCell>
-                        <TableCell className="text-purple-300">{result.performance?.scanTime || "N/A"}</TableCell>
+                        <TableCell className="text-purple-700">{result.performance?.scanTime || "N/A"}</TableCell>
                         <TableCell>
                           <Dialog>
                             <DialogTrigger asChild>
@@ -366,22 +366,22 @@ export function ScanResults({ results, onClear }: ScanResultsProps) {
                                 variant="ghost"
                                 size="sm"
                                 onClick={() => setSelectedResult(result)}
-                                className="text-purple-300 hover:text-white hover:bg-purple-700"
+                                className="text-purple-700 hover:text-white hover:bg-purple-500"
                               >
                                 <Eye className="w-4 h-4" />
                               </Button>
                             </DialogTrigger>
-                            <DialogContent className="max-w-4xl bg-purple-900 border-purple-700 text-white">
+                            <DialogContent className="max-w-4xl bg-purple-200 border-purple-300 text-white">
                               <DialogHeader>
                                 <DialogTitle className="text-white">Detailed Analysis: {result.filename}</DialogTitle>
-                                <DialogDescription className="text-purple-300">
+                                <DialogDescription className="text-purple-700">
                                   Comprehensive scan results from Probium analysis
                                 </DialogDescription>
                               </DialogHeader>
 
                               {selectedResult && (
                                 <Tabs defaultValue="overview" className="space-y-4">
-                                  <TabsList className="grid w-full grid-cols-6 bg-purple-800/50">
+                                  <TabsList className="grid w-full grid-cols-6 bg-purple-100">
                                     <TabsTrigger value="overview">Overview</TabsTrigger>
                                     <TabsTrigger value="hashes">Hashes</TabsTrigger>
                                     <TabsTrigger value="metadata">Metadata</TabsTrigger>
@@ -392,34 +392,34 @@ export function ScanResults({ results, onClear }: ScanResultsProps) {
 
                                   <TabsContent value="overview" className="space-y-4">
                                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                                      <div className="p-3 bg-purple-800/30 rounded-lg border border-purple-700">
-                                        <p className="text-xs text-purple-400">File Type</p>
+                                      <div className="p-3 bg-purple-50 rounded-lg border border-purple-300">
+                                        <p className="text-xs text-purple-600">File Type</p>
                                         <p className="text-white font-medium">{selectedResult.detectedType}</p>
                                       </div>
-                                      <div className="p-3 bg-purple-800/30 rounded-lg border border-purple-700">
-                                        <p className="text-xs text-purple-400">MIME Type</p>
+                                      <div className="p-3 bg-purple-50 rounded-lg border border-purple-300">
+                                        <p className="text-xs text-purple-600">MIME Type</p>
                                         <p className="text-white font-medium">{selectedResult.mimeType}</p>
                                       </div>
-                                      <div className="p-3 bg-purple-800/30 rounded-lg border border-purple-700">
-                                        <p className="text-xs text-purple-400">Confidence</p>
+                                      <div className="p-3 bg-purple-50 rounded-lg border border-purple-300">
+                                        <p className="text-xs text-purple-600">Confidence</p>
                                         <p className="text-white font-medium">
                                           {(selectedResult.confidence * 100).toFixed(1)}%
                                         </p>
                                       </div>
-                                      <div className="p-3 bg-purple-800/30 rounded-lg border border-purple-700">
-                                        <p className="text-xs text-purple-400">Probium Version</p>
+                                      <div className="p-3 bg-purple-50 rounded-lg border border-purple-300">
+                                        <p className="text-xs text-purple-600">Probium Version</p>
                                         <p className="text-white font-medium">{selectedResult.probiumVersion}</p>
                                       </div>
                                     </div>
 
                                     <div className="space-y-2">
-                                      <p className="text-sm font-medium text-purple-300">Detection Engines Used:</p>
+                                      <p className="text-sm font-medium text-purple-700">Detection Engines Used:</p>
                                       <div className="flex flex-wrap gap-2">
                                         {selectedResult.engines.map((engine: string) => (
                                           <Badge
                                             key={engine}
                                             variant="secondary"
-                                            className="bg-purple-700 text-purple-100"
+                                            className="bg-purple-500 text-purple-500"
                                           >
                                             {engine}
                                           </Badge>
@@ -432,13 +432,13 @@ export function ScanResults({ results, onClear }: ScanResultsProps) {
                                     {Object.entries(selectedResult.hashes || {}).map(([type, hash]) => (
                                       <div
                                         key={type}
-                                        className="flex items-center justify-between p-3 bg-purple-800/30 rounded-lg border border-purple-700"
+                                        className="flex items-center justify-between p-3 bg-purple-50 rounded-lg border border-purple-300"
                                       >
                                         <div className="flex items-center gap-2">
-                                          <Hash className="w-4 h-4 text-purple-400" />
-                                          <span className="text-purple-300 uppercase font-medium">{type}</span>
+                                          <Hash className="w-4 h-4 text-purple-600" />
+                                          <span className="text-purple-700 uppercase font-medium">{type}</span>
                                         </div>
-                                        <code className="text-white text-sm font-mono bg-purple-900/50 px-2 py-1 rounded">
+                                        <code className="text-white text-sm font-mono bg-purple-50 px-2 py-1 rounded">
                                           {hash as string}
                                         </code>
                                       </div>
@@ -450,9 +450,9 @@ export function ScanResults({ results, onClear }: ScanResultsProps) {
                                       {Object.entries(selectedResult.metadata || {}).map(([key, value]) => (
                                         <div
                                           key={key}
-                                          className="p-3 bg-purple-800/30 rounded-lg border border-purple-700"
+                                          className="p-3 bg-purple-50 rounded-lg border border-purple-300"
                                         >
-                                          <p className="text-xs text-purple-400 capitalize mb-1">
+                                          <p className="text-xs text-purple-600 capitalize mb-1">
                                             {key.replace(/([A-Z])/g, " $1")}
                                           </p>
                                           <p className="text-white">
@@ -468,9 +468,9 @@ export function ScanResults({ results, onClear }: ScanResultsProps) {
                                       {Object.entries(selectedResult.structure || {}).map(([key, value]) => (
                                         <div
                                           key={key}
-                                          className="p-3 bg-purple-800/30 rounded-lg border border-purple-700"
+                                          className="p-3 bg-purple-50 rounded-lg border border-purple-300"
                                         >
-                                          <p className="text-xs text-purple-400 capitalize mb-1">{key}</p>
+                                          <p className="text-xs text-purple-600 capitalize mb-1">{key}</p>
                                           <p className="text-white font-medium">{String(value)}</p>
                                         </div>
                                       ))}
@@ -479,19 +479,19 @@ export function ScanResults({ results, onClear }: ScanResultsProps) {
 
                                   <TabsContent value="security" className="space-y-4">
                                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                      <div className="p-4 bg-purple-800/30 rounded-lg border border-purple-700">
+                                      <div className="p-4 bg-purple-50 rounded-lg border border-purple-300">
                                         <div className="flex items-center gap-2 mb-2">
-                                          <Shield className="w-5 h-5 text-purple-400" />
-                                          <p className="text-sm font-medium text-purple-300">Malware Score</p>
+                                          <Shield className="w-5 h-5 text-purple-600" />
+                                          <p className="text-sm font-medium text-purple-700">Malware Score</p>
                                         </div>
                                         <p className="text-2xl font-bold text-white">
                                           {selectedResult.security?.malwareScore || 0}
                                         </p>
                                       </div>
-                                      <div className="p-4 bg-purple-800/30 rounded-lg border border-purple-700">
+                                      <div className="p-4 bg-purple-50 rounded-lg border border-purple-300">
                                         <div className="flex items-center gap-2 mb-2">
-                                          <AlertTriangle className="w-5 h-5 text-purple-400" />
-                                          <p className="text-sm font-medium text-purple-300">Threat Level</p>
+                                          <AlertTriangle className="w-5 h-5 text-purple-600" />
+                                          <p className="text-sm font-medium text-purple-700">Threat Level</p>
                                         </div>
                                         <Badge
                                           className={getThreatColor(selectedResult.security?.threatLevel || "low")}
@@ -499,10 +499,10 @@ export function ScanResults({ results, onClear }: ScanResultsProps) {
                                           {selectedResult.security?.threatLevel || "low"}
                                         </Badge>
                                       </div>
-                                      <div className="p-4 bg-purple-800/30 rounded-lg border border-purple-700">
+                                      <div className="p-4 bg-purple-50 rounded-lg border border-purple-300">
                                         <div className="flex items-center gap-2 mb-2">
-                                          <FileText className="w-5 h-5 text-purple-400" />
-                                          <p className="text-sm font-medium text-purple-300">Embedded Files</p>
+                                          <FileText className="w-5 h-5 text-purple-600" />
+                                          <p className="text-sm font-medium text-purple-700">Embedded Files</p>
                                         </div>
                                         <p className="text-2xl font-bold text-white">
                                           {selectedResult.security?.embedded?.files || 0}
@@ -513,33 +513,33 @@ export function ScanResults({ results, onClear }: ScanResultsProps) {
 
                                   <TabsContent value="performance" className="space-y-4">
                                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                                      <div className="p-3 bg-purple-800/30 rounded-lg border border-purple-700">
+                                      <div className="p-3 bg-purple-50 rounded-lg border border-purple-300">
                                         <div className="flex items-center gap-2 mb-1">
-                                          <Clock className="w-4 h-4 text-purple-400" />
-                                          <p className="text-xs text-purple-400">Total Time</p>
+                                          <Clock className="w-4 h-4 text-purple-600" />
+                                          <p className="text-xs text-purple-600">Total Time</p>
                                         </div>
                                         <p className="text-white font-medium">{selectedResult.performance?.scanTime}</p>
                                       </div>
-                                      <div className="p-3 bg-purple-800/30 rounded-lg border border-purple-700">
+                                      <div className="p-3 bg-purple-50 rounded-lg border border-purple-300">
                                         <div className="flex items-center gap-2 mb-1">
-                                          <Activity className="w-4 h-4 text-purple-400" />
-                                          <p className="text-xs text-purple-400">Memory Used</p>
+                                          <Activity className="w-4 h-4 text-purple-600" />
+                                          <p className="text-xs text-purple-600">Memory Used</p>
                                         </div>
                                         <p className="text-white font-medium">
                                           {selectedResult.performance?.memoryUsed}
                                         </p>
                                       </div>
-                                      <div className="p-3 bg-purple-800/30 rounded-lg border border-purple-700">
+                                      <div className="p-3 bg-purple-50 rounded-lg border border-purple-300">
                                         <div className="flex items-center gap-2 mb-1">
-                                          <Cpu className="w-4 h-4 text-purple-400" />
-                                          <p className="text-xs text-purple-400">CPU Time</p>
+                                          <Cpu className="w-4 h-4 text-purple-600" />
+                                          <p className="text-xs text-purple-600">CPU Time</p>
                                         </div>
                                         <p className="text-white font-medium">{selectedResult.performance?.cpuTime}</p>
                                       </div>
-                                      <div className="p-3 bg-purple-800/30 rounded-lg border border-purple-700">
+                                      <div className="p-3 bg-purple-50 rounded-lg border border-purple-300">
                                         <div className="flex items-center gap-2 mb-1">
-                                          <TrendingUp className="w-4 h-4 text-purple-400" />
-                                          <p className="text-xs text-purple-400">Efficiency</p>
+                                          <TrendingUp className="w-4 h-4 text-purple-600" />
+                                          <p className="text-xs text-purple-600">Efficiency</p>
                                         </div>
                                         <p className="text-white font-medium">
                                           {(
@@ -554,14 +554,14 @@ export function ScanResults({ results, onClear }: ScanResultsProps) {
                                     </div>
 
                                     <div className="space-y-3">
-                                      <p className="text-sm font-medium text-purple-300">Engine Performance:</p>
+                                      <p className="text-sm font-medium text-purple-700">Engine Performance:</p>
                                       {Object.entries(selectedResult.performance?.engineTimes || {}).map(
                                         ([engine, time]) => (
                                           <div
                                             key={engine}
-                                            className="flex items-center justify-between p-2 bg-purple-800/30 rounded border border-purple-700"
+                                            className="flex items-center justify-between p-2 bg-purple-50 rounded border border-purple-300"
                                           >
-                                            <span className="text-purple-300 capitalize">{engine} Engine</span>
+                                            <span className="text-purple-700 capitalize">{engine} Engine</span>
                                             <span className="text-white font-mono">{time as string}</span>
                                           </div>
                                         ),
@@ -579,11 +579,11 @@ export function ScanResults({ results, onClear }: ScanResultsProps) {
                 </Table>
               </div>
             ) : (
-              <Card className="bg-purple-800/30 border-purple-700">
+              <Card className="bg-purple-50 border-purple-300">
                 <CardContent className="p-12 text-center">
-                  <FileText className="w-12 h-12 text-purple-400 mx-auto mb-4" />
+                  <FileText className="w-12 h-12 text-purple-600 mx-auto mb-4" />
                   <h3 className="text-lg font-semibold text-white mb-2">No Results Found</h3>
-                  <p className="text-purple-300">
+                  <p className="text-purple-700">
                     {results.length === 0
                       ? "Upload and scan files to see results here"
                       : "No results match your current filters"}
@@ -597,7 +597,7 @@ export function ScanResults({ results, onClear }: ScanResultsProps) {
 
       {/* File Type Distribution */}
       {Object.keys(stats.fileTypes).length > 0 && (
-        <Card className="bg-purple-900/30 border-purple-700">
+        <Card className="bg-purple-50 border-purple-300">
           <CardHeader>
             <CardTitle className="text-white flex items-center gap-2">
               <BarChart3 className="w-5 h-5" />
@@ -608,9 +608,9 @@ export function ScanResults({ results, onClear }: ScanResultsProps) {
             <div className="space-y-3">
               {Object.entries(stats.fileTypes).map(([type, count]) => (
                 <div key={type} className="flex items-center justify-between">
-                  <span className="text-purple-300">{type}</span>
+                  <span className="text-purple-700">{type}</span>
                   <div className="flex items-center gap-3">
-                    <div className="w-32 bg-purple-800/50 rounded-full h-2">
+                    <div className="w-32 bg-purple-100 rounded-full h-2">
                       <div
                         className="bg-purple-500 h-2 rounded-full"
                         style={{ width: `${(count / stats.total) * 100}%` }}
