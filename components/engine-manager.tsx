@@ -85,7 +85,7 @@ export function EngineManager({ config, onConfigChange }: EngineManagerProps) {
       capabilities: ["Hex Analysis", "Pattern Matching", "Entropy Calculation", "Signature Detection"],
       supportedFormats: ["BIN", "EXE", "DLL", "SO", "DYLIB"],
       icon: Binary,
-      color: "text-purple-600",
+      color: "text-purple-300",
     },
     text: {
       name: "Text Processing Engine",
@@ -153,24 +153,24 @@ export function EngineManager({ config, onConfigChange }: EngineManagerProps) {
     <div className="space-y-6">
       {/* Engine Overview */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card className="bg-purple-50 border-purple-300">
+        <Card className="bg-gray-800 border-gray-700">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <Cpu className="w-8 h-8 text-purple-600" />
+              <Cpu className="w-8 h-8 text-purple-300" />
               <div>
-                <p className="text-sm text-purple-700">Active Engines</p>
+                <p className="text-sm text-gray-200">Active Engines</p>
                 <p className="text-2xl font-bold text-white">{config.engines.length}</p>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-purple-50 border-purple-300">
+        <Card className="bg-gray-800 border-gray-700">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
               <Activity className="w-8 h-8 text-green-400" />
               <div>
-                <p className="text-sm text-purple-700">Avg Performance</p>
+                <p className="text-sm text-gray-200">Avg Performance</p>
                 <p className="text-2xl font-bold text-white">
                   {Math.round(
                     Object.values(engineStats).reduce((sum: number, stat: any) => sum + stat.performance, 0) /
@@ -183,12 +183,12 @@ export function EngineManager({ config, onConfigChange }: EngineManagerProps) {
           </CardContent>
         </Card>
 
-        <Card className="bg-purple-50 border-purple-300">
+        <Card className="bg-gray-800 border-gray-700">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
               <BarChart3 className="w-8 h-8 text-blue-400" />
               <div>
-                <p className="text-sm text-purple-700">Total Scans</p>
+                <p className="text-sm text-gray-200">Total Scans</p>
                 <p className="text-2xl font-bold text-white">
                   {Object.values(engineStats)
                     .reduce((sum: number, stat: any) => sum + stat.scansCompleted, 0)
@@ -199,12 +199,12 @@ export function EngineManager({ config, onConfigChange }: EngineManagerProps) {
           </CardContent>
         </Card>
 
-        <Card className="bg-purple-50 border-purple-300">
+        <Card className="bg-gray-800 border-gray-700">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
               <AlertTriangle className="w-8 h-8 text-yellow-400" />
               <div>
-                <p className="text-sm text-purple-700">Warnings</p>
+                <p className="text-sm text-gray-200">Warnings</p>
                 <p className="text-2xl font-bold text-white">
                   {Object.values(engineStats).filter((stat: any) => stat.status === "warning").length}
                 </p>
@@ -215,19 +215,19 @@ export function EngineManager({ config, onConfigChange }: EngineManagerProps) {
       </div>
 
       {/* Engine Management */}
-      <Card className="bg-purple-50 border-purple-300">
+      <Card className="bg-gray-800 border-gray-700">
         <CardHeader>
           <CardTitle className="text-white flex items-center gap-2">
             <Settings className="w-5 h-5" />
             Engine Configuration
           </CardTitle>
-          <CardDescription className="text-purple-700">
+          <CardDescription className="text-gray-200">
             Manage detection engines and their configurations
           </CardDescription>
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="engines" className="space-y-4">
-            <TabsList className="grid w-full grid-cols-3 bg-purple-100">
+            <TabsList className="grid w-full grid-cols-3 bg-gray-900">
               <TabsTrigger value="engines">Engines</TabsTrigger>
               <TabsTrigger value="performance">Performance</TabsTrigger>
               <TabsTrigger value="advanced">Advanced</TabsTrigger>
@@ -241,14 +241,14 @@ export function EngineManager({ config, onConfigChange }: EngineManagerProps) {
                   const StatusIcon = getStatusIcon(stats.status)
 
                   return (
-                    <Card key={engineId} className="bg-purple-50 border-purple-300">
+                    <Card key={engineId} className="bg-gray-800 border-gray-700">
                       <CardContent className="p-4">
                         <div className="flex items-start justify-between mb-3">
                           <div className="flex items-center gap-3">
                             <IconComponent className={`w-6 h-6 ${details.color}`} />
                             <div>
                               <h3 className="font-semibold text-white">{details.name}</h3>
-                              <p className="text-xs text-purple-600">v{details.version}</p>
+                              <p className="text-xs text-purple-300">v{details.version}</p>
                             </div>
                           </div>
                           <div className="flex items-center gap-2">
@@ -260,35 +260,35 @@ export function EngineManager({ config, onConfigChange }: EngineManagerProps) {
                           </div>
                         </div>
 
-                        <p className="text-sm text-purple-700 mb-3">{details.description}</p>
+                        <p className="text-sm text-gray-200 mb-3">{details.description}</p>
 
                         <div className="space-y-2">
                           <div className="flex justify-between text-xs">
-                            <span className="text-purple-600">Performance</span>
+                            <span className="text-purple-300">Performance</span>
                             <span className="text-white">{stats.performance}%</span>
                           </div>
                           <Progress value={stats.performance} className="h-1" />
                         </div>
 
-                        <div className="mt-3 flex justify-between text-xs text-purple-600">
+                        <div className="mt-3 flex justify-between text-xs text-purple-300">
                           <span>Last used: {stats.lastUsed}</span>
                           <span>{stats.scansCompleted.toLocaleString()} scans</span>
                         </div>
 
                         <div className="mt-3">
-                          <p className="text-xs text-purple-600 mb-1">Supported Formats:</p>
+                          <p className="text-xs text-purple-300 mb-1">Supported Formats:</p>
                           <div className="flex flex-wrap gap-1">
                             {details.supportedFormats.slice(0, 3).map((format) => (
                               <Badge
                                 key={format}
                                 variant="outline"
-                                className="text-xs border-purple-300 text-purple-700"
+                                className="text-xs border-gray-700 text-gray-200"
                               >
                                 {format}
                               </Badge>
                             ))}
                             {details.supportedFormats.length > 3 && (
-                              <Badge variant="outline" className="text-xs border-purple-300 text-purple-700">
+                              <Badge variant="outline" className="text-xs border-gray-700 text-gray-200">
                                 +{details.supportedFormats.length - 3}
                               </Badge>
                             )}
@@ -303,7 +303,7 @@ export function EngineManager({ config, onConfigChange }: EngineManagerProps) {
 
             <TabsContent value="performance" className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <Card className="bg-purple-50 border-purple-300">
+                <Card className="bg-gray-800 border-gray-700">
                   <CardHeader>
                     <CardTitle className="text-white text-lg">Engine Performance</CardTitle>
                   </CardHeader>
@@ -311,7 +311,7 @@ export function EngineManager({ config, onConfigChange }: EngineManagerProps) {
                     {Object.entries(engineStats).map(([engineId, stats]) => (
                       <div key={engineId} className="space-y-2">
                         <div className="flex justify-between">
-                          <span className="text-purple-700 capitalize">{engineId}</span>
+                          <span className="text-gray-200 capitalize">{engineId}</span>
                           <span className="text-white">{stats.performance}%</span>
                         </div>
                         <Progress value={stats.performance} className="h-2" />
@@ -320,17 +320,17 @@ export function EngineManager({ config, onConfigChange }: EngineManagerProps) {
                   </CardContent>
                 </Card>
 
-                <Card className="bg-purple-50 border-purple-300">
+                <Card className="bg-gray-800 border-gray-700">
                   <CardHeader>
                     <CardTitle className="text-white text-lg">Usage Statistics</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     {Object.entries(engineStats).map(([engineId, stats]) => (
                       <div key={engineId} className="flex justify-between items-center">
-                        <span className="text-purple-700 capitalize">{engineId}</span>
+                        <span className="text-gray-200 capitalize">{engineId}</span>
                         <div className="text-right">
                           <p className="text-white font-medium">{stats.scansCompleted.toLocaleString()}</p>
-                          <p className="text-xs text-purple-600">{stats.lastUsed}</p>
+                          <p className="text-xs text-purple-300">{stats.lastUsed}</p>
                         </div>
                       </div>
                     ))}
@@ -341,52 +341,52 @@ export function EngineManager({ config, onConfigChange }: EngineManagerProps) {
 
             <TabsContent value="advanced" className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <Card className="bg-purple-50 border-purple-300">
+                <Card className="bg-gray-800 border-gray-700">
                   <CardHeader>
                     <CardTitle className="text-white text-lg">Thread Pool Configuration</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="space-y-2">
-                      <Label className="text-purple-700">Pool Size</Label>
+                      <Label className="text-gray-200">Pool Size</Label>
                       <Input
                         type="number"
                         value={config.threadPool}
                         onChange={(e) => onConfigChange({ ...config, threadPool: Number.parseInt(e.target.value) })}
-                        className="bg-purple-50 border-purple-300 text-white"
+                        className="bg-gray-800 border-gray-700 text-white"
                       />
                     </div>
 
                     <div className="space-y-2">
-                      <Label className="text-purple-700">Queue Size</Label>
+                      <Label className="text-gray-200">Queue Size</Label>
                       <Input
                         type="number"
                         defaultValue={100}
-                        className="bg-purple-50 border-purple-300 text-white"
+                        className="bg-gray-800 border-gray-700 text-white"
                       />
                     </div>
 
                     <div className="space-y-2">
-                      <Label className="text-purple-700">Timeout (ms)</Label>
+                      <Label className="text-gray-200">Timeout (ms)</Label>
                       <Input
                         type="number"
                         value={config.timeout}
-                        className="bg-purple-50 border-purple-300 text-white"
+                        className="bg-gray-800 border-gray-700 text-white"
                         readOnly
                       />
                     </div>
                   </CardContent>
                 </Card>
 
-                <Card className="bg-purple-50 border-purple-300">
+                <Card className="bg-gray-800 border-gray-700">
                   <CardHeader>
                     <CardTitle className="text-white text-lg">Engine Priorities</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="space-y-3">
                       {config.engines.map((engine: string, index: number) => (
-                        <div key={engine} className="flex items-center justify-between p-2 bg-purple-50 rounded">
-                          <span className="text-purple-700 capitalize">{engine}</span>
-                          <Badge variant="outline" className="border-purple-300 text-purple-700">
+                        <div key={engine} className="flex items-center justify-between p-2 bg-gray-800 rounded">
+                          <span className="text-gray-200 capitalize">{engine}</span>
+                          <Badge variant="outline" className="border-gray-700 text-gray-200">
                             Priority {index + 1}
                           </Badge>
                         </div>

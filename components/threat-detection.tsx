@@ -62,48 +62,48 @@ export function ThreatDetection({ results, config }: ThreatDetectionProps) {
     <div className="space-y-6">
       {/* Threat Overview */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card className="bg-purple-50 border-purple-300">
+        <Card className="bg-gray-800 border-gray-700">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
               <AlertTriangle className="w-8 h-8 text-red-400" />
               <div>
-                <p className="text-sm text-purple-700">Total Threats</p>
+                <p className="text-sm text-gray-200">Total Threats</p>
                 <p className="text-2xl font-bold text-white">{threatAnalysis.totalThreats}</p>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-purple-50 border-purple-300">
+        <Card className="bg-gray-800 border-gray-700">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
               <Shield className="w-8 h-8 text-yellow-400" />
               <div>
-                <p className="text-sm text-purple-700">High Risk</p>
+                <p className="text-sm text-gray-200">High Risk</p>
                 <p className="text-2xl font-bold text-white">{threatAnalysis.highThreats}</p>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-purple-50 border-purple-300">
+        <Card className="bg-gray-800 border-gray-700">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
               <Eye className="w-8 h-8 text-orange-400" />
               <div>
-                <p className="text-sm text-purple-700">Anomalies</p>
+                <p className="text-sm text-gray-200">Anomalies</p>
                 <p className="text-2xl font-bold text-white">{threatAnalysis.anomalies.length}</p>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-purple-50 border-purple-300">
+        <Card className="bg-gray-800 border-gray-700">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <FileX className="w-8 h-8 text-purple-600" />
+              <FileX className="w-8 h-8 text-purple-300" />
               <div>
-                <p className="text-sm text-purple-700">Suspicious</p>
+                <p className="text-sm text-gray-200">Suspicious</p>
                 <p className="text-2xl font-bold text-white">{threatAnalysis.suspiciousFiles.length}</p>
               </div>
             </div>
@@ -112,17 +112,17 @@ export function ThreatDetection({ results, config }: ThreatDetectionProps) {
       </div>
 
       {/* Threat Analysis Dashboard */}
-      <Card className="bg-purple-50 border-purple-300">
+      <Card className="bg-gray-800 border-gray-700">
         <CardHeader>
           <CardTitle className="text-white flex items-center gap-2">
             <Shield className="w-5 h-5" />
             Threat Detection & Analysis
           </CardTitle>
-          <CardDescription className="text-purple-700">Security assessment and threat categorization</CardDescription>
+          <CardDescription className="text-gray-200">Security assessment and threat categorization</CardDescription>
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="overview" className="space-y-4">
-            <TabsList className="grid w-full grid-cols-4 bg-purple-100">
+            <TabsList className="grid w-full grid-cols-4 bg-gray-900">
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="threats">Threats</TabsTrigger>
               <TabsTrigger value="anomalies">Anomalies</TabsTrigger>
@@ -131,16 +131,16 @@ export function ThreatDetection({ results, config }: ThreatDetectionProps) {
 
             <TabsContent value="overview" className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <Card className="bg-purple-50 border-purple-300">
+                <Card className="bg-gray-800 border-gray-700">
                   <CardHeader>
                     <CardTitle className="text-white text-lg">Threat Distribution</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="space-y-3">
                       <div className="flex justify-between items-center">
-                        <span className="text-purple-700">High Risk</span>
+                        <span className="text-gray-200">High Risk</span>
                         <div className="flex items-center gap-2">
-                          <div className="w-24 bg-purple-50 rounded-full h-2">
+                          <div className="w-24 bg-gray-800 rounded-full h-2">
                             <div
                               className="bg-red-500 h-2 rounded-full"
                               style={{
@@ -152,9 +152,9 @@ export function ThreatDetection({ results, config }: ThreatDetectionProps) {
                         </div>
                       </div>
                       <div className="flex justify-between items-center">
-                        <span className="text-purple-700">Medium Risk</span>
+                        <span className="text-gray-200">Medium Risk</span>
                         <div className="flex items-center gap-2">
-                          <div className="w-24 bg-purple-50 rounded-full h-2">
+                          <div className="w-24 bg-gray-800 rounded-full h-2">
                             <div
                               className="bg-yellow-500 h-2 rounded-full"
                               style={{
@@ -166,9 +166,9 @@ export function ThreatDetection({ results, config }: ThreatDetectionProps) {
                         </div>
                       </div>
                       <div className="flex justify-between items-center">
-                        <span className="text-purple-700">Low Risk</span>
+                        <span className="text-gray-200">Low Risk</span>
                         <div className="flex items-center gap-2">
-                          <div className="w-24 bg-purple-50 rounded-full h-2">
+                          <div className="w-24 bg-gray-800 rounded-full h-2">
                             <div
                               className="bg-green-500 h-2 rounded-full"
                               style={{
@@ -185,7 +185,7 @@ export function ThreatDetection({ results, config }: ThreatDetectionProps) {
                   </CardContent>
                 </Card>
 
-                <Card className="bg-purple-50 border-purple-300">
+                <Card className="bg-gray-800 border-gray-700">
                   <CardHeader>
                     <CardTitle className="text-white text-lg">Security Score</CardTitle>
                   </CardHeader>
@@ -194,10 +194,10 @@ export function ThreatDetection({ results, config }: ThreatDetectionProps) {
                       <div className="text-4xl font-bold text-white mb-2">
                         {(100 - threatAnalysis.threatPercentage).toFixed(0)}%
                       </div>
-                      <p className="text-purple-700">Overall Security Score</p>
+                      <p className="text-gray-200">Overall Security Score</p>
                     </div>
-                    <Progress value={100 - threatAnalysis.threatPercentage} className="bg-purple-200" />
-                    <div className="text-center text-sm text-purple-600">
+                    <Progress value={100 - threatAnalysis.threatPercentage} className="bg-gray-900" />
+                    <div className="text-center text-sm text-purple-300">
                       {threatAnalysis.threatPercentage < 10
                         ? "Excellent"
                         : threatAnalysis.threatPercentage < 25
@@ -213,7 +213,7 @@ export function ThreatDetection({ results, config }: ThreatDetectionProps) {
             </TabsContent>
 
             <TabsContent value="threats" className="space-y-4">
-              <Card className="bg-purple-50 border-purple-300">
+              <Card className="bg-gray-800 border-gray-700">
                 <CardHeader>
                   <CardTitle className="text-white text-lg">Detected Threats</CardTitle>
                 </CardHeader>
@@ -223,13 +223,13 @@ export function ThreatDetection({ results, config }: ThreatDetectionProps) {
                       threatAnalysis.suspiciousFiles.map((file, index) => (
                         <div
                           key={index}
-                          className="flex items-center justify-between p-3 bg-purple-50 rounded border border-purple-300"
+                          className="flex items-center justify-between p-3 bg-gray-800 rounded border border-gray-700"
                         >
                           <div className="flex items-center gap-3">
                             <AlertTriangle className="w-5 h-5 text-red-400" />
                             <div>
                               <p className="text-white font-medium">{file.filename}</p>
-                              <p className="text-purple-600 text-sm">
+                              <p className="text-purple-300 text-sm">
                                 Malware Score: {file.security?.malware_score?.toFixed(2)}
                               </p>
                             </div>
@@ -243,7 +243,7 @@ export function ThreatDetection({ results, config }: ThreatDetectionProps) {
                       <div className="text-center py-8">
                         <Shield className="w-12 h-12 text-green-400 mx-auto mb-4" />
                         <h3 className="text-lg font-semibold text-white mb-2">No Threats Detected</h3>
-                        <p className="text-purple-700">All scanned files appear to be safe</p>
+                        <p className="text-gray-200">All scanned files appear to be safe</p>
                       </div>
                     )}
                   </div>
@@ -252,7 +252,7 @@ export function ThreatDetection({ results, config }: ThreatDetectionProps) {
             </TabsContent>
 
             <TabsContent value="anomalies" className="space-y-4">
-              <Card className="bg-purple-50 border-purple-300">
+              <Card className="bg-gray-800 border-gray-700">
                 <CardHeader>
                   <CardTitle className="text-white text-lg">File Anomalies</CardTitle>
                 </CardHeader>
@@ -262,13 +262,13 @@ export function ThreatDetection({ results, config }: ThreatDetectionProps) {
                       threatAnalysis.anomalies.map((anomaly, index) => (
                         <div
                           key={index}
-                          className="flex items-center justify-between p-3 bg-purple-50 rounded border border-purple-300"
+                          className="flex items-center justify-between p-3 bg-gray-800 rounded border border-gray-700"
                         >
                           <div className="flex items-center gap-3">
                             <Eye className="w-5 h-5 text-yellow-400" />
                             <div>
                               <p className="text-white font-medium">{anomaly.filename}</p>
-                              <p className="text-purple-600 text-sm">{anomaly.anomaly}</p>
+                              <p className="text-purple-300 text-sm">{anomaly.anomaly}</p>
                             </div>
                           </div>
                           <Badge className={getThreatColor(anomaly.threat_level)}>{anomaly.threat_level}</Badge>
@@ -278,7 +278,7 @@ export function ThreatDetection({ results, config }: ThreatDetectionProps) {
                       <div className="text-center py-8">
                         <Eye className="w-12 h-12 text-green-400 mx-auto mb-4" />
                         <h3 className="text-lg font-semibold text-white mb-2">No Anomalies Detected</h3>
-                        <p className="text-purple-700">All files conform to expected patterns</p>
+                        <p className="text-gray-200">All files conform to expected patterns</p>
                       </div>
                     )}
                   </div>
@@ -288,7 +288,7 @@ export function ThreatDetection({ results, config }: ThreatDetectionProps) {
 
             <TabsContent value="prevention" className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Card className="bg-purple-50 border-purple-300">
+                <Card className="bg-gray-800 border-gray-700">
                   <CardHeader>
                     <CardTitle className="text-white text-lg flex items-center gap-2">
                       <Lock className="w-5 h-5" />
@@ -296,24 +296,24 @@ export function ThreatDetection({ results, config }: ThreatDetectionProps) {
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-3">
-                    <div className="p-3 bg-purple-50 rounded border border-purple-300">
+                    <div className="p-3 bg-gray-800 rounded border border-gray-700">
                       <h4 className="text-white font-medium mb-1">Enable Real-time Scanning</h4>
-                      <p className="text-purple-700 text-sm">Monitor files as they are accessed or modified</p>
+                      <p className="text-gray-200 text-sm">Monitor files as they are accessed or modified</p>
                     </div>
-                    <div className="p-3 bg-purple-50 rounded border border-purple-300">
+                    <div className="p-3 bg-gray-800 rounded border border-gray-700">
                       <h4 className="text-white font-medium mb-1">Update Engine Signatures</h4>
-                      <p className="text-purple-700 text-sm">
+                      <p className="text-gray-200 text-sm">
                         Keep detection engines updated with latest threat signatures
                       </p>
                     </div>
-                    <div className="p-3 bg-purple-50 rounded border border-purple-300">
+                    <div className="p-3 bg-gray-800 rounded border border-gray-700">
                       <h4 className="text-white font-medium mb-1">Quarantine Suspicious Files</h4>
-                      <p className="text-purple-700 text-sm">Automatically isolate files with high threat scores</p>
+                      <p className="text-gray-200 text-sm">Automatically isolate files with high threat scores</p>
                     </div>
                   </CardContent>
                 </Card>
 
-                <Card className="bg-purple-50 border-purple-300">
+                <Card className="bg-gray-800 border-gray-700">
                   <CardHeader>
                     <CardTitle className="text-white text-lg flex items-center gap-2">
                       <Zap className="w-5 h-5" />
@@ -330,7 +330,7 @@ export function ThreatDetection({ results, config }: ThreatDetectionProps) {
                     <button className="w-full p-3 bg-blue-900/30 border border-blue-600 rounded text-blue-300 hover:bg-blue-900/50 transition-colors">
                       Generate Security Report
                     </button>
-                    <button className="w-full p-3 bg-purple-50 border border-purple-300 rounded text-purple-700 hover:bg-purple-50 transition-colors">
+                    <button className="w-full p-3 bg-gray-800 border border-gray-700 rounded text-gray-200 hover:bg-gray-800 transition-colors">
                       Update Threat Database
                     </button>
                   </CardContent>
