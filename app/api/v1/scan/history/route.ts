@@ -1,7 +1,15 @@
-import { NextRequest } from 'next/server'
-import { proxy } from '@/app/api/_proxy'
+import { NextRequest, NextResponse } from 'next/server'
+import { localGetScanHistory } from '@/lib/local'
+
+export const runtime = 'nodejs'
 
 export async function GET(req: NextRequest) {
   const url = new URL(req.url)
-  return proxy(`/api/v1/scan/history${url.search}`)
+  const limit = Number(url.searchParams.get('limit') || '100')
+  try {
+    const data = await localGetScanHistory(limit)
+    return NextResponse.json(data)
+  } catch (err: any) {
+    return NextResponse.json({ error: String(err) }, { status: 500 })
+  }
 }
