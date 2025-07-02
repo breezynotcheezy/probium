@@ -113,25 +113,25 @@ export default function ProbiumComprehensiveDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white via-purple-50 to-white">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-950 to-black">
       <div className="container mx-auto p-6">
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-4">
-              <div className="w-16 h-16 bg-gradient-to-br from-purple-400 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
+              <div className="w-16 h-16 bg-gradient-to-br from-purple-600 to-purple-800 rounded-xl flex items-center justify-center shadow-lg">
                 <Shield className="w-8 h-8 text-white" />
               </div>
               <div>
                 <h1 className="text-4xl font-bold text-white mb-2">Probium Advanced Scanner</h1>
-                <p className="text-purple-600">
+                <p className="text-purple-300">
                   Comprehensive file analysis with {availableEngines.length} detection engines
                 </p>
               </div>
             </div>
             <div className="flex items-center gap-4">
               <div className="text-right">
-                <p className="text-sm text-purple-700">System Status</p>
+                <p className="text-sm text-gray-200">System Status</p>
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
                   <span className="text-green-400 font-medium">Online</span>
@@ -142,56 +142,56 @@ export default function ProbiumComprehensiveDashboard() {
 
           {/* Quick Stats */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 mb-6">
-            <Card className="bg-purple-50 border-purple-300">
+            <Card className="bg-gray-800 border-gray-700">
               <CardContent className="p-4">
                 <div className="flex items-center gap-3">
-                  <Database className="w-8 h-8 text-purple-600" />
+                  <Database className="w-8 h-8 text-purple-300" />
                   <div>
-                    <p className="text-sm text-purple-700">Total Scans</p>
+                    <p className="text-sm text-gray-200">Total Scans</p>
                     <p className="text-xl font-bold text-white">{systemStats.total_scans}</p>
                   </div>
                 </div>
               </CardContent>
             </Card>
-            <Card className="bg-purple-50 border-purple-300">
+            <Card className="bg-gray-800 border-gray-700">
               <CardContent className="p-4">
                 <div className="flex items-center gap-3">
                   <Cpu className="w-8 h-8 text-blue-400" />
                   <div>
-                    <p className="text-sm text-purple-700">Active Threads</p>
+                    <p className="text-sm text-gray-200">Active Threads</p>
                     <p className="text-xl font-bold text-white">{systemStats.active_threads}</p>
                   </div>
                 </div>
               </CardContent>
             </Card>
-            <Card className="bg-purple-50 border-purple-300">
+            <Card className="bg-gray-800 border-gray-700">
               <CardContent className="p-4">
                 <div className="flex items-center gap-3">
                   <Activity className="w-8 h-8 text-green-400" />
                   <div>
-                    <p className="text-sm text-purple-700">CPU Usage</p>
+                    <p className="text-sm text-gray-200">CPU Usage</p>
                     <p className="text-xl font-bold text-white">{systemStats.cpu_usage.toFixed(1)}%</p>
                   </div>
                 </div>
               </CardContent>
             </Card>
-            <Card className="bg-purple-50 border-purple-300">
+            <Card className="bg-gray-800 border-gray-700">
               <CardContent className="p-4">
                 <div className="flex items-center gap-3">
                   <Gauge className="w-8 h-8 text-yellow-400" />
                   <div>
-                    <p className="text-sm text-purple-700">Memory</p>
+                    <p className="text-sm text-gray-200">Memory</p>
                     <p className="text-xl font-bold text-white">{systemStats.memory_usage.toFixed(1)}%</p>
                   </div>
                 </div>
               </CardContent>
             </Card>
-            <Card className="bg-purple-50 border-purple-300">
+            <Card className="bg-gray-800 border-gray-700">
               <CardContent className="p-4">
                 <div className="flex items-center gap-3">
                   <Shield className="w-8 h-8 text-red-400" />
                   <div>
-                    <p className="text-sm text-purple-700">Threats</p>
+                    <p className="text-sm text-gray-200">Threats</p>
                     <p className="text-xl font-bold text-white">
                       {scanResults.filter((r) => r.security?.threat_level !== "low").length}
                     </p>
@@ -199,12 +199,12 @@ export default function ProbiumComprehensiveDashboard() {
                 </div>
               </CardContent>
             </Card>
-            <Card className="bg-purple-50 border-purple-300">
+            <Card className="bg-gray-800 border-gray-700">
               <CardContent className="p-4">
                 <div className="flex items-center gap-3">
-                  <FileType className="w-8 h-8 text-purple-600" />
+                  <FileType className="w-8 h-8 text-purple-300" />
                   <div>
-                    <p className="text-sm text-purple-700">Engines</p>
+                    <p className="text-sm text-gray-200">Engines</p>
                     <p className="text-xl font-bold text-white">{availableEngines.length}</p>
                   </div>
                 </div>
@@ -215,52 +215,52 @@ export default function ProbiumComprehensiveDashboard() {
 
         {/* Main Interface */}
         <Tabs defaultValue="scanner" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-6 lg:grid-cols-12 bg-purple-50 border-purple-300">
-            <TabsTrigger value="scanner" className="data-[state=active]:bg-purple-500">
+          <TabsList className="grid w-full grid-cols-6 lg:grid-cols-12 bg-gray-800 border-gray-700">
+            <TabsTrigger value="scanner" className="data-[state=active]:bg-purple-600">
               <Shield className="w-4 h-4 mr-2" />
               Scanner
             </TabsTrigger>
-            <TabsTrigger value="batch" className="data-[state=active]:bg-purple-500">
+            <TabsTrigger value="batch" className="data-[state=active]:bg-purple-600">
               <Database className="w-4 h-4 mr-2" />
               Batch
             </TabsTrigger>
-            <TabsTrigger value="engines" className="data-[state=active]:bg-purple-500">
+            <TabsTrigger value="engines" className="data-[state=active]:bg-purple-600">
               <Cpu className="w-4 h-4 mr-2" />
               Engines
             </TabsTrigger>
-            <TabsTrigger value="results" className="data-[state=active]:bg-purple-500">
+            <TabsTrigger value="results" className="data-[state=active]:bg-purple-600">
               <BarChart3 className="w-4 h-4 mr-2" />
               Results
             </TabsTrigger>
-            <TabsTrigger value="monitor" className="data-[state=active]:bg-purple-500">
+            <TabsTrigger value="monitor" className="data-[state=active]:bg-purple-600">
               <Activity className="w-4 h-4 mr-2" />
               Monitor
             </TabsTrigger>
-            <TabsTrigger value="analytics" className="data-[state=active]:bg-purple-500">
+            <TabsTrigger value="analytics" className="data-[state=active]:bg-purple-600">
               <BarChart3 className="w-4 h-4 mr-2" />
               Analytics
             </TabsTrigger>
-            <TabsTrigger value="threats" className="data-[state=active]:bg-purple-500">
+            <TabsTrigger value="threats" className="data-[state=active]:bg-purple-600">
               <AlertTriangle className="w-4 h-4 mr-2" />
               Threats
             </TabsTrigger>
-            <TabsTrigger value="registry" className="data-[state=active]:bg-purple-500">
+            <TabsTrigger value="registry" className="data-[state=active]:bg-purple-600">
               <FileType className="w-4 h-4 mr-2" />
               Registry
             </TabsTrigger>
-            <TabsTrigger value="profiler" className="data-[state=active]:bg-purple-500">
+            <TabsTrigger value="profiler" className="data-[state=active]:bg-purple-600">
               <Gauge className="w-4 h-4 mr-2" />
               Profiler
             </TabsTrigger>
-            <TabsTrigger value="api" className="data-[state=active]:bg-purple-500">
+            <TabsTrigger value="api" className="data-[state=active]:bg-purple-600">
               <Code className="w-4 h-4 mr-2" />
               API
             </TabsTrigger>
-            <TabsTrigger value="realtime" className="data-[state=active]:bg-purple-500">
+            <TabsTrigger value="realtime" className="data-[state=active]:bg-purple-600">
               <Eye className="w-4 h-4 mr-2" />
               Live
             </TabsTrigger>
-            <TabsTrigger value="config" className="data-[state=active]:bg-purple-500">
+            <TabsTrigger value="config" className="data-[state=active]:bg-purple-600">
               <Settings className="w-4 h-4 mr-2" />
               Config
             </TabsTrigger>
