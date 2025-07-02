@@ -3,9 +3,13 @@ from typing import TYPE_CHECKING
 from .core import detect, scan_dir, list_engines
 from .magic_service import detect_magic
 from .trid_multi import detect_with_trid
-from .watch import watch
 from .exceptions import EngineFailure, FastbackError, UnsupportedType
 from .registry import register
+
+def watch(*args, **kw):
+    """Lazily import and invoke :func:`probium.watch.watch`."""
+    from .watch import watch as _watch
+    return _watch(*args, **kw)
 __all__ = [
     "detect",
     "scan_dir",
