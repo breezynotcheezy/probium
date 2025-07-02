@@ -47,14 +47,12 @@ class PDFEngine(EngineBase):
         contains_xtos = re.search(xref_startxref_pattern, payload, re.DOTALL | re.S) is not None
 
 
-        sum = eof + xref + contains_final_xref_eof + contains_obj_block + ptex + contains_stream + pages + catalog
-
-        #print(sum)
-        if sum >= 5:
+        score = eof + xref + contains_final_xref_eof + contains_obj_block + ptex + contains_stream + pages + catalog + contains_xtos
+    
+        if score >= 5:
             conf = 1.0
 
             if idx == -1:
-                conf -= 0.05
                 cand.append(
                 Candidate(
                     media_type="application/pdf",
@@ -69,7 +67,7 @@ class PDFEngine(EngineBase):
                     media_type="application/pdf",
                     extension="pdf",
                     confidence=conf,
-                    #breakdown={"offset": float(idx), "magic_len": float(len(self._MAGIC))},
+                    breakdown={"offset": float(idx), "magic_len": float(len(self._MAGIC))},
                 ))
         
         return Result(candidates=cand)
