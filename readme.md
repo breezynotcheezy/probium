@@ -114,3 +114,16 @@ By default the UI expects the backend to be reachable at
 variable `BACKEND_URL` (used by Next.js API routes) or
 `NEXT_PUBLIC_API_URL` when launching the UI.
 
+### Authentication
+
+Probium's UI includes a basic login page powered by `next-auth`. Users can
+authenticate with an email address, a phone number, or a Google account.
+Credentials are hashed using `bcryptjs`. To enable Google login, set the
+following environment variables (see `.env.example`):
+
+```
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
+NEXTAUTH_SECRET=your-random-secret
+```
+
