@@ -21,6 +21,7 @@ def cmd_detect(ns: argparse.Namespace) -> None:
             only=ns.only,
             extensions=ns.ext,
             ignore=ns.ignore,
+            no_cap=ns.nocap
         ):
             entry = {"path": str(path), **res.model_dump()}
             if ns.trid:
@@ -43,6 +44,7 @@ def cmd_detect(ns: argparse.Namespace) -> None:
                 cap_bytes=ns.capbytes,
                 only=ns.only,
                 extensions=ns.ext,
+                no_cap=ns.nocap
             )
             out = res.model_dump()
         json.dump(out, sys.stdout, indent=None if ns.raw else 2)
@@ -119,6 +121,7 @@ def _add_common_options(ap: argparse.ArgumentParser) -> None:
     ap.add_argument("--raw", action="store_true", help="Emit compact JSON")
     ap.add_argument("--trid", action="store_true", help="Include TRiD engine")
     ap.add_argument("--capbytes", type=int, default=4096, help="Max number of bytes to scan (default = 4096)")
+    ap.add_argument("--nocap", action="store_true", help="Removes limit on how many bytes to scan")
 
 def main() -> None:
     ns = _build_parser().parse_args()
