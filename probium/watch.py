@@ -121,9 +121,15 @@ def watch(
 ) -> WatchContainer:
     """Start watching ``root`` and invoke ``callback`` for new files.
 
-    If :mod:`watchdog` is not installed, a stub implementation is used that
-    does not generate events. Install ``watchdog`` to enable real monitoring.
+    If :mod:`watchdog` is not installed, a :class:`RuntimeError` is raised
+    with instructions to install it. Without ``watchdog`` no file events can be
+    generated.
     """
+    if USING_STUB:
+        raise RuntimeError(
+            "watchdog package is required for directory monitoring. "
+            "Install it with 'pip install watchdog'."
+        )
     container = WatchContainer(
         root, callback, recursive=recursive, only=only, extensions=extensions
     )
