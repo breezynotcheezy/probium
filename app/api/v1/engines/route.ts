@@ -1,5 +1,13 @@
-import { proxy } from '@/app/api/_proxy'
+import { NextResponse } from 'next/server'
+import { localGetEngines } from '@/lib/local'
+
+export const runtime = 'nodejs'
 
 export async function GET() {
-  return proxy('/api/v1/engines')
+  try {
+    const data = await localGetEngines()
+    return NextResponse.json(data)
+  } catch (err: any) {
+    return NextResponse.json({ error: String(err) }, { status: 500 })
+  }
 }

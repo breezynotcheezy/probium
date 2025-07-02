@@ -1,5 +1,13 @@
-import { proxy } from '@/app/api/_proxy'
+import { NextResponse } from 'next/server'
+import { localGetSystemMetrics } from '@/lib/local'
+
+export const runtime = 'nodejs'
 
 export async function GET() {
-  return proxy('/api/v1/system/metrics')
+  try {
+    const metrics = await localGetSystemMetrics()
+    return NextResponse.json({ metrics })
+  } catch (err: any) {
+    return NextResponse.json({ error: String(err) }, { status: 500 })
+  }
 }
