@@ -60,6 +60,9 @@ def cmd_watch(ns: argparse.Namespace) -> None:
 
     print(f"Watching {ns.root}... Press Ctrl+C to stop", file=sys.stderr)
     from .watch import watch
+    if not ns.root.exists():
+        print(f"Path {ns.root} does not exist", file=sys.stderr)
+        return
     try:
         wc = watch(
             ns.root,
@@ -67,6 +70,7 @@ def cmd_watch(ns: argparse.Namespace) -> None:
             recursive=ns.recursive,
             only=ns.only,
             extensions=ns.ext,
+            interval=ns.interval,
         )
     except RuntimeError as exc:
         print(exc, file=sys.stderr)
@@ -105,6 +109,12 @@ def _build_parser() -> argparse.ArgumentParser:
         help="Do not watch subdirectories",
     )
     p_watch.set_defaults(recursive=True)
+    p_watch.add_argument(
+        "--interval",
+        type=float,
+        default=1.0,
+        help="Polling interval when watchdog is unavailable",
+    )
     _add_common_options(p_watch)
     p_watch.set_defaults(func=cmd_watch)
     return p
