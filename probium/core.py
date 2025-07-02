@@ -105,6 +105,8 @@ def _detect_file(
     if engine != "auto":
         return get_instance(engine)(payload)
 
+    magic_best: Result | None = None
+
     if only is not None:
         if engine_order is not None:
             allowed = set(only)
@@ -113,7 +115,6 @@ def _detect_file(
             engines = list(only)
     else:
         engines = engine_order or list_engines()
-        magic_best: Result | None = None
         for sig, off, en in MAGIC_SIGNATURES:
             end = off + len(sig)
             if len(payload) >= end and payload[off:end] == sig:

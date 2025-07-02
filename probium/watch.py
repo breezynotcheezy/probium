@@ -4,8 +4,17 @@ from pathlib import Path
 from typing import Callable, Iterable, Any
 import logging
 
-from watchdog.observers import Observer
-from watchdog.events import FileSystemEventHandler, FileSystemEvent
+try:  # use real watchdog if available
+    from watchdog.observers import Observer
+    from watchdog.events import FileSystemEventHandler, FileSystemEvent
+    USING_STUB = False
+except Exception:  # pragma: no cover - fallback when watchdog missing
+    from watchdog_stub.observers import Observer  # type: ignore
+    from watchdog_stub.events import FileSystemEventHandler, FileSystemEvent  # type: ignore
+    USING_STUB = True
+    logging.getLogger(__name__).warning(
+        "watchdog not installed; falling back to polling implementation"
+    )
 
 from .core import _detect_file as detect
 from .models import Result
@@ -18,24 +27,37 @@ class _FilterHandler(FileSystemEventHandler):
         self,
         callback: Callable[[Path, Result], Any],
         *,
+        recursive: bool = True,
         only: Iterable[str] | None = None,
         extensions: Iterable[str] | None = None,
     ) -> None:
         self.callback = callback
+        self.recursive = recursive
         self.only = set(only) if only else None
         self.extensions = (
             {e.lower().lstrip(".") for e in extensions} if extensions else None
         )
+        self._seen: set[Path] = set()
 
     def on_created(self, event: FileSystemEvent) -> None:
-        self._handle(event)
+        """Handle created paths."""
+        self._handle_path(event.src_path)
 
-    def on_modified(self, event: FileSystemEvent) -> None:
-        self._handle(event)
+    def on_moved(self, event: FileSystemEvent) -> None:
+        """Handle paths moved into the watched directory."""
+        self._handle_path(event.dest_path)
 
-    def _handle(self, event: FileSystemEvent) -> None:
-        path = Path(event.src_path)
+    def _handle_path(self, raw: str | Path) -> None:
+        path = Path(raw)
+        if path in self._seen:
+            return
+        self._seen.add(path)
         if path.is_dir():
+            if not self.recursive:
+                return
+            for p in path.rglob("*"):
+                if p.is_file():
+                    self._handle_path(p)
             return
         if self.extensions and path.suffix.lower().lstrip(".") not in self.extensions:
             return
@@ -61,11 +83,21 @@ class WatchContainer:
         self.root = Path(root)
         self.callback = callback
         self.recursive = recursive
-        self.handler = _FilterHandler(callback, only=only, extensions=extensions)
+        self.handler = _FilterHandler(
+            callback,
+            recursive=recursive,
+            only=only,
+            extensions=extensions,
+        )
         self.observer = Observer()
 
     def start(self) -> None:
         """Begin monitoring ``root`` for filesystem events."""
+
+        if USING_STUB:
+            logger.warning(
+                "watchdog not available; using fallback polling"
+            )
 
         self.observer.schedule(self.handler, str(self.root), recursive=self.recursive)
         self.observer.start()
@@ -85,7 +117,11 @@ def watch(
     only: Iterable[str] | None = None,
     extensions: Iterable[str] | None = None,
 ) -> WatchContainer:
-    """Start watching ``root`` and invoke ``callback`` for new files."""
+    """Start watching ``root`` and invoke ``callback`` for new files.
+
+    If :mod:`watchdog` is not installed, a polling fallback is used. Install
+    ``watchdog`` for efficient real-time monitoring.
+    """
     container = WatchContainer(
         root, callback, recursive=recursive, only=only, extensions=extensions
     )

@@ -59,6 +59,9 @@ wc = watch("incoming", handle, extensions=["pdf", "docx"])
 
 wc.stop()
 
+The watch utility uses the optional `watchdog` package when available. Without
+it, Probium falls back to a simple polling loop.
+
 ## 🖥️ UI Launcher 🖥️
 
 Install Node.js (version 18 or newer) and the ``pnpm`` package manager. If
