@@ -4,7 +4,9 @@ import json
 import sys
 from pathlib import Path
 from .core import detect, _detect_file, scan_dir
+
 from .google_magika import detect_magika, require_magika
+
 from .trid_multi import detect_with_trid
 import time
 

@@ -139,7 +139,9 @@ def test_watch_polling(monkeypatch, tmp_path):
 
 
 def test_detect_magika():
+
     pytest.importorskip("magika")
+
     path = SAMPLES_DIR / "sample.csv"
     res = detect_magika(path)
     cand = res.candidates[0]
