@@ -4,12 +4,20 @@ import json
 import sys
 from pathlib import Path
 from .core import detect, _detect_file, scan_dir
-from .google_magika import detect_magika
+
+from .google_magika import detect_magika, require_magika
+
 from .trid_multi import detect_with_trid
 import time
 
 def cmd_detect(ns: argparse.Namespace) -> None:
     """Detect a file or directory and emit JSON."""
+    if ns.magika:
+        try:
+            require_magika()
+        except RuntimeError as exc:
+            print(exc, file=sys.stderr)
+            return
     target = ns.path
     if target.is_dir():
         results: list[dict] = []
@@ -60,6 +68,13 @@ def cmd_detect(ns: argparse.Namespace) -> None:
 
 def cmd_watch(ns: argparse.Namespace) -> None:
     """Watch a directory and print detection results for new files."""
+
+    if ns.magika:
+        try:
+            require_magika()
+        except RuntimeError as exc:
+            print(exc, file=sys.stderr)
+            return
 
     def _handle(path: Path, res) -> None:
         entry = {"path": str(path), **res.model_dump()}

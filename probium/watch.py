@@ -23,6 +23,7 @@ except ImportError:  # pragma: no cover - fallback when watchdog missing
 
 from .core import _detect_file as detect
 from .models import Result
+from .google_magika import require_magika
 
 logger = logging.getLogger(__name__)
 
@@ -191,6 +192,9 @@ def watch(
     root = Path(root)
     if not root.exists():
         raise FileNotFoundError(f"watch root does not exist: {root}")
+
+    if magika:
+        require_magika()
 
     if USING_STUB:
         container: WatchContainer | PollingWatchContainer = PollingWatchContainer(
