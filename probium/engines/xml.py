@@ -1,8 +1,14 @@
 from __future__ import annotations
-import re
-import mimetypes
 import logging
+import mimetypes
+import re
 import xml.etree.ElementTree as ET
+from functools import lru_cache
+
+try:
+    import chardet  # type: ignore
+except Exception:  # pragma: no cover - optional dependency
+    chardet = None
 
 from ..models import Candidate, Result
 from ..scoring import score_magic, score_tokens
@@ -14,12 +20,43 @@ logger = logging.getLogger(__name__)
 
 _magic = load_magic()
 
+
 @register
 class XMLEngine(EngineBase):
+    """Heuristic XML detection with multiple analysis layers."""
+
     name = "xml"
     cost = 0.05
-    _MAGIC = [b"\xEF\xBB\xBF", b"\xFF\xFE", b"\xFE\xFF", b"<?xml"]
-    _TOKEN_RE = re.compile(r"[<>]")
+
+    SAMPLE_SIZE = 4096
+    TOKEN_RATIO_THRESHOLD = 0.05
+
+    BOM_UTF8 = b"\xEF\xBB\xBF"
+    BOM_UTF16_LE = b"\xFF\xFE"
+    BOM_UTF16_BE = b"\xFE\xFF"
+    MAGIC_PATTERNS = [BOM_UTF8, BOM_UTF16_LE, BOM_UTF16_BE, b"<?xml"]
+
+    DECL_RE = re.compile(r"<\?xml[^>]*>")
+    DOCTYPE_RE = re.compile(r"<!DOCTYPE[^>]+>", re.I)
+    TOKEN_RE = re.compile(r"[<>]")
+    OPEN_TAG_RE = re.compile(r"<[^/!?][^>]*>")
+    CLOSE_TAG_RE = re.compile(r"</[^>]+>")
+
+    def detect_encoding(self, payload: bytes) -> str:
+        if payload.startswith(self.BOM_UTF8):
+            return "utf-8-sig"
+        if payload.startswith(self.BOM_UTF16_LE):
+            return "utf-16-le"
+        if payload.startswith(self.BOM_UTF16_BE):
+            return "utf-16-be"
+        if chardet is not None:
+            try:
+                enc = chardet.detect(payload[: self.SAMPLE_SIZE]).get("encoding")
+                if enc:
+                    return enc
+            except Exception:
+                pass
+        return "utf-8"
 
     def _make_result(self, conf: float, breakdown: dict[str, float]) -> Result:
         cand = Candidate(
@@ -30,12 +67,27 @@ class XMLEngine(EngineBase):
         )
         return Result(candidates=[cand])
 
+    @lru_cache(maxsize=64)
+    def _parse_snippet(self, snippet: str) -> bool:
+        """Attempt to parse a snippet of XML, cached by content."""
+        try:
+            ET.fromstring(snippet)
+            return True
+        except Exception:
+            try:
+                ET.fromstring(f"<root>{snippet}</root>")
+                return True
+            except Exception:
+                return False
+
     def sniff(self, payload: bytes) -> Result:
-        # Layer 1: libmagic
+        """Return a detection result for the given payload."""
+
+        # 1. libmagic check
         if _magic is not None:
             try:
                 mime = _magic.from_buffer(payload)
-            except Exception as exc:  # pragma: no cover
+            except Exception as exc:  # pragma: no cover - rare
                 logger.warning("libmagic failed: %s", exc)
             else:
                 if mime and "xml" in mime:
@@ -48,93 +100,61 @@ class XMLEngine(EngineBase):
                     )
                     return Result(candidates=[cand])
 
+        encoding = self.detect_encoding(payload)
         try:
-            text = payload.decode("utf-8", errors="ignore")
+            text = payload.decode(encoding, errors="replace")
         except Exception:
             return Result(candidates=[])
 
-        window = text[:256]
-        candidates: list[Candidate] = []
+        window = text[: self.SAMPLE_SIZE]
+        breakdown: dict[str, float] = {}
+        confidence = 0.0
 
-        # Layer 2: BOM detection
-        for magic in self._MAGIC[:3]:
+        token_ratio = len(self.TOKEN_RE.findall(window)) / max(len(window), 1)
+        if token_ratio < self.TOKEN_RATIO_THRESHOLD / 2:
+            return Result(candidates=[])
+
+        # 2. XML declaration / BOM
+        if window.lstrip().startswith("<?xml"):
+            confidence = max(confidence, score_magic(5))
+            breakdown["xml_decl"] = 1.0
+        for magic in (self.BOM_UTF8, self.BOM_UTF16_LE, self.BOM_UTF16_BE):
             if payload.startswith(magic):
-                candidates.append(
-                    Candidate(
-                        media_type="application/xml",
-                        extension="xml",
-                        confidence=score_magic(len(magic)),
-                        breakdown={"bom": float(len(magic))},
-                    )
-                )
+                confidence = max(confidence, score_magic(len(magic)))
+                breakdown["bom"] = float(len(magic))
                 break
 
-        # Layer 3: XML declaration
-        if window.lstrip().startswith("<?xml"):
-            candidates.append(
-                Candidate(
-                    media_type="application/xml",
-                    extension="xml",
-                    confidence=score_magic(5),
-                    breakdown={"xml_decl": 1.0},
-                )
-            )
+        # 3. DOCTYPE
+        if self.DOCTYPE_RE.search(window):
+            confidence = max(confidence, score_tokens(0.6))
+            breakdown["doctype"] = 1.0
 
-        # Layer 4: attempt parsing
-        try:
-            ET.fromstring(text)
-            candidates.append(
-                Candidate(
-                    media_type="application/xml",
-                    extension="xml",
-                    confidence=score_tokens(1.0),
-                    breakdown={"parsed": 1.0},
-                )
-            )
-        except Exception:
-            pass
+        # 4. Parse attempt
+        if token_ratio > 0 and self._parse_snippet(window):
+            confidence = max(confidence, score_tokens(1.0))
+            breakdown["parsed"] = 1.0
 
-        # Layer 5: root tag detection
+        # 5. Root tag detection
         stripped = window.lstrip()
         if stripped.startswith("<") and ">" in stripped:
-            tag = stripped[1:stripped.find(">")].split()[0].strip("/?")
+            tag = stripped[1 : stripped.find(">")].split()[0].strip("/?")
             if tag:
-                candidates.append(
-                    Candidate(
-                        media_type="application/xml",
-                        extension="xml",
-                        confidence=score_tokens(0.2),
-                        breakdown={"root_tag": 1.0},
-                    )
-                )
+                confidence = max(confidence, score_tokens(0.7))
+                breakdown["root_tag"] = 1.0
 
-        # Layer 6: balanced tags heuristic
-        open_tags = len(re.findall(r"<[^/!?][^>]*>", window))
-        close_tags = len(re.findall(r"</[^>]+>", window))
+        # 6. Balanced tag heuristic
+        open_tags = len(self.OPEN_TAG_RE.findall(window))
+        close_tags = len(self.CLOSE_TAG_RE.findall(window))
         if open_tags and abs(open_tags - close_tags) <= 2:
-            candidates.append(
-                Candidate(
-                    media_type="application/xml",
-                    extension="xml",
-                    confidence=score_tokens(0.15),
-                    breakdown={"balanced": 1.0},
-                )
-            )
+            confidence = max(confidence, score_tokens(0.6))
+            breakdown["balanced"] = 1.0
 
-        # Layer 7: token ratio
-        token_ratio = len(self._TOKEN_RE.findall(window)) / max(len(window), 1)
-        if token_ratio > 0.05:
-            candidates.append(
-                Candidate(
-                    media_type="application/xml",
-                    extension="xml",
-                    confidence=score_tokens(min(token_ratio, 0.7)),
-                    breakdown={"token_ratio": round(token_ratio, 3)},
-                )
-            )
+        # 7. Token ratio (already computed above)
+        if token_ratio > self.TOKEN_RATIO_THRESHOLD:
+            confidence = max(confidence, score_tokens(min(token_ratio, 0.9)))
+        breakdown["token_ratio"] = round(token_ratio, 3)
 
-        if not candidates:
+        if confidence == 0:
             return Result(candidates=[])
 
-        best = max(candidates, key=lambda c: c.confidence)
-        return Result(candidates=[best])
+        return self._make_result(confidence, breakdown)
