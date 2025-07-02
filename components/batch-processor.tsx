@@ -93,31 +93,31 @@ export function BatchProcessor({ onBatchComplete, config, setIsScanning }: Batch
     <div className="space-y-6">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Batch Upload */}
-        <Card className="bg-purple-900/30 border-purple-700">
+        <Card className="bg-purple-50 border-purple-300">
           <CardHeader>
             <CardTitle className="text-white flex items-center gap-2">
               <Files className="w-5 h-5" />
               Batch File Upload
             </CardTitle>
-            <CardDescription className="text-purple-300">Upload multiple files for parallel processing</CardDescription>
+            <CardDescription className="text-purple-700">Upload multiple files for parallel processing</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div
               {...getRootProps()}
               className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-all ${
                 isDragActive
-                  ? "border-purple-400 bg-purple-800/30"
-                  : "border-purple-600 hover:border-purple-500 bg-purple-900/20"
+                  ? "border-purple-200 bg-purple-50"
+                  : "border-purple-300 hover:border-purple-300 bg-purple-50"
               }`}
             >
               <input {...getInputProps()} />
-              <Files className="w-12 h-12 text-purple-400 mx-auto mb-4" />
+              <Files className="w-12 h-12 text-purple-600 mx-auto mb-4" />
               {isDragActive ? (
-                <p className="text-purple-300">Drop the files here...</p>
+                <p className="text-purple-700">Drop the files here...</p>
               ) : (
                 <div>
-                  <p className="text-purple-200 mb-2">Drag & drop multiple files here, or click to select</p>
-                  <p className="text-sm text-purple-400">Process up to 1000 files simultaneously</p>
+                  <p className="text-purple-600 mb-2">Drag & drop multiple files here, or click to select</p>
+                  <p className="text-sm text-purple-600">Process up to 1000 files simultaneously</p>
                 </div>
               )}
             </div>
@@ -125,25 +125,25 @@ export function BatchProcessor({ onBatchComplete, config, setIsScanning }: Batch
             {files.length > 0 && (
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-purple-300">{files.length} files queued</span>
+                  <span className="text-purple-700">{files.length} files queued</span>
                   <Button
                     onClick={clearFiles}
                     variant="outline"
                     size="sm"
-                    className="border-purple-600 text-purple-300 bg-transparent"
+                    className="border-purple-300 text-purple-700 bg-transparent"
                   >
                     Clear All
                   </Button>
                 </div>
                 <div className="max-h-40 overflow-y-auto space-y-1">
                   {files.slice(0, 10).map((file, index) => (
-                    <div key={index} className="flex items-center justify-between p-2 bg-purple-800/30 rounded text-sm">
-                      <span className="text-purple-200 truncate">{file.name}</span>
-                      <span className="text-purple-400">{(file.size / 1024 / 1024).toFixed(1)}MB</span>
+                    <div key={index} className="flex items-center justify-between p-2 bg-purple-50 rounded text-sm">
+                      <span className="text-purple-600 truncate">{file.name}</span>
+                      <span className="text-purple-600">{(file.size / 1024 / 1024).toFixed(1)}MB</span>
                     </div>
                   ))}
                   {files.length > 10 && (
-                    <p className="text-center text-purple-400 text-sm">...and {files.length - 10} more files</p>
+                    <p className="text-center text-purple-600 text-sm">...and {files.length - 10} more files</p>
                   )}
                 </div>
               </div>
@@ -152,7 +152,7 @@ export function BatchProcessor({ onBatchComplete, config, setIsScanning }: Batch
         </Card>
 
         {/* Batch Options */}
-        <Card className="bg-purple-900/30 border-purple-700">
+        <Card className="bg-purple-50 border-purple-300">
           <CardHeader>
             <CardTitle className="text-white flex items-center gap-2">
               <Database className="w-5 h-5" />
@@ -164,7 +164,7 @@ export function BatchProcessor({ onBatchComplete, config, setIsScanning }: Batch
               <div className="flex items-center justify-between">
                 <div>
                   <Label className="text-white">Parallel Processing</Label>
-                  <p className="text-xs text-purple-400">Use multiple threads for faster processing</p>
+                  <p className="text-xs text-purple-600">Use multiple threads for faster processing</p>
                 </div>
                 <Switch
                   checked={batchOptions.parallelProcessing}
@@ -175,7 +175,7 @@ export function BatchProcessor({ onBatchComplete, config, setIsScanning }: Batch
               <div className="flex items-center justify-between">
                 <div>
                   <Label className="text-white">Skip Duplicates</Label>
-                  <p className="text-xs text-purple-400">Skip files with identical hashes</p>
+                  <p className="text-xs text-purple-600">Skip files with identical hashes</p>
                 </div>
                 <Switch
                   checked={batchOptions.skipDuplicates}
@@ -186,7 +186,7 @@ export function BatchProcessor({ onBatchComplete, config, setIsScanning }: Batch
               <div className="flex items-center justify-between">
                 <div>
                   <Label className="text-white">Generate Report</Label>
-                  <p className="text-xs text-purple-400">Create detailed batch processing report</p>
+                  <p className="text-xs text-purple-600">Create detailed batch processing report</p>
                 </div>
                 <Switch
                   checked={batchOptions.generateReport}
@@ -197,7 +197,7 @@ export function BatchProcessor({ onBatchComplete, config, setIsScanning }: Batch
               <div className="flex items-center justify-between">
                 <div>
                   <Label className="text-white">Auto Export</Label>
-                  <p className="text-xs text-purple-400">Automatically export results when complete</p>
+                  <p className="text-xs text-purple-600">Automatically export results when complete</p>
                 </div>
                 <Switch
                   checked={batchOptions.autoExport}
@@ -206,12 +206,12 @@ export function BatchProcessor({ onBatchComplete, config, setIsScanning }: Batch
               </div>
             </div>
 
-            <div className="pt-4 border-t border-purple-700">
+            <div className="pt-4 border-t border-purple-300">
               <div className="flex gap-2">
                 <Button
                   onClick={startBatchProcessing}
                   disabled={batchStatus === "running" || files.length === 0}
-                  className="flex-1 bg-purple-600 hover:bg-purple-700"
+                  className="flex-1 bg-purple-400 hover:bg-purple-500"
                 >
                   <Play className="w-4 h-4 mr-2" />
                   Start Batch
@@ -220,7 +220,7 @@ export function BatchProcessor({ onBatchComplete, config, setIsScanning }: Batch
                   <Button
                     onClick={() => setBatchStatus("paused")}
                     variant="outline"
-                    className="border-purple-600 text-purple-300"
+                    className="border-purple-300 text-purple-700"
                   >
                     <Pause className="w-4 h-4" />
                   </Button>
@@ -233,17 +233,17 @@ export function BatchProcessor({ onBatchComplete, config, setIsScanning }: Batch
 
       {/* Batch Progress */}
       {batchStatus === "running" && (
-        <Card className="bg-purple-900/30 border-purple-700">
+        <Card className="bg-purple-50 border-purple-300">
           <CardContent className="p-6">
             <div className="space-y-4">
               <div className="flex justify-between items-center">
                 <h3 className="font-semibold text-white">Batch Processing Progress</h3>
                 <div className="flex items-center gap-4">
-                  <Badge className="bg-purple-700">
+                  <Badge className="bg-purple-500">
                     <Cpu className="w-3 h-3 mr-1" />
                     {config.threadPool} threads
                   </Badge>
-                  <Badge className="bg-purple-700">
+                  <Badge className="bg-purple-500">
                     <Clock className="w-3 h-3 mr-1" />
                     {Math.round((Date.now() - (Date.now() - processedCount * 800)) / 1000)}s
                   </Badge>
@@ -252,16 +252,16 @@ export function BatchProcessor({ onBatchComplete, config, setIsScanning }: Batch
 
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span className="text-purple-300">
+                  <span className="text-purple-700">
                     Progress: {processedCount} / {files.length}
                   </span>
-                  <span className="text-purple-300">{Math.round((processedCount / files.length) * 100)}%</span>
+                  <span className="text-purple-700">{Math.round((processedCount / files.length) * 100)}%</span>
                 </div>
-                <Progress value={(processedCount / files.length) * 100} className="bg-purple-800" />
+                <Progress value={(processedCount / files.length) * 100} className="bg-purple-200" />
               </div>
 
               {currentFile && (
-                <p className="text-sm text-purple-300">
+                <p className="text-sm text-purple-700">
                   Currently processing: <span className="font-medium text-white">{currentFile}</span>
                 </p>
               )}
