@@ -4,8 +4,17 @@ from pathlib import Path
 from typing import Callable, Iterable, Any
 import logging
 
-from watchdog.observers import Observer
-from watchdog.events import FileSystemEventHandler, FileSystemEvent
+try:  # use real watchdog if available
+    from watchdog.observers import Observer
+    from watchdog.events import FileSystemEventHandler, FileSystemEvent
+    USING_STUB = False
+except Exception:  # pragma: no cover - fallback when watchdog missing
+    from watchdog_stub.observers import Observer  # type: ignore
+    from watchdog_stub.events import FileSystemEventHandler, FileSystemEvent  # type: ignore
+    USING_STUB = True
+    logging.getLogger(__name__).warning(
+        "watchdog package not installed; using stub implementation"
+    )
 
 from .core import _detect_file as detect
 from .models import Result
@@ -28,11 +37,13 @@ class _FilterHandler(FileSystemEventHandler):
         self.extensions = (
             {e.lower().lstrip(".") for e in extensions} if extensions else None
         )
+        self._seen: set[Path] = set()
 
     def on_created(self, event: FileSystemEvent) -> None:
 
         """Handle created paths."""
         self._handle_path(event.src_path)
+
 
     def on_moved(self, event: FileSystemEvent) -> None:
         """Handle paths moved into the watched directory."""
@@ -41,6 +52,10 @@ class _FilterHandler(FileSystemEventHandler):
 
     def _handle_path(self, raw: str | Path) -> None:
         path = Path(raw)
+        if path in self._seen:
+            return
+        self._seen.add(path)
+
         if path.is_dir():
             if not self.recursive:
                 return
@@ -83,6 +98,11 @@ class WatchContainer:
     def start(self) -> None:
         """Begin monitoring ``root`` for filesystem events."""
 
+        if USING_STUB:
+            logger.warning(
+                "watchdog not available; file events will not be reported"
+            )
+
         self.observer.schedule(self.handler, str(self.root), recursive=self.recursive)
         self.observer.start()
 
@@ -101,7 +121,11 @@ def watch(
     only: Iterable[str] | None = None,
     extensions: Iterable[str] | None = None,
 ) -> WatchContainer:
-    """Start watching ``root`` and invoke ``callback`` for new files."""
+    """Start watching ``root`` and invoke ``callback`` for new files.
+
+    If :mod:`watchdog` is not installed, a stub implementation is used that
+    does not generate events. Install ``watchdog`` to enable real monitoring.
+    """
     container = WatchContainer(
         root, callback, recursive=recursive, only=only, extensions=extensions
     )
