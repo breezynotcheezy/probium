@@ -6,7 +6,7 @@ import time
 import asyncio
 import pytest
 
-from probium import detect, detect_async
+from probium import detect, detect_async, detect_magika
 
 # Directory containing sample files for tests
 SAMPLES_DIR = Path(__file__).parent / "samples"
@@ -136,3 +136,11 @@ def test_watch_polling(monkeypatch, tmp_path):
         wc.stop()
 
     assert paths and paths[0] == f
+
+
+def test_detect_magika():
+    path = SAMPLES_DIR / "sample.csv"
+    res = detect_magika(path)
+    cand = res.candidates[0]
+    assert cand.media_type == "text/csv"
+    assert cand.extension == "csv"

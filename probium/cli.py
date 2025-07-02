@@ -4,6 +4,7 @@ import json
 import sys
 from pathlib import Path
 from .core import detect, _detect_file, scan_dir
+from .google_magika import detect_magika
 from .trid_multi import detect_with_trid
 import time
 
@@ -12,16 +13,21 @@ def cmd_detect(ns: argparse.Namespace) -> None:
     target = ns.path
     if target.is_dir():
         results: list[dict] = []
-        for path, res in scan_dir(
-            target,
+        scan_kwargs = dict(
             pattern=ns.pattern,
             workers=ns.workers,
             cap_bytes=ns.capbytes,
-            only=ns.only,
             extensions=ns.ext,
             ignore=ns.ignore,
-            no_cap=ns.nocap
-        ):
+            no_cap=ns.nocap,
+        )
+        if ns.magika:
+            scan_kwargs["engine"] = "magika"
+            scan_kwargs.pop("cap_bytes", None)
+        else:
+            scan_kwargs["only"] = ns.only
+
+        for path, res in scan_dir(target, **scan_kwargs):
             entry = {"path": str(path), **res.model_dump()}
             if ns.trid:
                 trid_res = _detect_file(path, engine="trid", cap_bytes=None)
@@ -33,18 +39,21 @@ def cmd_detect(ns: argparse.Namespace) -> None:
             res_map = detect_with_trid(
                 target,
                 cap_bytes=ns.capbytes,
-                only=ns.only,
+                only=None if ns.magika else ns.only,
                 extensions=ns.ext,
             )
             out = {k: v.model_dump() for k, v in res_map.items()}
         else:
-            res = _detect_file(
-                target,
-                cap_bytes=ns.capbytes,
-                only=ns.only,
-                extensions=ns.ext,
-                no_cap=ns.nocap
-            )
+            if ns.magika:
+                res = detect_magika(target, cap_bytes=None)
+            else:
+                res = _detect_file(
+                    target,
+                    cap_bytes=ns.capbytes,
+                    only=ns.only,
+                    extensions=ns.ext,
+                    no_cap=ns.nocap
+                )
             out = res.model_dump()
         json.dump(out, sys.stdout, indent=None if ns.raw else 2)
     sys.stdout.write("\n")
@@ -68,9 +77,10 @@ def cmd_watch(ns: argparse.Namespace) -> None:
             ns.root,
             _handle,
             recursive=ns.recursive,
-            only=ns.only,
+            only=None if ns.magika else ns.only,
             extensions=ns.ext,
             interval=ns.interval,
+            magika=ns.magika,
         )
     except RuntimeError as exc:
         print(exc, file=sys.stderr)
@@ -136,6 +146,11 @@ def _add_common_options(ap: argparse.ArgumentParser) -> None:
     ap.add_argument("--trid", action="store_true", help="Include TRiD engine")
     ap.add_argument("--capbytes", type=int, default=4096, help="Max number of bytes to scan (default = 4096)")
     ap.add_argument("--nocap", action="store_true", help="Removes limit on how many bytes to scan")
+    ap.add_argument(
+        "--magika",
+        action="store_true",
+        help="Use Google Magika exclusively for detection",
+    )
 
 def main() -> None:
     ns = _build_parser().parse_args()

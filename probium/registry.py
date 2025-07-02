@@ -45,5 +45,6 @@ def list_engines() -> list[str]:
         for name, cls in sorted(
             _engines.items(), key=lambda kv: getattr(kv[1], "cost", 1.0)
         )
+        if not getattr(cls, "opt_in_only", False)
     ]
 all_engines = lambda: MappingProxyType(_engines)

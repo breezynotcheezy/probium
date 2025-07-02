@@ -35,6 +35,7 @@ class _FilterHandler(FileSystemEventHandler):
         recursive: bool = True,
         only: Iterable[str] | None = None,
         extensions: Iterable[str] | None = None,
+        magika: bool = False,
     ) -> None:
         self.callback = callback
         self.recursive = recursive
@@ -43,6 +44,7 @@ class _FilterHandler(FileSystemEventHandler):
             {e.lower().lstrip(".") for e in extensions} if extensions else None
         )
         self._seen: set[Path] = set()
+        self.magika = magika
 
     def on_created(self, event: FileSystemEvent) -> None:
         """Handle created paths."""
@@ -67,7 +69,10 @@ class _FilterHandler(FileSystemEventHandler):
             return
         if self.extensions and path.suffix.lower().lstrip(".") not in self.extensions:
             return
-        res = detect(path, only=self.only, extensions=self.extensions, cap_bytes=None)
+        if self.magika:
+            res = detect(path, engine="magika", cap_bytes=None)
+        else:
+            res = detect(path, only=self.only, extensions=self.extensions, cap_bytes=None)
         try:
             self.callback(path, res)
         except Exception:
@@ -85,6 +90,7 @@ class WatchContainer:
         recursive: bool = True,
         only: Iterable[str] | None = None,
         extensions: Iterable[str] | None = None,
+        magika: bool = False,
     ) -> None:
         self.root = Path(root)
         self.callback = callback
@@ -94,6 +100,7 @@ class WatchContainer:
             recursive=recursive,
             only=only,
             extensions=extensions,
+            magika=magika,
         )
         self.observer = Observer()
 
@@ -125,6 +132,7 @@ class PollingWatchContainer:
         only: Iterable[str] | None = None,
         extensions: Iterable[str] | None = None,
         interval: float = 1.0,
+        magika: bool = False,
     ) -> None:
         self.root = Path(root)
         self.callback = callback
@@ -135,6 +143,7 @@ class PollingWatchContainer:
             recursive=recursive,
             only=only,
             extensions=extensions,
+            magika=magika,
         )
         self._stop = threading.Event()
         self._thread = threading.Thread(target=self._run, daemon=True)
@@ -171,6 +180,7 @@ def watch(
     only: Iterable[str] | None = None,
     extensions: Iterable[str] | None = None,
     interval: float = 1.0,
+    magika: bool = False,
 ) -> WatchContainer:
     """Start watching ``root`` and invoke ``callback`` for new files.
 
@@ -190,10 +200,16 @@ def watch(
             only=only,
             extensions=extensions,
             interval=interval,
+            magika=magika,
         )
     else:
         container = WatchContainer(
-            root, callback, recursive=recursive, only=only, extensions=extensions
+            root,
+            callback,
+            recursive=recursive,
+            only=only,
+            extensions=extensions,
+            magika=magika,
         )
     container.start()
     return container
