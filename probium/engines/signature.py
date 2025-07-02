@@ -56,7 +56,7 @@ class SignatureEngine(EngineBase):
                     cand = Candidate(
                         media_type=mime,
                         extension=ext,
-                        confidence=score_tokens(1.0),
+                        confidence=score_tokens(0),
                         breakdown={"token_ratio": 1.0},
                     )
                     return Result(candidates=[cand])

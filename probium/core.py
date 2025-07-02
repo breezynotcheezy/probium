@@ -45,6 +45,7 @@ def _detect_file(
 
     extensions: Iterable[str] | None = None,
 
+    no_cap: bool = False,
 
     cache: bool = True,
 ) -> Result:
@@ -100,6 +101,7 @@ def _detect_file(
     scan_cap = cap_bytes
     if engine == "auto" and only is None:
         scan_cap = max(cap_bytes or 0, _MAX_SCAN)
+
     payload = _load_bytes(source, scan_cap)
 
     if engine != "auto":
@@ -128,6 +130,7 @@ def _detect_file(
                 break
 
     best: Result | None = magic_best
+
     for name in engines:
         res = get_instance(name)(payload)
         if res.candidates:

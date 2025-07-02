@@ -40,6 +40,7 @@ class _FilterHandler(FileSystemEventHandler):
         self._seen: set[Path] = set()
 
     def on_created(self, event: FileSystemEvent) -> None:
+
         """Handle created paths."""
         self._handle_path(event.src_path)
 
@@ -52,6 +53,7 @@ class _FilterHandler(FileSystemEventHandler):
         if path in self._seen:
             return
         self._seen.add(path)
+
         if path.is_dir():
             if not self.recursive:
                 return
