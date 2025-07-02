@@ -44,11 +44,9 @@ class _FilterHandler(FileSystemEventHandler):
         """Handle created paths."""
         self._handle_path(event.src_path)
 
-
     def on_moved(self, event: FileSystemEvent) -> None:
         """Handle paths moved into the watched directory."""
         self._handle_path(event.dest_path)
-
 
     def _handle_path(self, raw: str | Path) -> None:
         path = Path(raw)

@@ -5,7 +5,6 @@ import sys
 from pathlib import Path
 from .core import detect, _detect_file, scan_dir
 from .trid_multi import detect_with_trid
-from .watch import watch
 import time
 
 def cmd_detect(ns: argparse.Namespace) -> None:
@@ -60,6 +59,7 @@ def cmd_watch(ns: argparse.Namespace) -> None:
         sys.stdout.flush()
 
     print(f"Watching {ns.root}... Press Ctrl+C to stop", file=sys.stderr)
+    from .watch import watch
     wc = watch(
         ns.root,
         _handle,

@@ -102,13 +102,12 @@ def _detect_file(
     if engine == "auto" and only is None:
         scan_cap = max(cap_bytes or 0, _MAX_SCAN)
 
-    if no_cap:
-        payload = _load_bytes(source, None)
-    else:
-        payload = _load_bytes(source, scan_cap)
+    payload = _load_bytes(source, scan_cap)
 
     if engine != "auto":
         return get_instance(engine)(payload)
+
+    magic_best: Result | None = None
 
     if only is not None:
         if engine_order is not None:
@@ -118,20 +117,20 @@ def _detect_file(
             engines = list(only)
     else:
         engines = engine_order or list_engines()
-        magic_best: Result | None = None
         for sig, off, en in MAGIC_SIGNATURES:
             end = off + len(sig)
             if len(payload) >= end and payload[off:end] == sig:
                 res = get_instance(en)(payload)
                 if res.candidates:
                     res.candidates[0].breakdown = {"magic_len": float(len(sig))}
-                    #res.candidates[0].confidence = score_magic(len(sig))
+                    res.candidates[0].confidence = score_magic(len(sig))
                     magic_best = res
                     if res.candidates[0].confidence >= 0.9:
                         return res
                 break
 
     best: Result | None = magic_best
+
     for name in engines:
         res = get_instance(name)(payload)
         if res.candidates:
