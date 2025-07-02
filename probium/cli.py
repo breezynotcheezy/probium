@@ -60,13 +60,17 @@ def cmd_watch(ns: argparse.Namespace) -> None:
 
     print(f"Watching {ns.root}... Press Ctrl+C to stop", file=sys.stderr)
     from .watch import watch
-    wc = watch(
-        ns.root,
-        _handle,
-        recursive=ns.recursive,
-        only=ns.only,
-        extensions=ns.ext,
-    )
+    try:
+        wc = watch(
+            ns.root,
+            _handle,
+            recursive=ns.recursive,
+            only=ns.only,
+            extensions=ns.ext,
+        )
+    except RuntimeError as exc:
+        print(exc, file=sys.stderr)
+        return
     try:
         while True:
             time.sleep(0.5)

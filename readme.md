@@ -11,8 +11,27 @@ Probium is a fast, modular content analysis tool that detects and classifies fil
 - Parallel scanning with thread pools ✔
 - JSON output for easy integration ✔
 
+
+## Installation
+
+Install Probium and its Python dependencies with ``pip``:
+
+```bash
+pip install probium
+```
+
+If you are working from a source checkout run ``pip install -e .`` instead.
+This includes the ``watchdog`` package so ``probium watch`` can report file
+system events.
+
+If the watch command warns that ``watchdog`` is missing, install it manually:
+
+```bash
+pip install watchdog
+```
+
 ### Usage:
-"*pip install probium*"
+
 
 
 ## ☑️ CLI ☑️

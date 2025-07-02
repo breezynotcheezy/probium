@@ -116,3 +116,12 @@ def test_detect_async(file_name: str, expect: dict, results_log: list):
     assert cand is not None, "No candidate returned (async)"
     assert cand.media_type == expect["media_type"]
     assert cand.extension == expect["extension"]
+
+
+def test_watch_requires_watchdog(monkeypatch, tmp_path):
+    """watch() should fail when watchdog is unavailable."""
+    import probium.watch as w
+
+    monkeypatch.setattr(w, "USING_STUB", True)
+    with pytest.raises(RuntimeError):
+        w.watch(tmp_path, lambda p, r: None)
