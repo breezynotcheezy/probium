@@ -2,6 +2,8 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+import os
+import asyncio
 from pathlib import Path
 from .core import detect, _detect_file, scan_dir
 
@@ -31,6 +33,7 @@ def _colorize_path(path: Path) -> str:
 
 def cmd_detect(ns: argparse.Namespace) -> None:
     """Detect a file or directory and emit JSON."""
+    start_total = time.perf_counter()
     if ns.magika:
         try:
             require_magika()
@@ -54,14 +57,28 @@ def cmd_detect(ns: argparse.Namespace) -> None:
         else:
             scan_kwargs["only"] = ns.only
 
-        for path, res in scan_dir(target, **scan_kwargs):
-            entry = {"path": str(path), **res.model_dump()}
-            if ns.color:
-                entry["path"] = _colorize_path(path)
-            if ns.trid:
-                trid_res = _detect_file(path, engine="trid", cap_bytes=None)
-                entry["trid"] = trid_res.model_dump()
-            results.append(entry)
+        if ns.sync:
+            for path, res in scan_dir(target, **scan_kwargs):
+                entry = {"path": str(path), **res.model_dump()}
+                if ns.color:
+                    entry["path"] = _colorize_path(path)
+                if ns.trid:
+                    trid_res = _detect_file(path, engine="trid", cap_bytes=None)
+                    entry["trid"] = trid_res.model_dump()
+                results.append(entry)
+        else:
+            async def _run() -> None:
+                from .core import scan_dir_async
+                async for path, res in scan_dir_async(target, **scan_kwargs):
+                    entry = {"path": str(path), **res.model_dump()}
+                    if ns.color:
+                        entry["path"] = _colorize_path(path)
+                    if ns.trid:
+                        trid_res = _detect_file(path, engine="trid", cap_bytes=None)
+                        entry["trid"] = trid_res.model_dump()
+                    results.append(entry)
+
+            asyncio.run(_run())
         json.dump(results, sys.stdout, indent=None if ns.raw else 2)
     else:
         if ns.trid:
@@ -88,6 +105,9 @@ def cmd_detect(ns: argparse.Namespace) -> None:
             out["path"] = _colorize_path(target)
         json.dump(out, sys.stdout, indent=None if ns.raw else 2)
     sys.stdout.write("\n")
+    if ns.benchmark:
+        total_ms = (time.perf_counter() - start_total) * 1000
+        print(f"Total time: {total_ms:.1f} ms", file=sys.stderr)
 
 def cmd_watch(ns: argparse.Namespace) -> None:
     """Watch a directory and print detection results for new files."""
@@ -139,12 +159,27 @@ def _build_parser() -> argparse.ArgumentParser:
     p_det = sub.add_parser("detect", help="Detect a file or directory")
     p_det.add_argument("path", type=Path, help="File or directory path")
     p_det.add_argument("--pattern", default="**/*", help="Glob pattern for directories")
-    p_det.add_argument("--workers", type=int, default=8, help="Thread-pool size")
+    p_det.add_argument(
+        "--workers",
+        type=int,
+        default=os.cpu_count() or 4,
+        help="Thread-pool size (default: CPU count)",
+    )
     p_det.add_argument(
         "--ignore",
         nargs="+",
         metavar="DIR",
         help="Directory names to skip during scan",
+    )
+    p_det.add_argument(
+        "--benchmark",
+        action="store_true",
+        help="Print total runtime to stderr",
+    )
+    p_det.add_argument(
+        "--sync",
+        action="store_true",
+        help="Use synchronous scanning instead of asyncio",
     )
     _add_common_options(p_det)
     p_det.set_defaults(func=cmd_detect)
