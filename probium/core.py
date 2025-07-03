@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import concurrent.futures as cf
+import functools
 import logging
 import os
 from pathlib import Path
@@ -33,9 +34,13 @@ def _load_bytes(source: str | Path | bytes, cap: int | None) -> bytes:
         if isinstance(cached, (bytes, bytearray)):
             return cached[:cap] if cap else bytes(cached)
         try:
-            data = p.read_bytes() if cap is None else p.read_bytes()[:cap]
+            with p.open("rb") as fh:
+                if cap is None:
+                    data = fh.read()
+                else:
+                    data = fh.read(cap)
             return data
-        except Exception as e:
+        except Exception:
             # logger.error(f"Failed to read file {p}: {e}")
             return b""
     return source[:cap] if (cap is not None) else source
@@ -255,6 +260,7 @@ def scan_dir(
     *,
     pattern: str = "**/*",
     workers: int = os.cpu_count() or 4,
+    processes: int = 0,
     only: Iterable[str] | None = None,
     extensions: Iterable[str] | None = None,
     ignore: Iterable[str] | None = None,
@@ -318,7 +324,9 @@ def scan_dir(
             if p.is_dir() or not p.suffix or p.suffix.lower().lstrip(".") in allowed
         ]
 
-    with cf.ThreadPoolExecutor(max_workers=workers) as ex:
+    Executor = cf.ProcessPoolExecutor if processes > 0 else cf.ThreadPoolExecutor
+    pool_size = processes if processes > 0 else workers
+    with Executor(max_workers=pool_size) as ex:
         futs = {
             ex.submit(_detect_file, p, only=only, extensions=extensions, **kw): p
             for p in paths
@@ -333,6 +341,7 @@ async def scan_dir_async(
     *,
     pattern: str = "**/*",
     workers: int = os.cpu_count() or 4,
+    processes: int = 0,
     only: Iterable[str] | None = None,
     extensions: Iterable[str] | None = None,
     ignore: Iterable[str] | None = None,
@@ -348,23 +357,47 @@ async def scan_dir_async(
     ignore_set = set(DEFAULT_IGNORES)
     if ignore:
         ignore_set.update(Path(d).name for d in ignore)
+    allowed = None
+    if extensions is not None:
+        allowed = {e.lower().lstrip(".") for e in extensions}
+
     paths = []
     for p in root.glob(pattern):
         if ignore_set and any(part in ignore_set for part in p.relative_to(root).parts):
             continue
-        if extensions is not None and p.is_file():
-            allowed = {e.lower().lstrip(".") for e in extensions}
+        if allowed is not None and p.is_file():
             if p.suffix and p.suffix.lower().lstrip(".") not in allowed:
                 continue
         paths.append(p)
 
-    sem = asyncio.Semaphore(workers)
+    use_proc = processes > 0
+    sem = asyncio.Semaphore(processes if use_proc else workers)
+    executor: cf.Executor | None = None
+    if use_proc:
+        executor = cf.ProcessPoolExecutor(max_workers=processes)
 
     async def _run(path: Path):
         async with sem:
-            res = await detect_async(path, only=only, extensions=extensions, **kw)
+            if executor is not None:
+                loop = asyncio.get_running_loop()
+                res = await loop.run_in_executor(
+                    executor,
+                    functools.partial(
+                        _detect_file,
+                        path,
+                        engine="auto",
+                        cap_bytes=None,
+                        only=only,
+                        extensions=extensions,
+                        **kw,
+                    ),
+                )
+            else:
+                res = await detect_async(path, only=only, extensions=extensions, **kw)
             return path, res
 
     tasks = [asyncio.create_task(_run(p)) for p in paths]
     for coro in asyncio.as_completed(tasks):
         yield await coro
+    if executor is not None:
+        executor.shutdown()
