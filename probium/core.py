@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import concurrent.futures as cf
+import functools
 import logging
 import os
 from pathlib import Path
@@ -259,6 +260,7 @@ def scan_dir(
     *,
     pattern: str = "**/*",
     workers: int = os.cpu_count() or 4,
+    processes: int = 0,
     only: Iterable[str] | None = None,
     extensions: Iterable[str] | None = None,
     ignore: Iterable[str] | None = None,
@@ -322,7 +324,9 @@ def scan_dir(
             if p.is_dir() or not p.suffix or p.suffix.lower().lstrip(".") in allowed
         ]
 
-    with cf.ThreadPoolExecutor(max_workers=workers) as ex:
+    Executor = cf.ProcessPoolExecutor if processes > 0 else cf.ThreadPoolExecutor
+    pool_size = processes if processes > 0 else workers
+    with Executor(max_workers=pool_size) as ex:
         futs = {
             ex.submit(_detect_file, p, only=only, extensions=extensions, **kw): p
             for p in paths
@@ -337,6 +341,7 @@ async def scan_dir_async(
     *,
     pattern: str = "**/*",
     workers: int = os.cpu_count() or 4,
+    processes: int = 0,
     only: Iterable[str] | None = None,
     extensions: Iterable[str] | None = None,
     ignore: Iterable[str] | None = None,
@@ -365,13 +370,34 @@ async def scan_dir_async(
                 continue
         paths.append(p)
 
-    sem = asyncio.Semaphore(workers)
+    use_proc = processes > 0
+    sem = asyncio.Semaphore(processes if use_proc else workers)
+    executor: cf.Executor | None = None
+    if use_proc:
+        executor = cf.ProcessPoolExecutor(max_workers=processes)
 
     async def _run(path: Path):
         async with sem:
-            res = await detect_async(path, only=only, extensions=extensions, **kw)
+            if executor is not None:
+                loop = asyncio.get_running_loop()
+                res = await loop.run_in_executor(
+                    executor,
+                    functools.partial(
+                        _detect_file,
+                        path,
+                        engine="auto",
+                        cap_bytes=None,
+                        only=only,
+                        extensions=extensions,
+                        **kw,
+                    ),
+                )
+            else:
+                res = await detect_async(path, only=only, extensions=extensions, **kw)
             return path, res
 
     tasks = [asyncio.create_task(_run(p)) for p in paths]
     for coro in asyncio.as_completed(tasks):
         yield await coro
+    if executor is not None:
+        executor.shutdown()

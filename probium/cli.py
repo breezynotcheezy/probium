@@ -46,6 +46,7 @@ def cmd_detect(ns: argparse.Namespace) -> None:
         scan_kwargs = dict(
             pattern=ns.pattern,
             workers=ns.workers,
+            processes=ns.processes,
             cap_bytes=ns.capbytes,
             extensions=ns.ext,
             ignore=ns.ignore,
@@ -214,6 +215,14 @@ def _build_parser() -> argparse.ArgumentParser:
         default=os.cpu_count() or 4,
         help="Thread-pool size (default: CPU count)",
     )
+
+    p_det.add_argument(
+        "--processes",
+        type=int,
+        default=0,
+        help="Use a process pool with this many workers",
+    )
+
     p_det.add_argument(
         "--ignore",
         nargs="+",

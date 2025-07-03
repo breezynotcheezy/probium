@@ -47,6 +47,9 @@ pip install watchdog
 Probium launches one worker thread per CPU core by default. Override this with
 `--workers` if needed.
 
+### Use a process pool
+"probium detect path/to/folder --processes 4"
+
 ### Colorize path output by file type
 "probium detect path/to/file --color"
 

@@ -6,7 +6,7 @@ import time
 import asyncio
 import pytest
 
-from probium import detect, detect_async, detect_magika
+from probium import detect, detect_async, detect_magika, scan_dir
 
 # Directory containing sample files for tests
 SAMPLES_DIR = Path(__file__).parent / "samples"
@@ -147,3 +147,8 @@ def test_detect_magika():
     cand = res.candidates[0]
     assert cand.media_type == "text/csv"
     assert cand.extension == "csv"
+
+
+def test_scan_dir_processes():
+    results = list(scan_dir(SAMPLES_DIR, processes=2, workers=1))
+    assert results
