@@ -43,6 +43,9 @@ pip install watchdog
 
 *Requires the optional `magika` package*
 
+### Colorize path output by file type
+"probium detect path/to/file --color"
+
 
 
 ### To monitor a folder for new files
