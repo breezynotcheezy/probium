@@ -37,6 +37,7 @@ class _FilterHandler(FileSystemEventHandler):
         only: Iterable[str] | None = None,
         extensions: Iterable[str] | None = None,
         magika: bool = False,
+        cache: bool = True,
     ) -> None:
         self.callback = callback
         self.recursive = recursive
@@ -46,6 +47,7 @@ class _FilterHandler(FileSystemEventHandler):
         )
         self._seen: set[Path] = set()
         self.magika = magika
+        self.cache = cache
 
     def on_created(self, event: FileSystemEvent) -> None:
         """Handle created paths."""
@@ -71,9 +73,15 @@ class _FilterHandler(FileSystemEventHandler):
         if self.extensions and path.suffix.lower().lstrip(".") not in self.extensions:
             return
         if self.magika:
-            res = detect(path, engine="magika", cap_bytes=None)
+            res = detect(path, engine="magika", cap_bytes=None, cache=self.cache)
         else:
-            res = detect(path, only=self.only, extensions=self.extensions, cap_bytes=None)
+            res = detect(
+                path,
+                only=self.only,
+                extensions=self.extensions,
+                cap_bytes=None,
+                cache=self.cache,
+            )
         try:
             self.callback(path, res)
         except Exception:
@@ -92,6 +100,7 @@ class WatchContainer:
         only: Iterable[str] | None = None,
         extensions: Iterable[str] | None = None,
         magika: bool = False,
+        cache: bool = True,
     ) -> None:
         self.root = Path(root)
         self.callback = callback
@@ -102,6 +111,7 @@ class WatchContainer:
             only=only,
             extensions=extensions,
             magika=magika,
+            cache=cache,
         )
         self.observer = Observer()
 
@@ -134,6 +144,7 @@ class PollingWatchContainer:
         extensions: Iterable[str] | None = None,
         interval: float = 1.0,
         magika: bool = False,
+        cache: bool = True,
     ) -> None:
         self.root = Path(root)
         self.callback = callback
@@ -145,6 +156,7 @@ class PollingWatchContainer:
             only=only,
             extensions=extensions,
             magika=magika,
+            cache=cache,
         )
         self._stop = threading.Event()
         self._thread = threading.Thread(target=self._run, daemon=True)
@@ -182,6 +194,7 @@ def watch(
     extensions: Iterable[str] | None = None,
     interval: float = 1.0,
     magika: bool = False,
+    cache: bool = True,
 ) -> WatchContainer:
     """Start watching ``root`` and invoke ``callback`` for new files.
 
@@ -205,6 +218,7 @@ def watch(
             extensions=extensions,
             interval=interval,
             magika=magika,
+            cache=cache,
         )
     else:
         container = WatchContainer(
@@ -214,6 +228,7 @@ def watch(
             only=only,
             extensions=extensions,
             magika=magika,
+            cache=cache,
         )
     container.start()
     return container

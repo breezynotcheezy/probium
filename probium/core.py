@@ -33,9 +33,13 @@ def _load_bytes(source: str | Path | bytes, cap: int | None) -> bytes:
         if isinstance(cached, (bytes, bytearray)):
             return cached[:cap] if cap else bytes(cached)
         try:
-            data = p.read_bytes() if cap is None else p.read_bytes()[:cap]
+            with p.open("rb") as fh:
+                if cap is None:
+                    data = fh.read()
+                else:
+                    data = fh.read(cap)
             return data
-        except Exception as e:
+        except Exception:
             # logger.error(f"Failed to read file {p}: {e}")
             return b""
     return source[:cap] if (cap is not None) else source
@@ -348,12 +352,15 @@ async def scan_dir_async(
     ignore_set = set(DEFAULT_IGNORES)
     if ignore:
         ignore_set.update(Path(d).name for d in ignore)
+    allowed = None
+    if extensions is not None:
+        allowed = {e.lower().lstrip(".") for e in extensions}
+
     paths = []
     for p in root.glob(pattern):
         if ignore_set and any(part in ignore_set for part in p.relative_to(root).parts):
             continue
-        if extensions is not None and p.is_file():
-            allowed = {e.lower().lstrip(".") for e in extensions}
+        if allowed is not None and p.is_file():
             if p.suffix and p.suffix.lower().lstrip(".") not in allowed:
                 continue
         paths.append(p)
