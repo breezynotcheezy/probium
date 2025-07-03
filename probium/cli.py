@@ -57,6 +57,7 @@ def cmd_detect(ns: argparse.Namespace) -> None:
         else:
             scan_kwargs["only"] = ns.only
 
+
         if ns.ndjson:
             write = sys.stdout.write
             dump = lambda e: json.dump(e, sys.stdout, indent=None if ns.raw else 2)
@@ -89,6 +90,7 @@ def cmd_detect(ns: argparse.Namespace) -> None:
         else:
             if ns.sync:
                 for path, res in scan_dir(target, **scan_kwargs):
+
                     entry = {"path": str(path), **res.model_dump()}
                     if ns.color:
                         entry["path"] = _colorize_path(path)
@@ -96,6 +98,7 @@ def cmd_detect(ns: argparse.Namespace) -> None:
                         trid_res = _detect_file(path, engine="trid", cap_bytes=None)
                         entry["trid"] = trid_res.model_dump()
                     results.append(entry)
+
             else:
                 async def _run() -> None:
                     from .core import scan_dir_async
@@ -110,6 +113,7 @@ def cmd_detect(ns: argparse.Namespace) -> None:
 
                 asyncio.run(_run())
             json.dump(results, sys.stdout, indent=None if ns.raw else 2)
+
     else:
         if ns.trid:
             res_map = detect_with_trid(
@@ -211,11 +215,13 @@ def _build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Use synchronous scanning instead of asyncio",
     )
+
     p_det.add_argument(
         "--ndjson",
         action="store_true",
         help="Stream newline-delimited JSON results",
     )
+
     _add_common_options(p_det)
     p_det.set_defaults(func=cmd_detect)
 
