@@ -10,6 +10,25 @@ from .google_magika import detect_magika, require_magika
 from .trid_multi import detect_with_trid
 import time
 
+# ANSI color codes for selected file extensions
+COLOR_MAP = {
+    "csv": "\033[32m",  # green
+    "pdf": "\033[91m",  # light red
+    "doc": "\033[94m",  # light blue
+    "docx": "\033[94m",
+    "png": "\033[95m",  # pink (magenta)
+}
+RESET = "\033[0m"
+
+
+def _colorize_path(path: Path) -> str:
+    """Return the path string wrapped in ANSI color codes if known."""
+    ext = path.suffix.lower().lstrip(".")
+    color = COLOR_MAP.get(ext)
+    if color:
+        return f"{color}{path}{RESET}"
+    return str(path)
+
 def cmd_detect(ns: argparse.Namespace) -> None:
     """Detect a file or directory and emit JSON."""
     if ns.magika:
@@ -37,6 +56,8 @@ def cmd_detect(ns: argparse.Namespace) -> None:
 
         for path, res in scan_dir(target, **scan_kwargs):
             entry = {"path": str(path), **res.model_dump()}
+            if ns.color:
+                entry["path"] = _colorize_path(path)
             if ns.trid:
                 trid_res = _detect_file(path, engine="trid", cap_bytes=None)
                 entry["trid"] = trid_res.model_dump()
@@ -63,6 +84,8 @@ def cmd_detect(ns: argparse.Namespace) -> None:
                     no_cap=ns.nocap
                 )
             out = res.model_dump()
+        if ns.color:
+            out["path"] = _colorize_path(target)
         json.dump(out, sys.stdout, indent=None if ns.raw else 2)
     sys.stdout.write("\n")
 
@@ -78,6 +101,8 @@ def cmd_watch(ns: argparse.Namespace) -> None:
 
     def _handle(path: Path, res) -> None:
         entry = {"path": str(path), **res.model_dump()}
+        if ns.color:
+            entry["path"] = _colorize_path(path)
         json.dump(entry, sys.stdout, indent=None if ns.raw else 2)
         sys.stdout.write("\n")
         sys.stdout.flush()
@@ -165,6 +190,11 @@ def _add_common_options(ap: argparse.ArgumentParser) -> None:
         "--magika",
         action="store_true",
         help="Use Google Magika exclusively for detection",
+    )
+    ap.add_argument(
+        "--color",
+        action="store_true",
+        help="Colorize path values based on file type",
     )
 
 def main() -> None:
