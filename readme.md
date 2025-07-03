@@ -36,6 +36,7 @@ pip install watchdog
 ## ☑️ CLI ☑️
 
 ### To scan a file or folder
+
 "probium detect path/to/file_or_folder"
 
 ### Use Google Magika instead of built-in engines
@@ -52,15 +53,17 @@ Probium launches one worker thread per CPU core by default. Override this with
 ### Measure total runtime
 "probium detect path/to/file --benchmark"
 
+### Disable the result cache
+"probium detect path/to/file --no-cache"
+
 ### Run scanning synchronously
 "probium detect path/to/folder --sync"
-
 
 ### Stream results line by line
 "probium detect path/to/folder --ndjson"
 
-
 Probium uses asynchronous scanning by default for maximum performance.
+
 
 
 

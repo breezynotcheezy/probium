@@ -62,12 +62,16 @@ def cmd_detect(ns: argparse.Namespace) -> None:
             write = sys.stdout.write
             dump = lambda e: json.dump(e, sys.stdout, indent=None if ns.raw else 2)
             if ns.sync:
-                for path, res in scan_dir(target, **scan_kwargs):
+
+                for path, res in scan_dir(target, cache=not ns.no_cache, **scan_kwargs):
+
                     entry = {"path": str(path), **res.model_dump()}
                     if ns.color:
                         entry["path"] = _colorize_path(path)
                     if ns.trid:
-                        trid_res = _detect_file(path, engine="trid", cap_bytes=None)
+
+                        trid_res = _detect_file(path, engine="trid", cap_bytes=None, cache=not ns.no_cache)
+
                         entry["trid"] = trid_res.model_dump()
                     dump(entry)
                     write("\n")
@@ -75,12 +79,16 @@ def cmd_detect(ns: argparse.Namespace) -> None:
             else:
                 async def _run() -> None:
                     from .core import scan_dir_async
-                    async for path, res in scan_dir_async(target, **scan_kwargs):
+
+                    async for path, res in scan_dir_async(target, cache=not ns.no_cache, **scan_kwargs):
+
                         entry = {"path": str(path), **res.model_dump()}
                         if ns.color:
                             entry["path"] = _colorize_path(path)
                         if ns.trid:
-                            trid_res = _detect_file(path, engine="trid", cap_bytes=None)
+
+                            trid_res = _detect_file(path, engine="trid", cap_bytes=None, cache=not ns.no_cache)
+
                             entry["trid"] = trid_res.model_dump()
                         dump(entry)
                         write("\n")
@@ -89,25 +97,29 @@ def cmd_detect(ns: argparse.Namespace) -> None:
                 asyncio.run(_run())
         else:
             if ns.sync:
-                for path, res in scan_dir(target, **scan_kwargs):
+
+                for path, res in scan_dir(target, cache=not ns.no_cache, **scan_kwargs):
 
                     entry = {"path": str(path), **res.model_dump()}
                     if ns.color:
                         entry["path"] = _colorize_path(path)
                     if ns.trid:
-                        trid_res = _detect_file(path, engine="trid", cap_bytes=None)
+
+                        trid_res = _detect_file(path, engine="trid", cap_bytes=None, cache=not ns.no_cache)
                         entry["trid"] = trid_res.model_dump()
                     results.append(entry)
-
             else:
                 async def _run() -> None:
                     from .core import scan_dir_async
-                    async for path, res in scan_dir_async(target, **scan_kwargs):
+                    async for path, res in scan_dir_async(target, cache=not ns.no_cache, **scan_kwargs):
+
                         entry = {"path": str(path), **res.model_dump()}
                         if ns.color:
                             entry["path"] = _colorize_path(path)
                         if ns.trid:
-                            trid_res = _detect_file(path, engine="trid", cap_bytes=None)
+
+                            trid_res = _detect_file(path, engine="trid", cap_bytes=None, cache=not ns.no_cache)
+
                             entry["trid"] = trid_res.model_dump()
                         results.append(entry)
 
@@ -121,6 +133,7 @@ def cmd_detect(ns: argparse.Namespace) -> None:
                 cap_bytes=ns.capbytes,
                 only=None if ns.magika else ns.only,
                 extensions=ns.ext,
+                cache=not ns.no_cache,
             )
             out = {k: v.model_dump() for k, v in res_map.items()}
         else:
@@ -132,7 +145,8 @@ def cmd_detect(ns: argparse.Namespace) -> None:
                     cap_bytes=ns.capbytes,
                     only=ns.only,
                     extensions=ns.ext,
-                    no_cap=ns.nocap
+                    no_cap=ns.nocap,
+                    cache=not ns.no_cache,
                 )
             out = res.model_dump()
         if ns.color:
@@ -175,6 +189,7 @@ def cmd_watch(ns: argparse.Namespace) -> None:
             extensions=ns.ext,
             interval=ns.interval,
             magika=ns.magika,
+            cache=not ns.no_cache,
         )
     except RuntimeError as exc:
         print(exc, file=sys.stderr)
@@ -266,6 +281,12 @@ def _add_common_options(ap: argparse.ArgumentParser) -> None:
         "--magika",
         action="store_true",
         help="Use Google Magika exclusively for detection",
+    )
+    ap.add_argument(
+        "--no-cache",
+        dest="no_cache",
+        action="store_true",
+        help="Disable result caching",
     )
     ap.add_argument(
         "--color",

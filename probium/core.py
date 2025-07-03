@@ -33,9 +33,13 @@ def _load_bytes(source: str | Path | bytes, cap: int | None) -> bytes:
         if isinstance(cached, (bytes, bytearray)):
             return cached[:cap] if cap else bytes(cached)
         try:
-            data = p.read_bytes() if cap is None else p.read_bytes()[:cap]
+            with p.open("rb") as fh:
+                if cap is None:
+                    data = fh.read()
+                else:
+                    data = fh.read(cap)
             return data
-        except Exception as e:
+        except Exception:
             # logger.error(f"Failed to read file {p}: {e}")
             return b""
     return source[:cap] if (cap is not None) else source
