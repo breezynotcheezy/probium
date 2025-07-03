@@ -43,8 +43,19 @@ pip install watchdog
 
 *Requires the optional `magika` package*
 
+Probium launches one worker thread per CPU core by default. Override this with
+`--workers` if needed.
+
 ### Colorize path output by file type
 "probium detect path/to/file --color"
+
+### Measure total runtime
+"probium detect path/to/file --benchmark"
+
+### Run scanning synchronously
+"probium detect path/to/folder --sync"
+
+Probium uses asynchronous scanning by default for maximum performance.
 
 
 

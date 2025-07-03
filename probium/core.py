@@ -348,12 +348,15 @@ async def scan_dir_async(
     ignore_set = set(DEFAULT_IGNORES)
     if ignore:
         ignore_set.update(Path(d).name for d in ignore)
+    allowed = None
+    if extensions is not None:
+        allowed = {e.lower().lstrip(".") for e in extensions}
+
     paths = []
     for p in root.glob(pattern):
         if ignore_set and any(part in ignore_set for part in p.relative_to(root).parts):
             continue
-        if extensions is not None and p.is_file():
-            allowed = {e.lower().lstrip(".") for e in extensions}
+        if allowed is not None and p.is_file():
             if p.suffix and p.suffix.lower().lstrip(".") not in allowed:
                 continue
         paths.append(p)
