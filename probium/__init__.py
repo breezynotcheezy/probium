@@ -1,6 +1,7 @@
 from importlib.metadata import entry_points, version
 from typing import TYPE_CHECKING
 from .core import detect, scan_dir, list_engines
+from .google_magika import detect_magika, require_magika, magika_env_only
 from .magic_service import detect_magic
 from .trid_multi import detect_with_trid
 from .exceptions import EngineFailure, FastbackError, UnsupportedType
@@ -20,6 +21,9 @@ __all__ = [
     "EngineFailure",
     "detect_with_trid",
     "detect_magic",
+    "detect_magika",
+    "require_magika",
+    "magika_env_only",
     "watch",
 
 ]

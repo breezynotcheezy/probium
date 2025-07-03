@@ -38,6 +38,16 @@ pip install watchdog
 ### To scan a file or folder
 "probium detect path/to/file_or_folder"
 
+### Use Google Magika instead of built-in engines
+"probium detect path/to/file --magika"
+*Requires the optional `magika` package*
+
+### Watch a folder with Google Magika
+"probium watch path/to/folder --magika"
+
+Set ``PROBIUM_MAGIKA_ONLY=1`` in the environment to make Magika the default
+engine for all detection commands.
+
 
 ### To monitor a folder for new files
 "probium watch path/to/folder"
@@ -50,6 +60,11 @@ pip install watchdog
 ### 1) Import
 
 from probium import detect, detect_magic, scan_dir
+from probium import detect_magika  # requires `magika` package
+from probium import magika_env_only  # check if PROBIUM_MAGIKA_ONLY is set
+
+if magika_env_only():
+    print("Magika-only mode active")
 
 
 ### 2) Peek at one file
@@ -57,6 +72,8 @@ meta = detect("sample.pdf")            # returns a rich Pydantic model
 print("SHA-256 🔮", meta.hash.sha256)  # 🍇 easy attribute access
 
 meta_fast = detect_magic(b"%PDF-1.4\n...")  # use magic-number lookup
+
+meta_magika = detect_magika("sample.pdf")  # use Google Magika if installed
 
 ### 3) Fine-tune if you like
 meta = detect(

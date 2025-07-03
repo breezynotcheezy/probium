@@ -11,6 +11,7 @@ from typing import Any, Iterable, Sequence
 DEFAULT_IGNORES = {".git", "venv", ".venv", "__pycache__"}
 from .cache import get as cache_get, put as cache_put
 from .registry import list_engines, get_instance
+from .google_magika import magika_env_only, require_magika
 from .magic_service import MAGIC_SIGNATURES, _MAX_SCAN
 from .scoring import score_magic
 
@@ -78,6 +79,11 @@ def _detect_file(
     cache:
         Whether to store and retrieve results from the cache.
     """
+
+    if magika_env_only() and engine == "auto" and only is None:
+        require_magika()
+        engine = "magika"
+        cap_bytes = None
 
     if cap_bytes is not None and cap_bytes < 0:
         cap_bytes = None
