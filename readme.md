@@ -55,6 +55,11 @@ Probium launches one worker thread per CPU core by default. Override this with
 ### Run scanning synchronously
 "probium detect path/to/folder --sync"
 
+
+### Stream results line by line
+"probium detect path/to/folder --ndjson"
+
+
 Probium uses asynchronous scanning by default for maximum performance.
 
 
