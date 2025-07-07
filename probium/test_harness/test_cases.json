@@ -1,0 +1,380 @@
+{
+  "false file tests": [
+    {
+      "name": "a.pdf test",
+      "test_file_path": "test_cases_cft/a.pdf",
+      "expected_mime_type": "text/plain"
+    },
+    {
+      "name": "b.pdf test",
+      "test_file_path": "test_cases_cft/b.pdf",
+      "expected_mime_type": "text/plain"
+    },
+    {
+      "name": "c.pdf test",
+      "test_file_path": "test_cases_cft/c.pdf",
+      "expected_mime_type": "text/plain"
+    },
+    {
+      "name": "d.pdf test",
+      "test_file_path": "test_cases_cft/d.pdf",
+      "expected_mime_type": "text/plain"
+    },
+    {
+      "name": "h.pdf test",
+      "test_file_path": "test_cases_cft/h.pdf",
+      "expected_mime_type": "text/plain"
+    },
+    {
+      "name": "a.csv test",
+      "test_file_path": "test_cases_cft/a.csv",
+      "expected_mime_type": "text/plain"
+    },
+    {
+      "name": "b.csv test",
+      "test_file_path": "test_cases_cft/b.csv",
+      "expected_mime_type": "text/plain"
+    },
+    {
+      "name": "c.csv test",
+      "test_file_path": "test_cases_cft/c.csv",
+      "expected_mime_type": "text/plain"
+    },
+    {
+      "name": "d.csv test",
+      "test_file_path": "test_cases_cft/d.csv",
+      "expected_mime_type": "text/plain"
+    },
+    {
+      "name": "e.csv test",
+      "test_file_path": "test_cases_cft/e.csv",
+      "expected_mime_type": "text/plain"
+    },
+    {
+      "name": "fake-f.docx test",
+      "test_file_path": "test_cases_cft/fake-f.docx",
+      "expected_mime_type": "text/plain"
+    },
+    {
+      "name": "hello world-f.docx test",
+      "test_file_path": "test_cases_cft/hello world-f.docx",
+      "expected_mime_type": "text/plain"
+    },
+    {
+      "name": "false-f.docx test",
+      "test_file_path": "test_cases_cft/false-f.docx",
+      "expected_mime_type": "text/plain"
+    },
+    {
+      "name": "test-f.docx test",
+      "test_file_path": "test_cases_cft/test-f.docx",
+      "expected_mime_type": "text/plain"
+    },
+    {
+      "name": "true-f.docx test",
+      "test_file_path": "test_cases_cft/true-f.docx",
+      "expected_mime_type": "text/plain"
+    }
+ ],
+
+
+    "(fake?) csv file tests" : [
+    {
+      "name": "998687.csv test",
+      "test_file_path": "test_cases_cft/998687.csv",
+      "expected_mime_type": "text/plain"
+    },
+    {
+      "name": "998688.csv test",
+      "test_file_path": "test_cases_cft/998688.csv",
+      "expected_mime_type": "text/plain"
+    },
+    {
+      "name": "998819.csv test",
+      "test_file_path": "test_cases_cft/998819.csv",
+      "expected_mime_type": "text/plain"
+    },
+    {
+      "name": "998820.csv test",
+      "test_file_path": "test_cases_cft/998820.csv",
+      "expected_mime_type": "text/plain"
+    },
+    {
+      "name": "998833.csv test",
+      "test_file_path": "test_cases_cft/998833.csv",
+      "expected_mime_type": "text/plain"
+    },
+    {
+      "name": "998834.csv test",
+      "test_file_path": "test_cases_cft/998834.csv",
+      "expected_mime_type": "text/plain"
+    },
+    {
+      "name": "998835.csv test",
+      "test_file_path": "test_cases_cft/998835.csv",
+      "expected_mime_type": "text/plain"
+    },
+    {
+      "name": "998836.csv test",
+      "test_file_path": "test_cases_cft/998836.csv",
+      "expected_mime_type": "text/plain"
+    },
+    {
+      "name": "998874.csv test",
+      "test_file_path": "test_cases_cft/998874.csv",
+      "expected_mime_type": "text/plain"
+    },
+    {
+      "name": "998884.csv test",
+      "test_file_path": "test_cases_cft/998884.csv",
+      "expected_mime_type": "text/plain"
+    }
+
+
+ ],
+"docx file tests": [
+    {
+      "name": "e.docx test",
+      "test_file_path": "test_cases_cft/e.docx",
+      "expected_mime_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    },
+    {
+      "name": "f.docx tests",
+      "test_file_path": "test_cases_cft/f.docx",
+      "expected_mime_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    },
+    {
+      "name": "fake.docx tests",
+      "test_file_path": "test_cases_cft/fake.docx",
+      "expected_mime_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    },
+    {
+      "name": "false.docx tests",
+      "test_file_path": "test_cases_cft/false.docx",
+      "expected_mime_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    },
+    {
+      "name": "Hello world.docx tests",
+      "test_file_path": "test_cases_cft/Hello world.docx",
+      "expected_mime_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    },
+    {
+      "name": "q.docx tests",
+      "test_file_path": "test_cases_cft/q.docx",
+      "expected_mime_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    },
+    {
+      "name": "real.docx tests",
+      "test_file_path": "test_cases_cft/real.docx",
+      "expected_mime_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    },
+    {
+      "name": "t.docx tests",
+      "test_file_path": "test_cases_cft/t.docx",
+      "expected_mime_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    },
+    {
+      "name": "test.docx tests",
+      "test_file_path": "test_cases_cft/test.docx",
+      "expected_mime_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    },    
+    {
+      "name": "true.docx tests",
+      "test_file_path": "test_cases_cft/true.docx",
+      "expected_mime_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    }
+  ],
+"pdf file tests": [
+    {
+      "name": "e.pdf test",
+      "test_file_path": "test_cases_cft/e.pdf",
+      "expected_mime_type": "application/pdf"
+    },
+    {
+      "name": "f.pdf test",
+      "test_file_path": "test_cases_cft/f.pdf",
+      "expected_mime_type": "application/pdf"
+    },
+    {
+      "name": "e.pdf test",
+      "test_file_path": "test_cases_cft/e.pdf",
+      "expected_mime_type": "application/pdf"
+    },
+    {
+      "name": "Hello world.pdf test",
+      "test_file_path": "test_cases_cft/Hello world.pdf",
+      "expected_mime_type": "application/pdf"
+    },
+    {
+      "name": "q.pdf test",
+      "test_file_path": "test_cases_cft/q.pdf",
+      "expected_mime_type": "application/pdf"
+    },
+    {
+      "name": "real.pdf test",
+      "test_file_path": "test_cases_cft/real.pdf",
+      "expected_mime_type": "application/pdf"
+    },
+    {
+      "name": "t.pdf test",
+      "test_file_path": "test_cases_cft/t.pdf",
+      "expected_mime_type": "application/pdf"
+    },
+    {
+      "name": "test.pdf test",
+      "test_file_path": "test_cases_cft/test.pdf",
+      "expected_mime_type": "application/pdf"
+    },
+    {
+      "name": "true.pdf test",
+      "test_file_path": "test_cases_cft/true.pdf",
+      "expected_mime_type": "application/pdf"
+    }
+ ],
+
+"corrupted files tests": [
+    {
+      "name": "e-c.pdf test",
+      "test_file_path": "test_cases_cft/e-c.pdf",
+      "expected_mime_type": "text/x-yaml"
+    },
+    {
+      "name": "fake-c.pdf test",
+      "test_file_path": "test_cases_cft/fake-c.pdf",
+      "expected_mime_type": "text/x-yaml"
+    },
+    {
+      "name": "false-c.pdf test",
+      "test_file_path": "test_cases_cft/false-c.pdf",
+      "expected_mime_type": "text/x-yaml"
+    },
+    {
+      "name": "f-c.pdf test",
+      "test_file_path": "test_cases_cft/f-c.pdf",
+      "expected_mime_type": "text/x-yaml"
+    },
+    {
+      "name": "Hello world-c.pdf test",
+      "test_file_path": "test_cases_cft/Hello world-c.pdf",
+      "expected_mime_type": "text/x-yaml"
+    },
+    {
+      "name": "q-c.pdf test",
+      "test_file_path": "test_cases_cft/q-c.pdf",
+      "expected_mime_type": "text/x-yaml"
+    },
+    {
+      "name": "t-c.pdf test",
+      "test_file_path": "test_cases_cft/t-c.pdf",
+      "expected_mime_type": "text/x-yaml"
+    },
+    {
+      "name": "test-c.pdf test",
+      "test_file_path": "test_cases_cft/test-c.pdf",
+      "expected_mime_type": "text/x-yaml"
+    },
+    {
+      "name": "true-c.pdf test",
+      "test_file_path": "test_cases_cft/true-c.pdf",
+      "expected_mime_type": "text/x-yaml"
+    },
+    {
+      "name": "fake-c.docx test",
+      "test_file_path": "test_cases_cft/fake-c.docx",
+      "expected_mime_type": "application/zip"
+    },
+    {
+      "name": "false-c.docx test",
+      "test_file_path": "test_cases_cft/false-c.docx",
+      "expected_mime_type": "application/zip"
+    },
+    {
+      "name": "f-c.docx test",
+      "test_file_path": "test_cases_cft/f-c.docx",
+      "expected_mime_type": "application/zip"
+    },
+    {
+      "name": "Hello world-c.docx test",
+      "test_file_path": "test_cases_cft/Hello world-c.docx",
+      "expected_mime_type": "application/zip"
+    },
+    {
+      "name": "q-c.docx test",
+      "test_file_path": "test_cases_cft/q-c.docx",
+      "expected_mime_type": "application/zip"
+    },
+    {
+      "name": "real-c.docx test",
+      "test_file_path": "test_cases_cft/real-c.docx",
+      "expected_mime_type": "application/zip"
+    },
+    {
+      "name": "t-c.docx test",
+      "test_file_path": "test_cases_cft/t-c.docx",
+      "expected_mime_type": "application/zip"
+    },
+    {
+      "name": "test-c.docx test",
+      "test_file_path": "test_cases_cft/test-c.docx",
+      "expected_mime_type": "application/zip"
+    },
+    {
+      "name": "true-c.docx test",
+      "test_file_path": "test_cases_cft/true-c.docx",
+      "expected_mime_type": "application/zip"
+    }
+ ],
+ "Edge case tests": [
+    {
+      "name": "_s_FC1C.tmp test",
+      "test_file_path": "test_cases_cft/_s_FC1C.tmp",
+      "expected_mime_type": "text/plain"
+    },    
+    {
+      "name": "{5DAC656C-21AD-4A02-AB49-649917162E70}.cip test",
+      "test_file_path": "test_cases_cft/{5DAC656C-21AD-4A02-AB49-649917162E70}.cip",
+      "expected_mime_type": "text/x-yaml"
+    },
+    {
+      "name": "{82443e1e-8a39-4b4a-96a8-f40ddc00b9f3}.cip test",
+      "test_file_path": "test_cases_cft/{82443e1e-8a39-4b4a-96a8-f40ddc00b9f3}.cip",
+      "expected_mime_type": "text/plain"
+    },    
+    {
+      "name": "{CDD5CB55-DB68-4D71-AA38-3DF2B6473A52}.cip test",
+      "test_file_path": "test_cases_cft/{CDD5CB55-DB68-4D71-AA38-3DF2B6473A52}.cip",
+      "expected_mime_type": "text/x-yaml"
+    },  
+    {
+      "name": "2025-05-28 10.11.45.267.winsat.etl test",
+      "test_file_path": "test_cases_cft/2025-05-28 10.11.45.267.winsat.etl",
+      "expected_mime_type": "text/x-yaml"
+    },  
+    {
+      "name": "2025-05-28 10.57.55.267.winsat.etl test",
+      "test_file_path": "test_cases_cft/2025-05-28 10.57.55.267.winsat.etl",
+      "expected_mime_type": "text/x-yaml"
+    },  
+    {
+      "name": "8514fix.font test",
+      "test_file_path": "test_cases_cft/8514fix.font",
+      "expected_mime_type": "application/octet-stream"
+    },  
+    {
+      "name": "8514oem.font test",
+      "test_file_path": "test_cases_cft/8514oem.font",
+      "expected_mime_type": "application/octet-stream"
+    },  
+    {
+      "name": "8514sys.font test",
+      "test_file_path": "test_cases_cft/8514sys.font",
+      "expected_mime_type": "application/octet-stream"
+    },  
+    {
+      "name": "AccountNotifications.admx test",
+      "test_file_path": "test_cases_cft/AccountNotifications.admx ",
+      "expected_mime_type": "application/octet-stream"
+    }  
+ ]
+}
+
