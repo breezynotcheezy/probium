@@ -1,7 +1,7 @@
 #made for zip files - recursive scan example engine
 from __future__ import annotations
 from ..scoring import score_magic, score_tokens
-import zipfile, io, re, xml.etree.ElementTree as ET
+import zipfile, io, re, xml.etree.ElementTree as ET, struct, zlib
 from ..models import Candidate, Result
 from .base import EngineBase
 from ..registry import register
@@ -101,6 +101,30 @@ class ZipOfficeEngine(EngineBase):
                         )
                     )
         except Exception:
+            # Fallback for truncated archives: try to parse first entry directly
+            try:
+                sig, ver, flags, method, mtime, mdate, crc, csize, usize, nlen, elen = struct.unpack_from(
+                    "<IHHHHHIIIHH", payload, 0
+                )
+                name = payload[30 : 30 + nlen].decode("utf-8", errors="ignore")
+                data_start = 30 + nlen + elen
+                data = payload[data_start : data_start + csize]
+                if len(data) == csize and name == "mimetype":
+                    content = data if method == 0 else zlib.decompress(data)
+                    mime = content.decode(errors="ignore").strip()
+                    if mime in _SIGS["mimetype"]:
+                        mt, ext = _SIGS["mimetype"][mime]
+                        cand.append(
+                            Candidate(
+                                media_type=mt,
+                                extension=ext,
+                                confidence=score_magic(len(mime)),
+                                breakdown={"partial": 1.0},
+                            )
+                        )
+                        return Result(candidates=cand)
+            except Exception:
+                pass
             cand.append(
                 Candidate(media_type="application/zip", extension="zip", confidence=0.98)
             )
