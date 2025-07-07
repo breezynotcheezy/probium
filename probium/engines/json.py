@@ -27,6 +27,9 @@ class JSONEngine(EngineBase):
     #these are not magic number sigs, "_MAGIC" field is used as placeholding binary sig. (delimiter replacement)
     _MAGIC = [b'{', b'[']
 
+    # limit bytes inspected for expensive regex operations
+    SAMPLE_SIZE = 65536
+
     def _make_result(
         self,
         conf: float,
@@ -55,12 +58,13 @@ class JSONEngine(EngineBase):
         """Return the first valid JSON snippet inside ``text`` if present."""
 
         decoder = json.JSONDecoder()
-        for match in re.finditer(r"[\{\[]", text):
+        snippet = text[: self.SAMPLE_SIZE]
+        for match in re.finditer(r"[\{\[]", snippet):
             start = match.start()
             try:
-                obj, idx = decoder.raw_decode(text[start:])
+                obj, idx = decoder.raw_decode(snippet[start:])
                 end = start + idx
-                return text[start:end]
+                return snippet[start:end]
             except Exception:
                 continue
         return None
@@ -103,20 +107,25 @@ class JSONEngine(EngineBase):
         text = text.strip()
         if not text:
             return Result(candidates=[])
-        token_count = len(self._TOKEN_RE.findall(text))
-        token_ratio = token_count / max(len(text), 1)
 
+        sample = text[: self.SAMPLE_SIZE]
         try:
-            json.loads(text) #if not magic, check common JSON limiters, count those and then calc confidence score based on known variables.
+            json.loads(text)
+            parse_ok = True
+        except Exception:
+            parse_ok = False
+
+        token_count = len(self._TOKEN_RE.findall(sample))
+        token_ratio = token_count / max(len(sample), 1)
+
+        if parse_ok:
             conf = score_tokens(1.0)
             if magic_hit:
                 conf = max(conf, score_magic(len(magic_hit)))
             return self._make_result(conf, token_ratio, magic_len=len(magic_hit) if magic_hit else None)
+        # full parse failed, attempt partial analysis
 
-        except Exception:
-            pass
-
-        frag = self._find_json_fragment(text)
+        frag = self._find_json_fragment(sample)
         if frag is not None:
             try:
                 json.loads(frag)
