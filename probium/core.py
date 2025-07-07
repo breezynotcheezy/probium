@@ -111,6 +111,10 @@ def _detect_file(
             return Result(
                 candidates=[Candidate(media_type="inode/directory", confidence=1.0)]
             )
+        if cache:
+            cached = cache_get(p)
+            if isinstance(cached, Result):
+                return cached
 
     ext = Path(source).suffix.lower().lstrip(".")
     if ext in {
