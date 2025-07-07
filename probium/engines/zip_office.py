@@ -30,6 +30,105 @@ class ZipOfficeEngine(EngineBase):
         if not payload.startswith(b"PK\x03\x04"):
             return Result(candidates=[])
         cand = []
+
+        ctypes = b"[Content_Types].xml" in payload
+
+        # docx files
+        num = b"\x00\x00word/numbering.xml" in payload
+        set = b"\x00\x00word/settings.xml" in payload
+        font = b"\x00\x00word/fontTable.xml" in payload
+        styles = b"\x00\x00styles.xml" in payload
+        doc = b"\x00\x00word/document.xml" in payload
+
+        """ if ctypes: print("ctypes")
+        if num: print("num")
+        if set: print("set")
+        if font: print("font")
+        if styles: print("styles")
+        if doc: print("doc") """
+       
+        docxsum = ctypes + num + set + font + styles + doc
+
+        if docxsum >= 2:
+            cand.append(
+                        Candidate(
+                            media_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                            extension="docx",
+                            confidence=1.0,
+                            breakdown={"token_ratio": 1.0},
+                        )
+                    )
+            return Result(candidates=cand)
+
+        # pptx files
+        rel = b"ppt/_rels" in payload
+        draw = b"ppt/drawings" in payload
+        embed = b"ppt/embeddings" in payload
+        media = b"ppt/media" in payload
+        notem = b"ppt/notesMasters" in payload
+        notes = b"ppt/notesSlides" in payload
+        slidel = b"ppt/slideLayouts" in payload
+        slidem = b"ppt/slideMasters" in payload
+        slides = b"ppt/slides" in payload
+        theme = b"ppt/theme" in payload
+        pres = b"ppt/presentation.xml" in payload
+        presp = b"ppt/presProps.xml" in payload
+        table = b"ppt/tableStyles.xml" in payload
+        view = b"ppt/viewProps.xml" in payload
+
+        """ if rel: print("Found: ppt/_rels")
+        if draw: print("Found: ppt/drawings")
+        if embed: print("Found: ppt/embeddings")
+        if media: print("Found: ppt/media")
+        if notem: print("Found: ppt/notesMasters")
+        if notes: print("Found: ppt/notesSlides")
+        if slidel: print("Found: ppt/slideLayouts")
+        if slidem: print("Found: ppt/slideMasters")
+        if slides: print("Found: ppt/slides")
+        if theme: print("Found: ppt/theme")
+        if pres: print("Found: ppt/presentation.xml")
+        if presp: print("Found: ppt/presProps.xml")
+        if table: print("Found: ppt/tableStyles.xml")
+        if view: print("Found: ppt/viewProps.xml") """
+
+        pptxsum = rel + draw + embed + media + notem + notes + slidel + slidem + slides + theme + pres + presp + table + view + ctypes
+        
+        if pptxsum >= 2:
+            cand.append(
+                        Candidate(
+                            media_type="application/vnd.openxmlformats-officedocument.presentationml.presentation",
+                            extension="pptx",
+                            confidence=1.0,
+                            breakdown={"token_ratio": 1.0},
+                        )
+                    )
+            return Result(candidates=cand)
+
+        # xlsx files
+        rel = b"xl/_rels" in payload
+        workb = b"xl/workbook.xml" in payload
+        works = b"xl/worksheets/" in payload
+        calc = b"xl/calcChain.xml" in payload
+        styles = b"xl/styles.xml" in payload
+        shared = b"xl/sharedStrings.xml" in payload
+        printer = b"xl/printerSettings/" in payload
+        theme = b"xl/theme/" in payload
+        draw = b"xl/drawings/" in payload
+        media = b"xl/media/" in payload
+
+        xlsxsum = rel + workb + works + calc + styles + shared + printer + theme + draw + media + ctypes
+
+        if xlsxsum >= 3:
+            cand.append(
+                        Candidate(
+                            media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                            extension="xlsx",
+                            confidence=1.0,
+                            breakdown={"token_ratio": 1.0},
+                        )
+                    )
+            return Result(candidates=cand)
+
         try:
             with zipfile.ZipFile(io.BytesIO(payload)) as zf:
                 namelist = zf.namelist()
