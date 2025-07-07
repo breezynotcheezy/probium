@@ -154,7 +154,7 @@ class XMLEngine(EngineBase):
             confidence = max(confidence, score_tokens(min(token_ratio, 0.9)))
         breakdown["token_ratio"] = round(token_ratio, 3)
 
-        if confidence == 0:
+        if confidence == 0 or b"%PDF-" in payload:
             return Result(candidates=[])
 
         return self._make_result(confidence, breakdown)

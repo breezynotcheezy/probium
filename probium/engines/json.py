@@ -91,7 +91,7 @@ class JSONEngine(EngineBase):
 
 
         try:
-            text = payload.decode("utf-8", errors="ignore")
+            text = payload.decode("utf-8")
         except Exception:
             return Result(candidates=[])
 
