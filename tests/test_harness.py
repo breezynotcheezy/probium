@@ -33,6 +33,18 @@ TEST_CASES = {
         "media_type": "*UNSAFE* / *NO ENGINE*",
         "extension": None,
     },
+    "file-sample_100kB.odt": {
+        "media_type": "application/vnd.oasis.opendocument.text",
+        "extension": "odt",
+    },
+    "file_example_ODS_10.ods": {
+        "media_type": "application/vnd.oasis.opendocument.spreadsheet",
+        "extension": "ods",
+    },
+    "file_example_ODP_200kB.odp": {
+        "media_type": "application/vnd.oasis.opendocument.presentation",
+        "extension": "odp",
+    },
 }
 
 LOG_FILE = Path(__file__).parent / "results.json"
