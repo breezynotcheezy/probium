@@ -6,6 +6,8 @@ from typing import Callable, Iterable, Any
 import logging
 import threading
 import time
+import os
+import concurrent.futures as cf
 
 try:  # use real watchdog if available
     from watchdog.observers import Observer
@@ -145,7 +147,16 @@ class PollingWatchContainer:
         interval: float = 1.0,
         magika: bool = False,
         cache: bool = True,
+        workers: int | None = None,
     ) -> None:
+        """Create a polling-based watcher.
+
+        Parameters
+        ----------
+        workers:
+            Number of threads used to scan files concurrently. Defaults to the
+            CPU count when ``None``.
+        """
         self.root = Path(root)
         self.callback = callback
         self.recursive = recursive
@@ -158,14 +169,21 @@ class PollingWatchContainer:
             magika=magika,
             cache=cache,
         )
+        self._executor = cf.ThreadPoolExecutor(max_workers=workers or os.cpu_count() or 4)
         self._stop = threading.Event()
         self._thread = threading.Thread(target=self._run, daemon=True)
 
     def _scan(self) -> None:
-        paths = self.root.rglob("*") if self.recursive else self.root.iterdir()
-        for p in paths:
-            if p.is_file():
-                self.handler._handle_path(p)
+        paths = [
+            p
+            for p in (
+                self.root.rglob("*") if self.recursive else self.root.iterdir()
+            )
+            if p.is_file()
+        ]
+        if not paths:
+            return
+        list(self._executor.map(self.handler._handle_path, paths))
 
     def _run(self) -> None:
         while not self._stop.is_set():
@@ -183,6 +201,7 @@ class PollingWatchContainer:
     def stop(self) -> None:
         self._stop.set()
         self._thread.join()
+        self._executor.shutdown(wait=True)
 
 
 def watch(
@@ -195,12 +214,14 @@ def watch(
     interval: float = 1.0,
     magika: bool = False,
     cache: bool = True,
+    workers: int | None = None,
 ) -> WatchContainer:
     """Start watching ``root`` and invoke ``callback`` for new files.
 
     If the optional :mod:`watchdog` package is available, native file system
     events are used. Otherwise a portable polling loop is started. The polling
-    interval can be customized with ``interval``.
+    interval can be customized with ``interval``. When polling is used,
+    ``workers`` controls the size of the thread pool used to scan files.
     """
     root = Path(root)
     if not root.exists():
@@ -219,6 +240,7 @@ def watch(
             interval=interval,
             magika=magika,
             cache=cache,
+            workers=workers,
         )
     else:
         container = WatchContainer(
