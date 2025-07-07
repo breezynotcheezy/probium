@@ -130,7 +130,7 @@ def _detect_file(
         "ppt",
         "xls",
     }:
-        cap_bytes = 10000000
+        cap_bytes = min(8192, cap_bytes or 8192)
 
     scan_cap = cap_bytes
     if engine == "auto" and only is None:
@@ -191,7 +191,7 @@ def _detect_file(
         and cap_bytes is not None
         and isinstance(source, (str, Path))
     ):
-        payload = Path(source).read_bytes()
+        payload = Path(source).read_bytes()[:scan_cap]
         for name in engines:
             res = get_instance(name)(payload)
             if res.candidates:
