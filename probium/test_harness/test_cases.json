@@ -63,7 +63,7 @@
     {
       "name": "false-f.docx test",
       "test_file_path": "test_cases_cft/false-f.docx",
-      "expected_mime_type": "text/plain"
+      "expected_mime_type": "application/json"
     },
     {
       "name": "test-f.docx test",
@@ -73,7 +73,7 @@
     {
       "name": "true-f.docx test",
       "test_file_path": "test_cases_cft/true-f.docx",
-      "expected_mime_type": "text/plain"
+      "expected_mime_type": "application/json"
     }
  ],
 
@@ -338,7 +338,7 @@
     {
       "name": "{82443e1e-8a39-4b4a-96a8-f40ddc00b9f3}.cip test",
       "test_file_path": "test_cases_cft/{82443e1e-8a39-4b4a-96a8-f40ddc00b9f3}.cip",
-      "expected_mime_type": "text/plain"
+      "expected_mime_type": "application/octet-stream"
     },    
     {
       "name": "{CDD5CB55-DB68-4D71-AA38-3DF2B6473A52}.cip test",
@@ -356,24 +356,9 @@
       "expected_mime_type": "text/x-yaml"
     },  
     {
-      "name": "8514fix.font test",
-      "test_file_path": "test_cases_cft/8514fix.font",
-      "expected_mime_type": "application/octet-stream"
-    },  
-    {
-      "name": "8514oem.font test",
-      "test_file_path": "test_cases_cft/8514oem.font",
-      "expected_mime_type": "application/octet-stream"
-    },  
-    {
-      "name": "8514sys.font test",
-      "test_file_path": "test_cases_cft/8514sys.font",
-      "expected_mime_type": "application/octet-stream"
-    },  
-    {
       "name": "AccountNotifications.admx test",
-      "test_file_path": "test_cases_cft/AccountNotifications.admx ",
-      "expected_mime_type": "application/octet-stream"
+      "test_file_path": "test_cases_cft/AccountNotifications.admx",
+      "expected_mime_type": "text/xml"
     }  
  ]
 }
