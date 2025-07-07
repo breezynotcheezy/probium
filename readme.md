@@ -59,6 +59,9 @@ Probium launches one worker thread per CPU core by default. Override this with
 ### Disable the result cache
 "probium detect path/to/file --no-cache"
 
+Scanning results are cached using file size and modification time. Repeating a
+scan on unchanged files returns instantly from the cache.
+
 ### Run scanning synchronously
 "probium detect path/to/folder --sync"
 

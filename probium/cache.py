@@ -8,8 +8,9 @@ from typing import Optional
 from platformdirs import user_cache_dir
 from cachetools import LRUCache
 from threading import RLock
+import json
 
-from .models import Result
+from .models import Result, Candidate
 
 
 CACHE_DIR = Path(user_cache_dir("probium"))
@@ -51,12 +52,25 @@ def _now() -> float:
     return time.time()
 
 
-def _ser(res: Result) -> str:
-    return res.model_dump_json()
+def _ser(res: Result, *, mtime: float, size: int) -> str:
+    entry = {"r": res.model_dump(), "m": mtime, "s": size}
+    return json.dumps(entry)
 
 
-def _des(raw: str) -> Result:
-    return Result.model_validate_json(raw)
+def _des(raw: str) -> tuple[Result, float | None, int | None]:
+    try:
+        obj = json.loads(raw)
+        if isinstance(obj, dict) and "r" in obj:
+            res = Result.model_validate_json(json.dumps(obj["r"]))
+            if isinstance(res.candidates, list):
+                res.candidates = [
+                    Candidate(**c) if isinstance(c, dict) else c
+                    for c in res.candidates
+                ]
+            return res, obj.get("m"), obj.get("s")
+    except Exception:
+        pass
+    return Result.model_validate_json(raw), None, None
 
 
 def get(path: Path) -> Optional[Result]:
@@ -67,7 +81,14 @@ def get(path: Path) -> Optional[Result]:
     # L1: RAM
     with _mem_lock:
         if key in _mem:
-            return _des(_mem[key])
+            res, m, s = _des(_mem[key])
+            try:
+                stat = path.stat()
+            except FileNotFoundError:
+                return None
+            if m is not None and s is not None and (stat.st_mtime != m or stat.st_size != s):
+                return None
+            return res
 
     # L2: SQLite (own connection per thread)
     try:
@@ -83,16 +104,27 @@ def get(path: Path) -> Optional[Result]:
         _reset_db()
         return None
 
+    res, m, s = _des(raw)
+    try:
+        stat = path.stat()
+    except FileNotFoundError:
+        return None
+    if m is not None and s is not None and (stat.st_mtime != m or stat.st_size != s):
+        return None
     with _mem_lock:
         _mem[key] = raw
-    return _des(raw)
+    return res
 
 
 def put(path: Path, result: Result) -> None:
     """Store ``result`` in the on-disk and in-memory caches."""
 
     key = str(path.resolve())
-    raw = _ser(result)
+    try:
+        stat = path.stat()
+    except FileNotFoundError:
+        return
+    raw = _ser(result, mtime=stat.st_mtime, size=stat.st_size)
     with _mem_lock:
         _mem[key] = raw
     try:
