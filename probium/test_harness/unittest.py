@@ -67,9 +67,7 @@ class TestFileTypeDetection(unittest.TestCase):
                 detected_result_object = _detect_file(full_filepath) # This will be the Result object
                 expected_mime = test_case["expected_mime_type"]
 
-                print(f"--- Debugging '{test_case['name']}' ---")
-                print(f"Detected value type: {type(detected_result_object)}")
-                print(f"Detected value (Result object): {detected_result_object}")
+                print(f'{test_case['name']}')
                 print(f"Expected MIME type: {expected_mime}")
 
                 # 1. Assert that it's an instance of your Result class
