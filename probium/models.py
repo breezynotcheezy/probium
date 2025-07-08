@@ -2,6 +2,7 @@ from __future__ import annotations
 from typing import Dict, List, Optional
 from pydantic import BaseModel, Field, ConfigDict
 
+
 class Candidate(BaseModel):
     """Single MIME guess with an optional extension and confidence score.
 

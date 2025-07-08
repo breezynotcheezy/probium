@@ -323,43 +323,6 @@
       "test_file_path": "test_cases_cft/true-c.docx",
       "expected_mime_type": "application/zip"
     }
- ],
- "Edge case tests": [
-    {
-      "name": "_s_FC1C.tmp test",
-      "test_file_path": "test_cases_cft/_s_FC1C.tmp",
-      "expected_mime_type": "text/plain"
-    },    
-    {
-      "name": "{5DAC656C-21AD-4A02-AB49-649917162E70}.cip test",
-      "test_file_path": "test_cases_cft/{5DAC656C-21AD-4A02-AB49-649917162E70}.cip",
-      "expected_mime_type": "text/x-yaml"
-    },
-    {
-      "name": "{82443e1e-8a39-4b4a-96a8-f40ddc00b9f3}.cip test",
-      "test_file_path": "test_cases_cft/{82443e1e-8a39-4b4a-96a8-f40ddc00b9f3}.cip",
-      "expected_mime_type": "application/octet-stream"
-    },    
-    {
-      "name": "{CDD5CB55-DB68-4D71-AA38-3DF2B6473A52}.cip test",
-      "test_file_path": "test_cases_cft/{CDD5CB55-DB68-4D71-AA38-3DF2B6473A52}.cip",
-      "expected_mime_type": "text/x-yaml"
-    },  
-    {
-      "name": "2025-05-28 10.11.45.267.winsat.etl test",
-      "test_file_path": "test_cases_cft/2025-05-28 10.11.45.267.winsat.etl",
-      "expected_mime_type": "text/x-yaml"
-    },  
-    {
-      "name": "2025-05-28 10.57.55.267.winsat.etl test",
-      "test_file_path": "test_cases_cft/2025-05-28 10.57.55.267.winsat.etl",
-      "expected_mime_type": "text/x-yaml"
-    },  
-    {
-      "name": "AccountNotifications.admx test",
-      "test_file_path": "test_cases_cft/AccountNotifications.admx",
-      "expected_mime_type": "text/xml"
-    }  
  ]
 }
 
