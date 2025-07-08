@@ -236,47 +236,47 @@
     {
       "name": "e-c.pdf test",
       "test_file_path": "test_cases_cft/e-c.pdf",
-      "expected_mime_type": "text/x-yaml"
+      "expected_mime_type": "application/pdf"
     },
     {
       "name": "fake-c.pdf test",
       "test_file_path": "test_cases_cft/fake-c.pdf",
-      "expected_mime_type": "text/x-yaml"
+      "expected_mime_type": "application/pdf"
     },
     {
       "name": "false-c.pdf test",
       "test_file_path": "test_cases_cft/false-c.pdf",
-      "expected_mime_type": "text/x-yaml"
+      "expected_mime_type": "application/pdf"
     },
     {
       "name": "f-c.pdf test",
       "test_file_path": "test_cases_cft/f-c.pdf",
-      "expected_mime_type": "text/x-yaml"
+      "expected_mime_type": "application/pdf"
     },
     {
       "name": "Hello world-c.pdf test",
       "test_file_path": "test_cases_cft/Hello world-c.pdf",
-      "expected_mime_type": "text/x-yaml"
+      "expected_mime_type": "application/pdf"
     },
     {
       "name": "q-c.pdf test",
       "test_file_path": "test_cases_cft/q-c.pdf",
-      "expected_mime_type": "text/x-yaml"
+      "expected_mime_type": "application/pdf"
     },
     {
       "name": "t-c.pdf test",
       "test_file_path": "test_cases_cft/t-c.pdf",
-      "expected_mime_type": "text/x-yaml"
+      "expected_mime_type": "application/pdf"
     },
     {
       "name": "test-c.pdf test",
       "test_file_path": "test_cases_cft/test-c.pdf",
-      "expected_mime_type": "text/x-yaml"
+      "expected_mime_type": "application/pdf"
     },
     {
       "name": "true-c.pdf test",
       "test_file_path": "test_cases_cft/true-c.pdf",
-      "expected_mime_type": "text/x-yaml"
+      "expected_mime_type": "application/pdf"
     },
     {
       "name": "fake-c.docx test",
