@@ -1,3 +1,4 @@
 specifically call from the main directory using python -m probium.test_harness.test_engine_call and python -m probium.test_harness.main_harness
+to run the unit test, you need to be in the main directory and use python3 -m probium.test_harness.unittest
 
 WILL NOT WORK OTHERWISE!!!!!
