@@ -149,7 +149,37 @@ class TestFileTypeDetection(unittest.TestCase):
 
     def test_edge_case_tests(self):
         self._run_tests_for_category("Edge case tests")
+    
+    def test_jpg_file_tests(self):
+        self._run_tests_for_category("jpg file tests")
+    
+    def test_doc_file_tests(self):
+        self._run_tests_for_category("doc file tests")
 
+    def test_xml_file_tests(self):
+        self._run_tests_for_category("xml file tests")
 
+    def test_html_file_tests(self):
+        self._run_tests_for_category("html file tests")
+
+    def test_gz_file_tests(self):
+        self._run_tests_for_category("gz file tests")
+
+    def test_ppt_file_tests(self):
+        self._run_tests_for_category("ppt file tests")
+
+    def test_ps_file_tests(self):
+        self._run_tests_for_category("ps file tests")
+
+    def test_gif_file_tests(self):
+        self._run_tests_for_category("gif file tests")
+
+    def test_ods_file_tests(self):
+        self._run_tests_for_category("ods file tests")
+
+    def test_excel_file_tests(self):
+        self._run_tests_for_category("excel file tests")
+
+    
 if __name__ == '__main__':
     unittest.main()
