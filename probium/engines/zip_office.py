@@ -128,6 +128,17 @@ class ZipOfficeEngine(EngineBase):
                         )
                     )
             return Result(candidates=cand)
+        
+        if b"META-INF/MANIFEST.MF" in payload:
+            cand.append(
+                        Candidate(
+                            media_type="application/java-archive",
+                            extension="jar",
+                            confidence=1.0,
+                            breakdown={"token_ratio": 1.0},
+                        )
+                    )
+            return Result(candidates=cand)
 
         try:
             with zipfile.ZipFile(io.BytesIO(payload)) as zf:
