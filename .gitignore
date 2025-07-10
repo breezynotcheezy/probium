@@ -2,3 +2,4 @@ __pycache__/
 probium.egg-info/
 .pytest_cache/
 tests/results.json
+node_modules
