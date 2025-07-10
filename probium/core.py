@@ -136,6 +136,9 @@ def _detect_file(
     }:
         cap_bytes = min(8192, cap_bytes or 8192)
 
+    if ext in {"ppt"}:
+        no_cap = True
+
     scan_cap = cap_bytes
     if engine == "auto" and only is None:
         scan_cap = max(cap_bytes or 0, _MAX_SCAN)
