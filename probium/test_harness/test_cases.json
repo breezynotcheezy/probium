@@ -323,6 +323,290 @@
       "test_file_path": "test_cases_cft/true-c.docx",
       "expected_mime_type": "application/zip"
     }
- ]
+ ],
+ "jpg file tests": [
+    {
+      "name": "998001.jpg test",
+      "test_file_path": "test_cases_cft/998001.jpg",
+      "expected_mime_type": "image/jpeg"
+    },
+    {
+      "name": "998019.jpg test",
+      "test_file_path": "test_cases_cft/998019.jpg",
+      "expected_mime_type": "image/jpeg"
+    },
+    {
+      "name": "998013.jpg test",
+      "test_file_path": "test_cases_cft/998013.jpg",
+      "expected_mime_type": "image/jpeg"
+    },
+    {
+      "name": "998065.jpg test",
+      "test_file_path": "test_cases_cft/998065.jpg",
+      "expected_mime_type": "image/jpeg"
+    },
+    {
+      "name": "998064.jpg test",
+      "test_file_path": "test_cases_cft/998064.jpg",
+      "expected_mime_type": "image/jpeg"
+    },
+    {
+      "name": "998057.jpg test",
+      "test_file_path": "test_cases_cft/998057.jpg",
+      "expected_mime_type": "image/jpeg"
+    },
+    {
+      "name": "998071.jpg test",
+      "test_file_path": "test_cases_cft/998071.jpg",
+      "expected_mime_type": "image/jpeg"
+    }
+],
+
+"doc file tests": [
+    {
+      "name": "998059.doc test",
+      "test_file_path": "test_cases_cft/998059.doc",
+      "expected_mime_type": "application/vnd.ms-office"
+    },
+    {
+      "name": "998068.doc test",
+      "test_file_path": "test_cases_cft/998068.doc",
+      "expected_mime_type": "application/vnd.ms-office"
+    },
+    {
+      "name": "998037.doc test",
+      "test_file_path": "test_cases_cft/998037.doc",
+      "expected_mime_type": "application/vnd.ms-office"
+    },
+    {
+      "name": "998006.doc test",
+      "test_file_path": "test_cases_cft/998006.doc",
+      "expected_mime_type": "application/vnd.ms-office"
+    },
+    {
+      "name": "998010.doc test",
+      "test_file_path": "test_cases_cft/998010.doc",
+      "expected_mime_type": "application/vnd.ms-office"
+    },
+    {
+      "name": "998011.doc test",
+      "test_file_path": "test_cases_cft/998011.doc",
+      "expected_mime_type": "application/vnd.ms-office"
+    },
+    {
+      "name": "998021.doc test",
+      "test_file_path": "test_cases_cft/998021.doc",
+      "expected_mime_type": "application/vnd.ms-office"
+    },
+    {
+      "name": "998002.doc test",
+      "test_file_path": "test_cases_cft/998002.doc",
+      "expected_mime_type": "application/vnd.ms-office"
+    },
+    {
+      "name": "998004.doc test",
+      "test_file_path": "test_cases_cft/998004.doc",
+      "expected_mime_type": "application/vnd.ms-office"
+    }
+],
+
+"xml file tests": [
+    {
+      "name": "998084.xml test",
+      "test_file_path": "test_cases_cft/998084.xml",
+      "expected_mime_type": "application/xml"
+    },
+    {
+      "name": "998079.xml test",
+      "test_file_path": "test_cases_cft/998079.xml",
+      "expected_mime_type": "application/xml"
+    },
+    {
+      "name": "998073.xml test",
+      "test_file_path": "test_cases_cft/998073.xml",
+      "expected_mime_type": "application/xml"
+    },
+    {
+      "name": "998055.xml test",
+      "test_file_path": "test_cases_cft/998055.xml",
+      "expected_mime_type": "application/xml"
+    },
+    {
+      "name": "998058.xml test",
+      "test_file_path": "test_cases_cft/998058.xml",
+      "expected_mime_type": "application/xml"
+    },
+    {
+      "name": "998051.xml test",
+      "test_file_path": "test_cases_cft/998051.xml",
+      "expected_mime_type": "text/xml"
+    },
+    {
+      "name": "998052.xml test",
+      "test_file_path": "test_cases_cft/998052.xml",
+      "expected_mime_type": "application/xml"
+    },
+    {
+      "name": "998041.xml test",
+      "test_file_path": "test_cases_cft/998041.xml",
+      "expected_mime_type": "application/xml"
+    },
+    {
+      "name": "998033.xml test",
+      "test_file_path": "test_cases_cft/998033.xml",
+      "expected_mime_type": "text/xml"
+    },
+    {
+      "name": "998035.xml test",
+      "test_file_path": "test_cases_cft/998035.xml",
+      "expected_mime_type": "application/xml"
+    },
+    {
+      "name": "998039.xml test",
+      "test_file_path": "test_cases_cft/998039.xml",
+      "expected_mime_type": "text/xml"
+    },
+    {
+      "name": "998018.xml test",
+      "test_file_path": "test_cases_cft/998018.xml",
+      "expected_mime_type": "text/xml"
+    }
+],
+
+"html file tests": [
+    {
+      "name": "998082.html test",
+      "test_file_path": "test_cases_cft/998082.html",
+      "expected_mime_type": "text/html"
+    },
+    {
+      "name": "998074.html test",
+      "test_file_path": "test_cases_cft/998074.html",
+      "expected_mime_type": "text/html"
+    },
+    {
+      "name": "998075.html test",
+      "test_file_path": "test_cases_cft/998075.html",
+      "expected_mime_type": "text/html"
+    },
+    {
+      "name": "998061.html test",
+      "test_file_path": "test_cases_cft/998061.html",
+      "expected_mime_type": "text/html"
+    },
+    {
+      "name": "998066.html test",
+      "test_file_path": "test_cases_cft/998066.html",
+      "expected_mime_type": "text/html"
+    },
+    {
+      "name": "998023.html test",
+      "test_file_path": "test_cases_cft/998023.html",
+      "expected_mime_type": "text/html"
+    }
+],
+
+"gz file tests": [
+    {
+      "name": "998014.gz test",
+      "test_file_path": "test_cases_cft/998014.gz",
+      "expected_mime_type": "application/gzip"
+    }
+],
+
+"ppt file tests": [
+    {
+      "name": "998049.ppt test",
+      "test_file_path": "test_cases_cft/998049.ppt",
+      "expected_mime_type": "application/vnd.ms-office"
+    },
+    {
+      "name": "998040.ppt test",
+      "test_file_path": "test_cases_cft/998040.ppt",
+      "expected_mime_type": "application/vnd.ms-office"
+    },
+    {
+      "name": "998042.ppt test",
+      "test_file_path": "test_cases_cft/998042.ppt",
+      "expected_mime_type": "application/vnd.ms-office"
+    },
+    {
+      "name": "998046.ppt test",
+      "test_file_path": "test_cases_cft/998046.ppt",
+      "expected_mime_type": "application/vnd.ms-office"
+    },
+    {
+      "name": "998029.ppt test",
+      "test_file_path": "test_cases_cft/998029.ppt",
+      "expected_mime_type": "application/vnd.ms-office"
+    }
+],
+
+"ps file tests": [
+    {
+      "name": "998036.ps test",
+      "test_file_path": "test_cases_cft/998036.ps",
+      "expected_mime_type": "text/plain"
+    },
+    {
+      "name": "998007.ps test",
+      "test_file_path": "test_cases_cft/998007.ps",
+      "expected_mime_type": "text/plain"
+    },
+    {
+      "name": "998016.ps test",
+      "test_file_path": "test_cases_cft/998016.ps",
+      "expected_mime_type": "text/plain"
+    }
+],
+
+"gif file tests": [
+    {
+      "name": "998070.gif test",
+      "test_file_path": "test_cases_cft/998070.gif",
+      "expected_mime_type": "image/gif"
+    },
+    {
+      "name": "998053.gif test",
+      "test_file_path": "test_cases_cft/998053.gif",
+      "expected_mime_type": "image/gif"
+    }
+],
+
+"ods file tests": [
+    {
+      "name": "file_example_ods_5000.ods test",
+      "test_file_path": "test_cases_cft/file_example_ODS_5000.ods",
+      "expected_mime_type": "application/vnd.oasis.opendocument.spreadsheet"
+    },
+    {
+      "name": "file_example_ods_1000.ods test",
+      "test_file_path": "test_cases_cft/file_example_ODS_1000.ods",
+      "expected_mime_type": "application/vnd.oasis.opendocument.spreadsheet"
+    },
+    {
+      "name": "file_example_ods_100.ods test",
+      "test_file_path": "test_cases_cft/file_example_ODS_100.ods",
+      "expected_mime_type": "application/vnd.oasis.opendocument.spreadsheet"
+    },
+    {
+      "name": "file_example_ods_10.ods test",
+      "test_file_path": "test_cases_cft/file_example_ODS_10.ods",
+      "expected_mime_type": "application/vnd.oasis.opendocument.spreadsheet"
+    }
+],
+
+"excel file tests": [
+    {
+      "name": "998054.xls test",
+      "test_file_path": "test_cases_cft/998054.xls",
+      "expected_mime_type": "application/vnd.ms-office"
+    },
+    {
+      "name": "998045.xls test",
+      "test_file_path": "test_cases_cft/998045.xls",
+      "expected_mime_type": "application/vnd.ms-office"
+    }
+]
 }
 
