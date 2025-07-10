@@ -82,7 +82,7 @@ class XMLEngine(EngineBase):
 
     def sniff(self, payload: bytes) -> Result:
         """Return a detection result for the given payload."""
-
+        cand=[]
         # 1. libmagic check
         if _magic is not None:
             try:
@@ -91,14 +91,15 @@ class XMLEngine(EngineBase):
                 logger.warning("libmagic failed: %s", exc)
             else:
                 if mime and "xml" in mime:
-                    ext = (mimetypes.guess_extension(mime) or "").lstrip(".") or "xml"
-                    cand = Candidate(
-                        media_type=mime,
-                        extension=ext,
-                        confidence=score_tokens(1.0),
-                        breakdown={"libmagic": True},
-                    )
-                    return Result(candidates=[cand])
+                    if not (b'<!DOCTYPE html' in payload or b'<!DOCTYPE HTML' in payload or b'<html>' in payload or b'<HTML' in payload):
+                        ext = (mimetypes.guess_extension(mime) or "").lstrip(".") or "xml"
+                        cand = Candidate(
+                            media_type=mime,
+                            extension=ext,
+                            confidence=score_tokens(1.0),
+                            breakdown={"libmagic": True},
+                        )
+                        return Result(candidates=[cand])
 
         encoding = self.detect_encoding(payload)
         try:
@@ -154,7 +155,20 @@ class XMLEngine(EngineBase):
             confidence = max(confidence, score_tokens(min(token_ratio, 0.9)))
         breakdown["token_ratio"] = round(token_ratio, 3)
 
+
+        
         if confidence == 0 or b"%PDF-" in payload:
             return Result(candidates=[])
+        
+        if b'<!DOCTYPE html' in payload or b'<!DOCTYPE HTML' in payload or b'<html' in payload or b'<HTML' in payload:
+            cand.append(
+                    Candidate(
+                        media_type="text/html",
+                        extension="html",
+                        confidence=1,
+                        breakdown=breakdown,
+                    )
+                )
+            return Result(candidates=cand)
 
         return self._make_result(confidence, breakdown)
