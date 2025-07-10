@@ -549,8 +549,8 @@
       "expected_mime_type": "text/plain"
     },
     {
-      "name": "998001.ps test",
-      "test_file_path": "test_cases_cft/998001.ps",
+      "name": "998007.ps test",
+      "test_file_path": "test_cases_cft/998007.ps",
       "expected_mime_type": "text/plain"
     },
     {
