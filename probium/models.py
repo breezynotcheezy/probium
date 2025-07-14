@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Union
 from pydantic import BaseModel, Field, ConfigDict
 
 
@@ -14,7 +14,7 @@ class Candidate(BaseModel):
     media_type: str
     extension: Optional[str] = None
     confidence: float = Field(ge=0, le=1)
-    breakdown: Dict[str, float] | None = None
+    breakdown: dict[str, Union[float, str]] = {}
 
 class Result(BaseModel):
     """Unified return object for every engine.

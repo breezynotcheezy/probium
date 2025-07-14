@@ -228,7 +228,7 @@ async def scan_file(
     engines: Optional[str] = None,
     deep_analysis: bool = True,
     generate_hashes: bool = True,
-    extract_metadata: bool = True,
+    extract_metadata_flag: bool = True,
     validate_signatures: bool = True,
 ):
     """Scan a single file using Probium engines."""
@@ -300,7 +300,7 @@ async def scan_file(
                 scan_result["hashes"] = calculate_file_hashes(tmp_file_path)
             
             # Extract metadata if requested
-            if extract_metadata:
+            if extract_metadata_flag:
                 active_scans[scan_id]["progress"] = 85
                 active_scans[scan_id]["current_stage"] = "Extracting metadata"
                 scan_result["metadata"] = extract_metadata(tmp_file_path, result)
