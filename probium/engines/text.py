@@ -81,16 +81,31 @@ class TextEngine(EngineBase):
             )
         return None
 
+    
     def check_javascript(self, text: str) -> Candidate | None:
-        keywords = ["let ", "var ", "console.log(", "=>"]
-        if any(k in text for k in keywords):
+        patterns = [
+            r"\bfunction\s+\w+\s*\(",                 # function myFunc(
+            r"\blet\s+\w+",                           # let variable
+            r"\bvar\s+\w+",                           # var variable
+            r"console\.log\s*\(",                     # console.log(...)
+            r"=>",                                     # arrow function
+            r"\bexport\s+(default\s+)?(function|class|const|let|var)?",  # export default ...
+            r"\basync\s+function\s+\w*",              # async function
+            r"\bawait\s+\w+",                         # await something
+            r"\bdocument\.\w+",                       # document.querySelector etc.
+            r"\bwindow\.\w+",                         # window.location etc.
+            r"\bPromise\s*\.",                        # Promise.then, Promise.all, etc.
+        ]
+
+        if any(re.search(p, text) for p in patterns):
             return Candidate(
                 media_type="application/javascript",
                 extension="js",
                 confidence=1.0,
-                breakdown={"lang": "javascript"}
+                breakdown={"lang": "javascript", "matched": "js keyword or structure"}
             )
         return None
+
 
     def check_java(self, text: str) -> Candidate | None:
         java_declaration_pattern = re.compile(
