@@ -113,7 +113,7 @@ class MultiModalClassifier(nn.Module):
         
         return logits, confidence
 
-@register
+#@register
 class TextEngineV2(EngineBase):
     name = "text_v2"
     cost = 1.0  # Lower cost to ensure it's preferred over other engines
