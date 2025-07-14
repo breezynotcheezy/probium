@@ -5,6 +5,10 @@ import time
 from pathlib import Path
 import psutil
 from probium import scan_dir
+from plyer import notification
+import sys
+if sys.platform == "win32":
+    import winsound
 
 checked = {p.mountpoint for p in psutil.disk_partitions(all=False)}
 
@@ -17,6 +21,14 @@ def scan_drive(mount: str) -> None:
             print(f"{path} -> {cand.media_type}")
         if Path(path).suffix.lower().lstrip(".") in {"exe", "bat", "bad"}:
             print("*** VIRUS DETECTED! ***")
+            notification.notify(
+                title="Virus Detected!",
+                message=f"{path} is suspicious.",
+                timeout=8
+            )
+            if sys.platform == "win32":
+                for _ in range(2):
+                    winsound.Beep(1000, 800)
 
 
 def main() -> None:
@@ -28,7 +40,7 @@ def main() -> None:
             print(f"Drive detected: {mount}")
             scan_drive(mount)
             checked.add(mount)
-        time.sleep(5)
+        time.sleep(1)
 
 
 if __name__ == "__main__":
