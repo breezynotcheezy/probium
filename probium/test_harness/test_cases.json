@@ -74,6 +74,11 @@
       "name": "true-f.docx test",
       "test_file_path": "test_cases_cft/true-f.docx",
       "expected_mime_type": "application/json"
+    },
+    {
+      "name": "998061.html test",
+      "test_file_path": "test_cases_cft/998061.html",
+      "expected_mime_type": "text/x-makefile"
     }
  ],
 
@@ -366,47 +371,47 @@
     {
       "name": "998059.doc test",
       "test_file_path": "test_cases_cft/998059.doc",
-      "expected_mime_type": "application/vnd.ms-office"
+      "expected_mime_type": "application/msword"
     },
     {
       "name": "998068.doc test",
       "test_file_path": "test_cases_cft/998068.doc",
-      "expected_mime_type": "application/vnd.ms-office"
+      "expected_mime_type": "application/msword"
     },
     {
       "name": "998037.doc test",
       "test_file_path": "test_cases_cft/998037.doc",
-      "expected_mime_type": "application/vnd.ms-office"
+      "expected_mime_type": "application/msword"
     },
     {
       "name": "998006.doc test",
       "test_file_path": "test_cases_cft/998006.doc",
-      "expected_mime_type": "application/vnd.ms-office"
+      "expected_mime_type": "application/msword"
     },
     {
       "name": "998010.doc test",
       "test_file_path": "test_cases_cft/998010.doc",
-      "expected_mime_type": "application/vnd.ms-office"
+      "expected_mime_type": "application/msword"
     },
     {
       "name": "998011.doc test",
       "test_file_path": "test_cases_cft/998011.doc",
-      "expected_mime_type": "application/vnd.ms-office"
+      "expected_mime_type": "application/msword"
     },
     {
       "name": "998021.doc test",
       "test_file_path": "test_cases_cft/998021.doc",
-      "expected_mime_type": "application/vnd.ms-office"
+      "expected_mime_type": "application/msword"
     },
     {
       "name": "998002.doc test",
       "test_file_path": "test_cases_cft/998002.doc",
-      "expected_mime_type": "application/vnd.ms-office"
+      "expected_mime_type": "application/msword"
     },
     {
       "name": "998004.doc test",
       "test_file_path": "test_cases_cft/998004.doc",
-      "expected_mime_type": "application/vnd.ms-office"
+      "expected_mime_type": "application/msword"
     }
 ],
 
@@ -489,11 +494,7 @@
       "test_file_path": "test_cases_cft/998075.html",
       "expected_mime_type": "text/html"
     },
-    {
-      "name": "998061.html test",
-      "test_file_path": "test_cases_cft/998061.html",
-      "expected_mime_type": "text/html"
-    },
+
     {
       "name": "998066.html test",
       "test_file_path": "test_cases_cft/998066.html",
@@ -518,27 +519,27 @@
     {
       "name": "998049.ppt test",
       "test_file_path": "test_cases_cft/998049.ppt",
-      "expected_mime_type": "application/vnd.ms-office"
+      "expected_mime_type": "application/vnd.ms-powerpoint"
     },
     {
       "name": "998040.ppt test",
       "test_file_path": "test_cases_cft/998040.ppt",
-      "expected_mime_type": "application/vnd.ms-office"
+      "expected_mime_type": "application/vnd.ms-powerpoint"
     },
     {
       "name": "998042.ppt test",
       "test_file_path": "test_cases_cft/998042.ppt",
-      "expected_mime_type": "application/vnd.ms-office"
+      "expected_mime_type": "application/vnd.ms-powerpoint"
     },
     {
       "name": "998046.ppt test",
       "test_file_path": "test_cases_cft/998046.ppt",
-      "expected_mime_type": "application/vnd.ms-office"
+      "expected_mime_type": "application/vnd.ms-powerpoint"
     },
     {
       "name": "998029.ppt test",
       "test_file_path": "test_cases_cft/998029.ppt",
-      "expected_mime_type": "application/vnd.ms-office"
+      "expected_mime_type": "application/vnd.ms-powerpoint"
     }
 ],
 
@@ -600,12 +601,12 @@
     {
       "name": "998054.xls test",
       "test_file_path": "test_cases_cft/998054.xls",
-      "expected_mime_type": "application/vnd.ms-office"
+      "expected_mime_type": "application/vnd.ms-excel"
     },
     {
       "name": "998045.xls test",
       "test_file_path": "test_cases_cft/998045.xls",
-      "expected_mime_type": "application/vnd.ms-office"
+      "expected_mime_type": "application/vnd.ms-excel"
     }
 ]
 }
