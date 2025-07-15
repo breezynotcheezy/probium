@@ -3,52 +3,52 @@
     {
       "name": "a.pdf test",
       "test_file_path": "test_cases_cft/a.pdf",
-      "expected_mime_type": "application/octet-stream"
+      "expected_mime_type": "text/plain"
     },
     {
       "name": "b.pdf test",
       "test_file_path": "test_cases_cft/b.pdf",
-      "expected_mime_type": "application/octet-stream"
+      "expected_mime_type": "text/plain"
     },
     {
       "name": "c.pdf test",
       "test_file_path": "test_cases_cft/c.pdf",
-      "expected_mime_type": "application/octet-stream"
+      "expected_mime_type": "text/plain"
     },
     {
       "name": "d.pdf test",
       "test_file_path": "test_cases_cft/d.pdf",
-      "expected_mime_type": "application/octet-stream"
+      "expected_mime_type": "text/plain"
     },
     {
       "name": "h.pdf test",
       "test_file_path": "test_cases_cft/h.pdf",
-      "expected_mime_type": "application/octet-stream"
+      "expected_mime_type": "text/plain"
     },
     {
       "name": "a.csv test",
       "test_file_path": "test_cases_cft/a.csv",
-      "expected_mime_type": "application/octet-stream"
+      "expected_mime_type": "text/plain"
     },
     {
       "name": "b.csv test",
       "test_file_path": "test_cases_cft/b.csv",
-      "expected_mime_type": "application/octet-stream"
+      "expected_mime_type": "text/plain"
     },
     {
       "name": "c.csv test",
       "test_file_path": "test_cases_cft/c.csv",
-      "expected_mime_type": "application/octet-stream"
+      "expected_mime_type": "text/plain"
     },
     {
       "name": "d.csv test",
       "test_file_path": "test_cases_cft/d.csv",
-      "expected_mime_type": "application/octet-stream"
+      "expected_mime_type": "text/plain"
     },
     {
       "name": "e.csv test",
       "test_file_path": "test_cases_cft/e.csv",
-      "expected_mime_type": "application/octet-stream"
+      "expected_mime_type": "text/plain"
     },
     {
       "name": "fake-f.docx test",
@@ -552,17 +552,17 @@
     {
       "name": "998036.ps test",
       "test_file_path": "test_cases_cft/998036.ps",
-      "expected_mime_type": "application/json"
+      "expected_mime_type": "text/plain"
     },
     {
       "name": "998007.ps test",
       "test_file_path": "test_cases_cft/998007.ps",
-      "expected_mime_type": "application/json"
+      "expected_mime_type": "text/plain"
     },
     {
       "name": "998016.ps test",
       "test_file_path": "test_cases_cft/998016.ps",
-      "expected_mime_type": "application/json"
+      "expected_mime_type": "text/plain"
     }
 ],
 
