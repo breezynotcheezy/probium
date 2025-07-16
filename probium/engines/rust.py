@@ -5,7 +5,7 @@ from ..models import Candidate, Result
 from .base import EngineBase
 from ..registry import register
 
-@register
+#@register
 class RustEngine(EngineBase):
     name = "rust"
     cost = 0.05

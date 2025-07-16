@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 _magic = load_magic()
 
-@register
+#@register
 class CppEngine(EngineBase):
     name = "cpp"
     cost = 0.05

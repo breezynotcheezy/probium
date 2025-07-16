@@ -5,7 +5,7 @@ from ..models import Candidate, Result
 from .base import EngineBase
 from ..registry import register
 
-@register
+#@register
 class MakefileEngine(EngineBase):
     name = "makefile"
     cost = 0.05

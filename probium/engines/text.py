@@ -5,37 +5,76 @@ from ..models import Candidate, Result
 from .base import EngineBase
 from ..registry import register
 import re
+import os
+import importlib
+import chardet
 
 @register
 class TextEngine(EngineBase):
     name = "text"
     cost = 1.0
 
+    def __init__(self):
+        super().__init__()
+        self.checkers = self.load_language_checkers()
+
+
     def sniff(self, payload: bytes) -> Result:
         sample = payload[:512]
+        text = "\x00"
         try:
-            text = sample.decode("utf-8")
+            text = payload.decode("utf-8")
         except UnicodeDecodeError:
-            return Result(candidates=[])
+            if chardet:
+                res = chardet.detect(sample)
+                encoding = res.get("encoding")
+                #print(encoding)
+                if encoding:
+                    try:
+                        text = sample.decode(encoding)
+                    except:
+                        return Result(candidates=[])
+            else:
+                return Result(candidates=[])
+            
         printable = set(string.printable)
         printable_count = sum(1 for c in text if c in printable or c in "\n\r\t")
         ratio = printable_count / max(len(text), 1)
-
-
-        if ratio < 0.95:
+        
+        if ratio < 0.8:
             return Result(candidates=[])
+
+        # check csv and xml
+        if "<" in text:
+            for checker in self.checkers["xml"]:
+                    result = checker(text=text, payload=payload)
+                    if result:
+                        return Result(candidates=[result])
 
         # Run detectors
         # check for languages with semicolons first
         if b';\x0D\x0A' in payload or b';\x0A' in payload:
-            for checker in [self.check_java, self.check_javascript, self.check_cpp, self.check_rust]:
+            for checker in self.checkers["colon"]:
                 result = checker(text)
                 if result:
                     return Result(candidates=[result])
-            cc = self.check_c(payload)
-            if cc: return Result(candidates=[cc])
 
-        for checker in [self.check_python, self.check_bat]:
+        # check json        
+        if text.startswith("{") or text.startswith("["):
+            for checker in self.checkers["json"]:
+                result = checker(text)
+                if result:
+                    return Result(candidates=[result])
+
+
+           
+        for checker in self.checkers["csv"]:
+                result = checker(text=text)
+                if result:
+                    return Result(candidates=[result])
+            
+        # check remaining
+        for checker in self.checkers["standard"]:
             result = checker(text)
             if result:
                 return Result(candidates=[result])
@@ -50,131 +89,37 @@ class TextEngine(EngineBase):
         )
         return Result(candidates=[cand])
 
-        
-        if ratio > 0.95 and "<" not in text and ">" not in text:
-            conf = score_tokens(ratio)
-            cand = Candidate(
-                media_type="text/plain",
-                extension="txt",
-                confidence=conf,
-                breakdown={"token_ratio": ratio},
-            )
-            return Result(candidates=[cand])
-
-        return Result(candidates=[])
     
-    def check_python(self, text: str) -> Candidate | None:
-        patterns = [
-            re.compile(r"\bdef\s+\w+\s*\((.*?)\):"),
-            re.compile(r"\bimport\s+\w+"),
-            re.compile(r"\bprint\s*\("),
-            re.compile(r"if\s+__name__\s*==\s*['\"]__main__['\"]"),
-            re.compile(r"\bfrom\s+\w+\s+import\s+"),
-        ]
-        
-        if any(p.search(text) for p in patterns):
-            return Candidate(
-                media_type="text/x-python",
-                extension="py",
-                confidence=1.0,
-                breakdown={"lang": "python"}
-            )
-        return None
-
-    
-    def check_javascript(self, text: str) -> Candidate | None:
-        patterns = [
-            r"\bfunction\s+\w+\s*\(",                 # function myFunc(
-            r"\blet\s+\w+",                           # let variable
-            r"\bvar\s+\w+",                           # var variable
-            r"console\.log\s*\(",                     # console.log(...)
-            r"=>",                                     # arrow function
-            r"\bexport\s+(default\s+)?(function|class|const|let|var)?",  # export default ...
-            r"\basync\s+function\s+\w*",              # async function
-            r"\bawait\s+\w+",                         # await something
-            r"\bdocument\.\w+",                       # document.querySelector etc.
-            r"\bwindow\.\w+",                         # window.location etc.
-            r"\bPromise\s*\.",                        # Promise.then, Promise.all, etc.
-        ]
-
-        if any(re.search(p, text) for p in patterns):
-            return Candidate(
-                media_type="application/javascript",
-                extension="js",
-                confidence=1.0,
-                breakdown={"lang": "javascript", "matched": "js keyword or structure"}
-            )
-        return None
 
 
-    def check_java(self, text: str) -> Candidate | None:
-        java_declaration_pattern = re.compile(
-            r"\bpublic\s+(class|interface)\s+\w+(\s+(extends|implements)\s+\w+)?", re.MULTILINE
-        )
-        if java_declaration_pattern.search(text):
-            return Candidate(
-                media_type="text/x-java-source",
-                extension="java",
-                confidence=1.0,
-                breakdown={"lang": "java", "match": "public class/interface declaration"}
-            )
-        keywords = ["public static void main(String", "System.out.println("]
-        if any(k in text for k in keywords):
-            return Candidate(
-                media_type="text/x-java-source",
-                extension="java",
-                confidence=1.0,
-                breakdown={"lang": "java"}
-            )
-        return None
-    
-    def check_c(self, sample: bytes) -> Candidate | None:
+    def load_language_checkers(self):
+        """Dynamically imports all modules in the additionalengines folder with a `check` function."""
+        checkers = {"standard": [], "colon": [], "json": [], "xml": [], "csv": []}
 
-        include_pattern = rb'#include\s*[<"][^>"]+[>"]'
-        include_found = re.search(include_pattern, sample) is not None
-        if include_found:
-            return Candidate(
-                media_type="text/x-c",
-                extension="c",
-                confidence=1.0,
-                breakdown={"lang": "c"}
-            )
-        return None
-    
-    def check_cpp(self, text: str) -> Candidate | None:
-        keywords = ["include <iostream>", "std::"]
-        if any(k in text for k in keywords):
-            return Candidate(
-                media_type="text/x-c++",
-                extension="cpp",
-                confidence=1.0,
-                breakdown={"lang": "c++"}
-            )
-        return None
+        dir_path = os.path.dirname(__file__)
+        additional_path = os.path.join(dir_path, "textengines")
+        for file in os.listdir(additional_path):
+            if file.endswith(".py") and not file.startswith("_"):
+                mod_name = file[:-3]
+                try:
+                    mod = importlib.import_module(f".textengines.{mod_name}", package=__package__)
+                    if hasattr(mod, "check"):
+                        checkers["standard"].append(mod.check)
 
-    def check_bat(self, text: str) -> Candidate | None:
-        patterns = [r"@echo\s+off", r"\brem\b"]
-        if any(re.search(p, text, re.IGNORECASE) for p in patterns):
-            return Candidate(
-                media_type="application/x-bat",
-                extension="bat",
-                confidence=1.0,
-                breakdown={"lang": "batch"}
-            )
-        return None
-    
-    def check_rust(self, text: str) -> Candidate | None:
-        rust_use_pattern = re.compile(
-            r"\buse\s+[a-zA-Z0-9_:{} ,]+;",
-            re.MULTILINE
-        )
+                    if hasattr(mod, "check_s"):
+                        checkers["colon"].append(mod.check_s)
 
-        if rust_use_pattern.search(text):
-            return Candidate(
-                media_type="text/rust",
-                extension="rs",
-                confidence=1.0,
-                breakdown={"lang": "rust", "pattern": "use statement"}
-            )
-        return None
+                    if hasattr(mod, "check_json"):
+                        checkers["json"].append(mod.check_json)
 
+                    if hasattr(mod, "check_csv"):
+                        checkers["csv"].append(mod.check_csv)
+                    
+                    # xml commented out for now
+                    
+                    if hasattr(mod, "check_xml"):
+                        checkers["xml"].append(mod.check_xml)
+                    
+                except Exception as e:
+                    print(f"Failed to load {mod_name}: {e}")
+        return checkers

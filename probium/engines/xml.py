@@ -84,6 +84,7 @@ class XMLEngine(EngineBase):
         """Return a detection result for the given payload."""
         cand=[]
         # 1. libmagic check
+        return Result(candidates=[])
         if _magic is not None:
             try:
                 mime = _magic.from_buffer(payload)
