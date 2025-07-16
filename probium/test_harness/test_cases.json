@@ -446,18 +446,18 @@
     {
       "name": "998073.xml test",
       "test_file_path": "test_cases_cft/998073.xml",
-      "expected_mime_type": "text/xml"
+      "expected_mime_type": "application/xml"
     },
     {
       "name": "998055.xml test",
       "test_file_path": "test_cases_cft/998055.xml",
-      "expected_mime_type": "text/xml"
+      "expected_mime_type": "application/xml"
     },
 
     {
       "name": "998051.xml test",
       "test_file_path": "test_cases_cft/998051.xml",
-      "expected_mime_type": "text/xml"
+      "expected_mime_type": "application/xml"
     },
  
     {
@@ -468,18 +468,18 @@
     {
       "name": "998033.xml test",
       "test_file_path": "test_cases_cft/998033.xml",
-      "expected_mime_type": "text/xml"
+      "expected_mime_type": "application/xml"
     },
 
     {
       "name": "998039.xml test",
       "test_file_path": "test_cases_cft/998039.xml",
-      "expected_mime_type": "text/xml"
+      "expected_mime_type": "application/xml"
     },
     {
       "name": "998018.xml test",
       "test_file_path": "test_cases_cft/998018.xml",
-      "expected_mime_type": "text/xml"
+      "expected_mime_type": "application/xml"
     }
 ],
 
