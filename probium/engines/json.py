@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 _magic = load_magic()
 
 
-@register
+#@register
 class JSONEngine(EngineBase):
     name = "json"
     #Identifier for this engine

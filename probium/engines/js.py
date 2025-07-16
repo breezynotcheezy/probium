@@ -5,7 +5,7 @@ from ..models import Candidate, Result
 from .base import EngineBase
 from ..registry import register
 
-@register
+#@register
 class JavaScriptEngine(EngineBase):
     name = "js"
     cost = 0.05

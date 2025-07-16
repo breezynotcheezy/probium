@@ -22,7 +22,7 @@ from ..libmagic import load_magic
 logger = logging.getLogger(__name__)
 _magic = load_magic()
 
-@register
+#@register
 class CSVEngine(EngineBase):
     name = "csv"
     cost = 0.05

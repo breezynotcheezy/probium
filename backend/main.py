@@ -1,4 +1,4 @@
-from fastapi import FastAPI, File, UploadFile, HTTPException, BackgroundTasks
+from fastapi import FastAPI, File, UploadFile, HTTPException, BackgroundTasks, Depends, Header
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 import asyncio
@@ -18,12 +18,74 @@ from probium.core import detect, scan_dir, _detect_file
 from probium.registry import list_engines, get_instance
 from probium.models import Result, Candidate
 
+from sqlalchemy import create_engine, Column, Integer, String, DateTime, ForeignKey, Text
+from sqlalchemy.orm import declarative_base, sessionmaker, relationship
+from google.oauth2 import id_token
+from google.auth.transport import requests as google_requests
+
+DATABASE_URL = "sqlite:///./probiumlens.sqlite3"
+engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+Base = declarative_base()
+
+class User(Base):
+    __tablename__ = 'users'
+    id = Column(Integer, primary_key=True, index=True)
+    email = Column(String, unique=True, index=True)
+    name = Column(String)
+    google_sub = Column(String, unique=True)
+    scans = relationship('ScanHistory', back_populates='user')
+
+class ScanHistory(Base):
+    __tablename__ = 'scan_history'
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey('users.id'))
+    filename = Column(String)
+    result_json = Column(Text)
+    timestamp = Column(DateTime, default=datetime.utcnow)
+    user = relationship('User', back_populates='scans')
+
+Base.metadata.create_all(bind=engine)
+
+GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID")
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+def get_current_user(authorization: str = Header(None), db=Depends(get_db)):
+    if not authorization:
+        return None  # Allow anonymous
+    if not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Invalid auth header")
+    try:
+        token = authorization.split(" ", 1)[1]
+        idinfo = id_token.verify_oauth2_token(token, google_requests.Request(), GOOGLE_CLIENT_ID)
+        email = idinfo["email"]
+        sub = idinfo["sub"]
+        user = db.query(User).filter_by(google_sub=sub).first()
+        if not user:
+            user = User(email=email, name=idinfo.get("name", email), google_sub=sub)
+            db.add(user)
+            db.commit()
+            db.refresh(user)
+        return user
+    except Exception as e:
+        return None  # Allow anonymous if token is invalid
+
 app = FastAPI(title="Probium API", version="1.0.0")
 
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
+    allow_origins=[
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        "https://v0-probity-anti-virus-portal.vercel.app"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -47,23 +109,23 @@ system_metrics = {
 def calculate_file_hashes(file_path: Path) -> Dict[str, str]:
     """Calculate MD5, SHA1, SHA256, and CRC32 hashes for a file."""
     hashes = {}
-    
+
     with open(file_path, 'rb') as f:
         content = f.read()
-        
+
     # MD5
     hashes['md5'] = hashlib.md5(content).hexdigest()
-    
+
     # SHA1
     hashes['sha1'] = hashlib.sha1(content).hexdigest()
-    
+
     # SHA256
     hashes['sha256'] = hashlib.sha256(content).hexdigest()
-    
+
     # CRC32
     import zlib
     hashes['crc32'] = format(zlib.crc32(content) & 0xffffffff, '08x')
-    
+
     return hashes
 
 def extract_metadata(file_path: Path, result: Result) -> Dict[str, Any]:
@@ -74,7 +136,7 @@ def extract_metadata(file_path: Path, result: Result) -> Dict[str, Any]:
         "created": datetime.fromtimestamp(file_path.stat().st_ctime).isoformat(),
         "modified": datetime.fromtimestamp(file_path.stat().st_mtime).isoformat(),
     }
-    
+
     # Add type-specific metadata based on detection result
     if result.candidates:
         candidate = result.candidates[0]
@@ -92,7 +154,7 @@ def extract_metadata(file_path: Path, result: Result) -> Dict[str, Any]:
                 "height": None,
                 "color_depth": None,
             })
-    
+
     return metadata
 
 def analyze_file_structure(file_path: Path, result: Result) -> Dict[str, Any]:
@@ -102,7 +164,7 @@ def analyze_file_structure(file_path: Path, result: Result) -> Dict[str, Any]:
         "corrupted": False,
         "suspicious": False,
     }
-    
+
     if result.candidates:
         candidate = result.candidates[0]
         # Add structure analysis based on file type
@@ -113,7 +175,7 @@ def analyze_file_structure(file_path: Path, result: Result) -> Dict[str, Any]:
                 "xref_entries": None,
                 "linearized": False,
             })
-    
+
     return structure
 
 def assess_security(file_path: Path, result: Result) -> Dict[str, Any]:
@@ -129,31 +191,31 @@ def assess_security(file_path: Path, result: Result) -> Dict[str, Any]:
             "forms": 0,
         }
     }
-    
+
     # Basic security checks
     file_size = file_path.stat().st_size
-    
+
     # Flag very large files as potentially suspicious
     if file_size > 100 * 1024 * 1024:  # 100MB
         security["anomalies"].append("Large file size")
         security["malware_score"] += 0.1
-    
+
     # Check for suspicious extensions vs detected type mismatch
     if result.candidates:
         candidate = result.candidates[0]
         expected_ext = candidate.extension
         actual_ext = file_path.suffix.lower().lstrip('.')
-        
+
         if expected_ext and actual_ext and expected_ext != actual_ext:
             security["anomalies"].append("Extension mismatch")
             security["malware_score"] += 0.2
-    
+
     # Determine threat level
     if security["malware_score"] >= 0.7:
         security["threat_level"] = "high"
     elif security["malware_score"] >= 0.3:
         security["threat_level"] = "medium"
-    
+
     return security
 
 @app.get("/api/v1/engines")
@@ -162,7 +224,7 @@ async def get_engines():
     try:
         engines = list_engines()
         engine_details = []
-        
+
         for engine_name in engines:
             try:
                 engine_instance = get_instance(engine_name)
@@ -180,7 +242,7 @@ async def get_engines():
                     "status": "error",
                     "version": "unknown",
                 })
-        
+
         return {
             "success": True,
             "engines": engine_details,
@@ -196,7 +258,7 @@ async def get_engine_status():
     try:
         engines = list_engines()
         engine_status = {}
-        
+
         for engine_name in engines:
             # Get stats from global metrics or calculate
             stats = system_metrics["engine_stats"].get(engine_name, {
@@ -205,7 +267,7 @@ async def get_engine_status():
                 "last_used": None,
                 "performance": 95.0,  # Default performance score
             })
-            
+
             engine_status[engine_name] = {
                 "status": "active",
                 "performance": stats["performance"],
@@ -213,7 +275,7 @@ async def get_engine_status():
                 "avg_time": stats["avg_time"],
                 "last_used": stats["last_used"],
             }
-        
+
         return {
             "success": True,
             "engines": engine_status
@@ -230,11 +292,13 @@ async def scan_file(
     generate_hashes: bool = True,
     extract_metadata_flag: bool = True,
     validate_signatures: bool = True,
+    user=Depends(get_current_user),
+    db=Depends(get_db),
 ):
     """Scan a single file using Probium engines."""
     scan_start_time = time.time()
     scan_id = f"scan_{int(scan_start_time * 1000)}"
-    
+
     try:
         # Update active scans
         active_scans[scan_id] = {
@@ -243,37 +307,37 @@ async def scan_file(
             "progress": 0,
             "start_time": scan_start_time,
         }
-        
+
         # Save uploaded file temporarily
         with tempfile.NamedTemporaryFile(delete=False, suffix=f"_{file.filename}") as tmp_file:
             content = await file.read()
             tmp_file.write(content)
             tmp_file_path = Path(tmp_file.name)
-        
+
         try:
             # Parse engines parameter
             engine_list = None
             if engines:
                 engine_list = [e.strip() for e in engines.split(',')]
-            
+
             # Update progress
             active_scans[scan_id]["progress"] = 20
             active_scans[scan_id]["current_stage"] = "Initializing engines"
-            
+
             # Perform detection using actual Probium
             detection_start = time.time()
-            
+
             if engine_list:
                 result = _detect_file(tmp_file_path, only=engine_list)
             else:
                 result = _detect_file(tmp_file_path)
-            
+
             detection_time = time.time() - detection_start
-            
+
             # Update progress
             active_scans[scan_id]["progress"] = 60
             active_scans[scan_id]["current_stage"] = "Analyzing file structure"
-            
+
             # Generate comprehensive result
             scan_result = {
                 "id": scan_id,
@@ -288,34 +352,34 @@ async def scan_file(
                 "timestamp": datetime.now().isoformat(),
                 "probium_version": probium.__version__,
             }
-            
+
             # Add breakdown information if available
             if result.candidates and result.candidates[0].breakdown:
                 scan_result["breakdown"] = result.candidates[0].breakdown
-            
+
             # Generate hashes if requested
             if generate_hashes:
                 active_scans[scan_id]["progress"] = 75
                 active_scans[scan_id]["current_stage"] = "Generating hashes"
                 scan_result["hashes"] = calculate_file_hashes(tmp_file_path)
-            
+
             # Extract metadata if requested
             if extract_metadata_flag:
                 active_scans[scan_id]["progress"] = 85
                 active_scans[scan_id]["current_stage"] = "Extracting metadata"
                 scan_result["metadata"] = extract_metadata(tmp_file_path, result)
-            
+
             # Analyze structure if deep analysis is enabled
             if deep_analysis:
                 active_scans[scan_id]["progress"] = 90
                 active_scans[scan_id]["current_stage"] = "Analyzing structure"
                 scan_result["structure"] = analyze_file_structure(tmp_file_path, result)
-            
+
             # Perform security assessment
             active_scans[scan_id]["progress"] = 95
             active_scans[scan_id]["current_stage"] = "Security assessment"
             scan_result["security"] = assess_security(tmp_file_path, result)
-            
+
             # Calculate performance metrics
             total_scan_time = time.time() - scan_start_time
             scan_result["performance"] = {
@@ -325,12 +389,12 @@ async def scan_file(
                 "cpu_time": f"{detection_time:.3f}s",
                 "efficiency": f"{len(content) / 1024 / 1024 / total_scan_time:.1f} MB/s"
             }
-            
+
             # Update progress
             active_scans[scan_id]["progress"] = 100
             active_scans[scan_id]["current_stage"] = "Complete"
             active_scans[scan_id]["status"] = "complete"
-            
+
             # Update global metrics
             system_metrics["total_scans"] += 1
             for engine in scan_result["engines_used"]:
@@ -342,31 +406,37 @@ async def scan_file(
                         "last_used": None,
                         "performance": 95.0,
                     }
-                
+
                 stats = system_metrics["engine_stats"][engine]
                 stats["scans_completed"] += 1
                 stats["total_time"] += detection_time
                 stats["avg_time"] = stats["total_time"] / stats["scans_completed"]
                 stats["last_used"] = datetime.now().isoformat()
-            
+
             # Add to scan history
             scan_history.append(scan_result)
-            
+
             # Clean up active scan
             del active_scans[scan_id]
-            
+
+            # At the end, store scan in DB
+            if user:
+                db_scan = ScanHistory(user_id=user.id, filename=file.filename, result_json=json.dumps(scan_result))
+                db.add(db_scan)
+                db.commit()
+
             return {
                 "success": True,
                 "result": scan_result
             }
-            
+
         finally:
             # Clean up temporary file
             try:
                 tmp_file_path.unlink()
             except Exception as e:
                 logger.warning(f"Failed to delete temporary file: {e}")
-                
+
     except Exception as e:
         logger.error(f"Scan failed: {e}")
         if scan_id in active_scans:
@@ -384,13 +454,13 @@ async def scan_batch(
     """Scan multiple files in parallel."""
     batch_id = f"batch_{int(time.time() * 1000)}"
     batch_start_time = time.time()
-    
+
     try:
         results = []
         engine_list = None
         if engines:
             engine_list = [e.strip() for e in engines.split(',')]
-        
+
         # Process files
         for i, file in enumerate(files):
             try:
@@ -399,7 +469,7 @@ async def scan_batch(
                     content = await file.read()
                     tmp_file.write(content)
                     tmp_file_path = Path(tmp_file.name)
-                
+
                 try:
                     # Detect file type
                     detection_start = time.time()
@@ -408,7 +478,7 @@ async def scan_batch(
                     else:
                         result = _detect_file(tmp_file_path)
                     detection_time = time.time() - detection_start
-                    
+
                     # Create result
                     file_result = {
                         "filename": file.filename,
@@ -419,16 +489,16 @@ async def scan_batch(
                         "scan_time": f"{detection_time:.3f}s",
                         "index": i,
                     }
-                    
+
                     results.append(file_result)
-                    
+
                 finally:
                     # Clean up temporary file
                     try:
                         tmp_file_path.unlink()
                     except Exception as e:
                         logger.warning(f"Failed to delete temporary file: {e}")
-                        
+
             except Exception as e:
                 logger.error(f"Failed to process file {file.filename}: {e}")
                 results.append({
@@ -436,9 +506,9 @@ async def scan_batch(
                     "error": str(e),
                     "index": i,
                 })
-        
+
         total_time = time.time() - batch_start_time
-        
+
         return {
             "success": True,
             "batch_id": batch_id,
@@ -449,7 +519,7 @@ async def scan_batch(
             "total_time": f"{total_time:.3f}s",
             "timestamp": datetime.now().isoformat(),
         }
-        
+
     except Exception as e:
         logger.error(f"Batch scan failed: {e}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -474,19 +544,19 @@ async def get_scan_status(scan_id: str):
                         "result": scan
                     }
                 }
-        
+
         raise HTTPException(status_code=404, detail="Scan not found")
 
 @app.get("/api/v1/system/metrics")
 async def get_system_metrics():
     """Get current system metrics and statistics."""
     import psutil
-    
+
     # Get real system metrics
     cpu_percent = psutil.cpu_percent(interval=1)
     memory = psutil.virtual_memory()
     disk = psutil.disk_usage('/')
-    
+
     # Update global metrics
     system_metrics.update({
         "cpu_usage": cpu_percent,
@@ -499,19 +569,20 @@ async def get_system_metrics():
         "active_threads": len(active_scans),
         "timestamp": datetime.now().isoformat(),
     })
-    
+
     return {
         "success": True,
         "metrics": system_metrics
     }
 
 @app.get("/api/v1/scan/history")
-async def get_scan_history(limit: int = 100):
+async def get_scan_history(limit: int = 100, user=Depends(get_current_user), db=Depends(get_db)):
     """Get recent scan history."""
+    scans = db.query(ScanHistory).filter_by(user_id=user.id).order_by(ScanHistory.timestamp.desc()).limit(limit).all()
     return {
         "success": True,
-        "scans": scan_history[-limit:],
-        "total": len(scan_history)
+        "scans": [json.loads(scan.result_json) for scan in scans],
+        "total": len(scans)
     }
 
 if __name__ == "__main__":

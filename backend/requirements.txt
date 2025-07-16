@@ -1,4 +1,5 @@
-fastapi==0.104.1
+fastapi>=0.111.0
+pydantic>=2.7
 uvicorn[standard]==0.24.0
 python-multipart==0.0.6
 psutil==5.9.6
@@ -10,3 +11,7 @@ torch>=2.1.0
 regex>=2023.10.3
 cachetools>=5.3.2
 typing-extensions>=4.8.0
+sqlalchemy
+google-auth
+google-auth-oauthlib
+google-api-python-client

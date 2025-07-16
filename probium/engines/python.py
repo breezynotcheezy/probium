@@ -17,7 +17,7 @@ _PYC_MAGIC = importlib.util.MAGIC_NUMBER
 
 _PY_SHEBANG = b"python"
 
-@register
+#@register
 class PythonEngine(EngineBase):
     name = "python"
     cost = 0.01
