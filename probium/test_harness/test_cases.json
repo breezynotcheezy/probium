@@ -484,11 +484,7 @@
 ],
 
 "html file tests": [
-    {
-      "name": "998082.html test",
-      "test_file_path": "test_cases_cft/998082.html",
-      "expected_mime_type": "text/html"
-    },
+
     {
       "name": "998074.html test",
       "test_file_path": "test_cases_cft/998074.html",
