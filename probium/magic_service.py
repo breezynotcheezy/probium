@@ -22,7 +22,7 @@ MAGIC_SIGNATURES: list[tuple[bytes, int, str]] = [
     (b"ftyp", 4, "mp4"),
     (b"ID3", 0, "mp3"),
     (b"OggS", 0, "ogg"),
-    (b"fLaC", 0, "flac"),
+    #(b"fLaC", 0, "flac"),
     (b"RIFF", 0, "wav"),
     (b"\x1f\x8b", 0, "gzip"),
     (b"BZh", 0, "bzip2"),

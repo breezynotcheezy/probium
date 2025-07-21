@@ -5,8 +5,10 @@ import concurrent.futures as cf
 import functools
 import logging
 import os
+import mmap
+import ctypes
 from pathlib import Path
-from typing import Any, Iterable, Sequence
+from typing import Any, Iterable, Sequence, Union
 
 # directories ignored by default when scanning
 DEFAULT_IGNORES = {".git", "venv", ".venv", "__pycache__"}
@@ -21,7 +23,7 @@ logger = logging.getLogger(__name__)
 
 
 def _load_bytes(source: str | Path | bytes, cap: int | None) -> bytes:
-    """Return raw bytes, never a Result (guards against cache mix-ups)."""
+    # Return raw bytes, never a Result (guards against cache mix-ups).
     if cap is not None and cap < 0:
         cap = None
 
@@ -30,19 +32,17 @@ def _load_bytes(source: str | Path | bytes, cap: int | None) -> bytes:
         if not p.exists():
             # logger.warning(f"Source file does not exist: {p}")
             return b""
-        cached = cache_get(p)
-        if isinstance(cached, (bytes, bytearray)):
-            return cached[:cap] if cap else bytes(cached)
+        
         try:
-            with p.open("rb") as fh:
-                if cap is None:
-                    data = fh.read()
-                else:
-                    data = fh.read(cap)
-            return data
+            fd = os.open(p, os.O_RDONLY)
+            try:
+                return os.read(fd, cap or os.path.getsize(p))
+            finally:
+                os.close(fd)
         except Exception:
             # logger.error(f"Failed to read file {p}: {e}")
             return b""
+        
     return source[:cap] if (cap is not None) else source
 
 
