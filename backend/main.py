@@ -309,7 +309,8 @@ async def scan_file(
         }
 
         # Save uploaded file temporarily
-        with tempfile.NamedTemporaryFile(delete=False, suffix=f"_{file.filename}") as tmp_file:
+        from pathlib import Path
+        with tempfile.NamedTemporaryFile(delete=False, suffix=f"_{Path(file.filename).name}") as tmp_file:
             content = await file.read()
             tmp_file.write(content)
             tmp_file_path = Path(tmp_file.name)
@@ -465,7 +466,7 @@ async def scan_batch(
         for i, file in enumerate(files):
             try:
                 # Save file temporarily
-                with tempfile.NamedTemporaryFile(delete=False, suffix=f"_{file.filename}") as tmp_file:
+                with tempfile.NamedTemporaryFile(delete=False, suffix=f"_{Path(file.filename).name}") as tmp_file:
                     content = await file.read()
                     tmp_file.write(content)
                     tmp_file_path = Path(tmp_file.name)
