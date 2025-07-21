@@ -408,3 +408,25 @@ async def scan_dir_async(
         yield await coro
     if executor is not None:
         executor.shutdown()
+
+
+def format_results(res: list[tuple[Any, Any]]) -> list[dict]:
+    """
+    Usage:
+    When using Probium as a library and calling detect on a directory, this method can be used to convert
+    the results into a list.
+    Ex:
+
+    detect_results = detect("folder")
+    formatted_results = format_results(detect_results)
+    for entry in formatted_results:
+        for cand in entry["candidates"]:
+            print(cand["extension"]) # prints the found extension of every file
+
+
+    """
+    results = []
+    for path, m in res:
+        entry = {"path": str(path), **m.model_dump()}
+        results.append(entry)
+    return results

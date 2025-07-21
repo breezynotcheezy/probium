@@ -1,6 +1,6 @@
 from importlib.metadata import entry_points, version
 from typing import TYPE_CHECKING
-from .core import detect, scan_dir, list_engines
+from .core import detect, scan_dir, list_engines, format_results
 from .google_magika import detect_magika
 from .magic_service import detect_magic
 from .trid_multi import detect_with_trid
