@@ -198,7 +198,6 @@ def _detect_file(
         and cap_bytes is not None
         and isinstance(source, (str, Path))
     ):
-        payload = Path(source).read_bytes()[:scan_cap]
         for name in engines:
             res = get_instance(name)(payload)
             if res.candidates:
