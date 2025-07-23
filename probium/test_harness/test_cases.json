@@ -63,7 +63,7 @@
     {
       "name": "false-f.docx test",
       "test_file_path": "test_cases_cft/false-f.docx",
-      "expected_mime_type": "application/json"
+      "expected_mime_type": "text/plain"
     },
     {
       "name": "test-f.docx test",
@@ -73,37 +73,37 @@
     {
       "name": "true-f.docx test",
       "test_file_path": "test_cases_cft/true-f.docx",
-      "expected_mime_type": "application/json"
+      "expected_mime_type": "text/plain"
     },
     {
       "name": "998061.html test",
       "test_file_path": "test_cases_cft/998061.html",
-      "expected_mime_type": "text/x-makefile"
+      "expected_mime_type": "text/html"
     },
         {
       "name": "998084.xml test",
       "test_file_path": "test_cases_cft/998084.xml",
-      "expected_mime_type": "text/plain"
+      "expected_mime_type": "application/xml"
     },
         {
       "name": "998079.xml test",
       "test_file_path": "test_cases_cft/998079.xml",
-      "expected_mime_type": "text/plain"
+      "expected_mime_type": "application/xml"
     },
         {
       "name": "998058.xml test",
       "test_file_path": "test_cases_cft/998058.xml",
-      "expected_mime_type": "text/plain"
+      "expected_mime_type": "application/xml"
     },
        {
       "name": "998052.xml test",
       "test_file_path": "test_cases_cft/998052.xml",
-      "expected_mime_type": "text/plain"
+      "expected_mime_type": "application/xml"
     },
         {
       "name": "998035.xml test",
       "test_file_path": "test_cases_cft/998035.xml",
-      "expected_mime_type": "text/plain"
+      "expected_mime_type": "application/xml"
     }
  ],
 
