@@ -6,10 +6,12 @@ Probium is a fast, modular content analysis tool that detects and classifies fil
 ## Features
 
 - Fast file type detection ✔
-- Pluggable engine architecture (PDF, ZIP, etc.) ✔
+- Pluggable engine architecture (PDF, ZIP, etc) ✔
 - Python library and CLI interface ✔
 - Parallel scanning with thread pools ✔
 - JSON output for easy integration ✔
+- API: https://probium.onrender.com
+- Demo of API: ##https://v0-probity-anti-virus-portal.vercel.app/
 
 
 ## Installation
